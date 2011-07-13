@@ -1,0 +1,317 @@
+
+/* css reset */
+.fl-grid
+,.fl-table
+,.fl-th,.fl-td
+,.fl-menu-table
+,.fl-menu-td
+	{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-family: Arial;
+	font-size: 11px;
+	letter-spacing: normal;
+	line-height: normal;
+	background: none;
+	}
+
+.fl-grid
+	{
+	border: 1px solid #bbb;
+	position: relative;
+	width: 100%;
+	background: #fff;
+	color: #333;
+
+	}
+	
+	.fl-hbdiv
+		{
+
+		position: relative;
+		width: 100%;
+		overflow: hidden;
+		background: #fff;
+		}
+
+	.fl-fpane
+		{
+		}
+		
+		.fl-fpane-left
+			{
+			border-right: 0px solid #ccc;
+			position: absolute;
+			top: 0px;
+			left: 0px;
+			}
+		
+	.fl-hdiv
+		{
+		width: 100%;
+		overflow: hidden;
+		position: relative;
+		border-bottom: 2px solid #000;
+		}
+		
+		.fl-hdiv-inner
+			{
+			padding-right: 40px;
+			float: left;
+			}
+			
+	.fl-bdiv
+		{
+		width: 100%;
+		overflow: auto;
+		position: relative;
+		}
+		
+		.fl-grid-fw .fl-bdiv
+		{
+		overflow: hidden;
+		overflow-y: auto;
+		}
+		
+		.fl-bdiv-inner
+			{
+			float: left;
+			padding-bottom: 0px;
+			}
+			
+		.fl-grid-fw .fl-bdiv-inner
+			{
+			float: none;
+			}
+
+		.fl-fpane-left .fl-bdiv-inner
+			{
+			padding-bottom: 40px;
+			}
+		
+
+.fl-table
+	{
+	table-layout: fixed;
+	width: 0;
+	margin-top: -1px;
+	margin-left: -1px;
+	border-right: 1px solid #ccc;
+	}
+	
+	.fl-fpane-left .fl-table
+		{
+		border-right: 0;
+		}
+		
+		.fl-fpane-left .fl-hdiv
+			{
+			border-right: 1px solid #ccc;
+			}
+
+	.fl-grid-fw .fl-table
+		{
+		width: 100%;
+		border-right: 0px;
+		
+		border-left: 0px;
+		}
+
+	.fl-grid-fw .fl-hdiv .fl-table
+		{
+		border-right: 1px solid #fff;
+		}
+		
+
+	.fl-td, .fl-th
+		{
+		vertical-align: top;
+		text-align: left;
+		padding: 0px;
+		position: relative;
+		border-left: 1px solid #ccc;
+		border-right: 1px solid #fff;
+		border-top: 1px solid #ddd;
+		cursor: default;
+		}
+
+		
+		.fl-td
+			{
+			border-left: 0px;
+			border-right: 0px;
+			padding: 0px 1px;
+			}
+			
+			.fl-th-con
+				{
+				position: relative;
+				overflow: visible;
+				height: 0px;
+				}
+		
+			.fl-coldrag
+				{
+				height: 300px;
+				width: 5px;
+				position: absolute;
+				bottom: 0px;
+				right: -4px;
+				cursor: col-resize;
+				z-index: 6;
+				}
+				
+			.fl-coltog
+				{
+				display: none;
+				background: #fff;
+				height: 300px;
+				width: 15px;
+				position: absolute;
+				bottom: 0px;
+				right: 0px;
+				z-index: 4;
+				}
+				
+				.fl-th:hover .fl-coltog
+					{
+					display: block;
+					}
+				
+				.fl-coltogged
+					{
+					display: block;
+					}
+				
+				.fl-coltog-inner
+					{
+					position: absolute;
+					width: 16px;
+					height: 16px;
+					bottom: 2px;
+					left: 0px;
+					background: url(images/ddn.png) no-repeat center;
+					}
+				
+			.fl-td-div, .fl-th-div
+				{
+				white-space: nowrap;
+				overflow: hidden;
+				padding: 5px;
+				text-overflow: ellipsis;
+				-o-text-overflow: ellipsis;
+				}
+
+			.fl-fpane-left .fl-td-div, .fl-fpane-left .fl-th-div
+			,.fl-fpane-right .fl-td-div, .fl-fpane-right .fl-th-div
+				{
+				white-space: nowrap;
+				}
+
+
+/* fl-menu module */
+
+.fl-menu
+	{
+	border: 1px solid #ddd;
+	position: absolute;
+	background: #fff;
+	z-index: 6;
+	top: 0px;
+	left: 0px;
+	color: #111;
+	display: none;
+
+	-webkit-box-shadow: #999 0px 5px 10px;
+	-moz-box-shadow: #999 0px 5px 10px;
+	box-shadow: #999 0px 5px 10px;
+	
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	padding: 4px 0px;	
+
+	
+	}
+	
+	.fl-menu-table
+		{
+		border: 0px solid #fff;
+		width: auto;
+		}
+	
+	.fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr .fl-menu-td
+		{
+		padding: 5px;
+		cursor: default;
+		background: none;
+		color: #111;
+		}
+		
+		.fl-submenu
+			{
+			position: relative;
+			display: block;
+			}
+			
+			.fl-menu-tr:hover .fl-menu-td .fl-menu
+				{
+				display: block;
+				}
+		
+		.fl-menu-col1,.fl-menu-col3
+			{
+			width: 16px;
+			}
+		
+		.fl-menu-br .fl-menu-td
+			{
+			padding: 3px 0px;
+			}
+		
+		.fl-menu-br-div
+			{
+			height: 0px;
+			overflow: hidden;
+			border-top: 1px solid #eee;
+			}
+
+		.fl-menu-tr:hover .fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr:hover .fl-menu-td
+			{
+			background: #222;
+			color: #fff;
+			}
+			
+			
+		
+		
+		.fl-label
+			{
+			white-space: nowrap;
+			}
+			
+			.fl-label-disabled
+				{
+				color: #bbb;
+				}
+
+		
+				
+.fl-icon, .fl-submenu
+	{
+	width: 16px;
+	height: 16px;
+	display: -moz-inline-stack;
+	display: inline-block;
+	vertical-align: top;
+	position: relative;
+	}
+	
+
+	.fl-submenu .fl-menu
+		{
+		left: 21px;
+		top: -6px;
+		}
+

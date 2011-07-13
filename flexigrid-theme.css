@@ -1,0 +1,77 @@
+
+	.fl-coltog
+		{
+		background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
+		border-left: 1px solid #ccc;
+		}
+
+	.fl-grid
+		{
+		background: #eee;
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+
+		}
+
+	.fl-grid-inner
+		{
+		padding: 5px;
+		border: 1px solid #fff;
+
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+
+		}
+		
+		.fl-hbdiv
+			{
+			border: 1px solid #ccc;
+			margin-left: -1px;
+			}
+
+	.fl-hdiv
+		{
+		background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
+		border-bottom: 0px;
+		}
+
+	.fl-grid-fw .fl-hdiv .fl-table
+		{
+		border-right: 1px solid #dedede;
+		}
+
+	.fl-fpane-left .fl-table
+		{
+		border-right: 0px solid #ccc;
+		}
+		
+		.fl-fpane-left
+			{
+			border-right: 1px solid #ccc !important;
+			}
+		
+		.fl-th-div
+			{
+			padding-bottom: 6px;
+			}
+			
+			.fl-th-div:hover
+				{
+				border-bottom: 1px solid orange;
+				padding-bottom: 5px;
+				}
+				
+
+		.fl-td
+			{
+			padding: 0px;
+/*
+			border-left: 1px solid #ccc;
+			border-right: 1px solid #fff;
+*/
+			}
+
+				
