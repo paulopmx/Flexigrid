@@ -4,7 +4,7 @@
 
 
 		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
-		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css"  />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic" disabled="disabled"  />
 		
 		<style>
 			body
@@ -24,6 +24,10 @@
 		</style>
 	</head>
 	<body>
+
+	<button type="button" onclick="toggle()">Toggle Classic Theme</button>
+
+	<br />
 
 	<h2>Percentage width</h2>
 
@@ -489,10 +493,20 @@
 
 	</div> <!-- end fl-grid --> 	
 	
-	
-
 	<script type="text/javascript" src="../lib/jquery162.js"></script>
+
 	<script type="text/javascript">
+	
+		function toggle()
+			{
+			var state = $('#classic').attr('disabled');
+			
+			if (state)
+				$('#classic').removeAttr('disabled');
+			else
+				$('#classic').attr('disabled','disabled');
+			
+			}
 	
 	
 		function fixfw()
