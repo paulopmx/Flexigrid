@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<title>Flexigrid</title>
+
+
+		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css"  />
+		
+		<style>
+			body
+				{
+				margin: 0;
+				padding: 20px;
+				font-family: Arial;
+				}
+				
+			h2
+				{
+				font-size: 24px;
+				margin: 15px 0px;
+				font-weight: normal;
+				color: #555;
+				}
+				
+		</style>
+		
+	</head>
+	<body>
+
+	<h2>Flexigrid</h2>
+
+	<table class="table"></table>
+
+	<script type="text/javascript" src="../lib/jquery162.js"></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-table-parser.js" ></script>
+	<script type="text/javascript">
+		$('.table').flexigrid();
+	</script>
+
+	</body>
+</html>
