@@ -12,7 +12,6 @@ when to load: after render
 
 */
 
-
 fl_mod['fl_menu'] = {
 			//layouts
 			 fl_menu_col1: '<td class="fl-menu-td fl-menu-col1"><span class="fl-icon"></span></td>'
@@ -23,7 +22,13 @@ fl_mod['fl_menu'] = {
 			,fl_menu_br: '<tr class="fl-menu-br"><td class="fl-menu-td" colspan="3"><div class="fl-menu-br-div"></div></td></tr>'
 			,fl_coltog: '<div class="fl-coltog"><div class="fl-coltog-inner"></div></div>' //insert into th
 			
+			//events - to avoid collision with other modules use module_name_functionname for module events
+			//fl_menu_init: function () {}
+			
 		};
 
-fl_grid.prototype = $.extend(fl_grid.prototype,fl_mod['fl_menu']);
+/* 
+sample event attach
+fl_events['fl_menu'] = {beforeRender:'init'}; */
+
 

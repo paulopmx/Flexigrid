@@ -5,21 +5,20 @@
  * Dual licensed under the MIT (MIT-LICENSE.txt)
  * and GPL (GPL-LICENSE.txt) licenses.
 
-name: fl_tableparser
+name: fl_table_parser
 purpose: Parses static table
 requirement: none
 when to load: manually triggered
 
 */
 
-fl_mod['fl_tableparser'] = {
+fl_mod['fl_table_parser'] = {
 			//events
 			parseTable: function (tableobj)
 				{
 				//get column headers
 				//get rows into data
 				}
+
 		};
 
-//merge
-fl_grid.prototype = $.extend(fl_grid.prototype,fl_mod['fl_tableparser']);

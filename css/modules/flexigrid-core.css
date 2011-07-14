@@ -214,7 +214,7 @@
 
 .fl-menu
 	{
-	border: 1px solid #ddd;
+	border: 1px solid #ccc;
 	position: absolute;
 	background: #fff;
 	z-index: 6;
@@ -223,9 +223,9 @@
 	color: #111;
 	display: none;
 
-	-webkit-box-shadow: #999 0px 5px 10px;
-	-moz-box-shadow: #999 0px 5px 10px;
-	box-shadow: #999 0px 5px 10px;
+	-webkit-box-shadow: #999 0px 5px 20px;
+	-moz-box-shadow: #999 0px 5px 20px;
+	box-shadow: #999 0px 5px 20px;
 	
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
@@ -243,9 +243,10 @@
 	
 	.fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr .fl-menu-td
 		{
-		padding: 5px;
+		padding: 3px 5px;
 		cursor: default;
 		background: none;
+		font-size: 13px;
 		color: #111;
 		}
 		

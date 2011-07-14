@@ -4,7 +4,7 @@
 
 
 		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
-		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic" disabled="disabled"  />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic"  />
 		
 		<style>
 			body
@@ -519,7 +519,7 @@
 		/* freeze pane */
 		
 		var w1 = $('.fl-fpane-left .fl-table').outerWidth();
-		$('.fl-fpane-left').width(w1);
+		$('.fl-fpane-left').width(w1-1);
 		$('.fl-fpane-right').css('margin-left',$('.fl-fpane-left').outerWidth());
 		
 		}

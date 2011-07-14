@@ -5,7 +5,7 @@
 
 
 		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
-		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css"  />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic"  />
 		
 		<style>
 			body
@@ -28,6 +28,10 @@
 	</head>
 	<body>
 
+	<button type="button" onclick="toggle()">Toggle Classic Theme</button>
+	
+	<br />
+
 	<h2>Flexigrid</h2>
 
 	<table class="table"></table>
@@ -37,7 +41,20 @@
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-table-parser.js" ></script>
 	<script type="text/javascript">
-		$('.table').flexigrid();
+	
+		$('.table').flexigrid({except_module:['fl_table_parser']});
+
+		function toggle()
+			{
+			var state = $('#classic').attr('disabled');
+			
+			if (state)
+				$('#classic').removeAttr('disabled');
+			else
+				$('#classic').attr('disabled','disabled');
+			
+			}
+
 	</script>
 
 	</body>

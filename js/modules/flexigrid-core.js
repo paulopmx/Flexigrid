@@ -9,10 +9,28 @@
  * $Date: 2011-07-13 16:53:00 +0800 (Tue, 13 Jul 2011) $
  */
 
+
+/* 
+New - Flexigrid Modules 
+
+You can add/remove additional functionality for flexigrid
+
+Format for making modules:
+1. Add comment description at begining specifying:
+	name:
+	purpose: 
+	requirement: 
+	when to load:
+	
+2. Declare as fl_mod[name_of_mod]
+3. Declare which module specific events to be trigger at certain times as fl_events[name_of_mod]
+
+*/
+
+
 var fl_grid = function (){};
-var fl_mod = [];
-var fl_beforeRender = [];
-var fl_afterRender = [];
+var fl_mod = {};
+var fl_events = {};
 
 fl_grid.prototype = {
 	
@@ -49,20 +67,15 @@ fl_grid.prototype = {
 	,fl_th: '<td class="fl-th"><div class="fl-th-div"></div><div class="fl-th-con"><div class="fl-coldrag"></div></div></th>'  
 	,fl_grid: '<div class="fl-grid-inner"><div class="hbdiv"></div></div>'
 	
-	//module events --> can be overridden 
-	,modBeforeRender: fl_beforeRender
-	,modAfterRender: fl_afterRender
 
 	//default events
 	,render: function ()
 		{
 
 		//trigger module beforeRender events
-		var r = 0;
 		
-		for (r=0;r<this.modBeforeRender.length;r++)
-			this[this.modBeforeRender[r]]();
-		
+		this.module_events('beforeRender');
+					
 		//first unbind and empty then add default content
 		$("*",this).unbind();
 		$(this).empty();
@@ -71,35 +84,31 @@ fl_grid.prototype = {
 		
 		
 		//trigger module afterRender events
-
-		for (r=0;r<this.modAfterRender.length;r++)
-			this[this.modAfterRender[r]]();
 		
-		r = null;
+		this.module_events('afterRender');
 		
 		}
+	,module_events: function (mtype)
+		{
+			
+			var mod;
+			var ev;
+		
+			for (mod in fl_events)
+				{
+					for (var ev in fl_events[mod])
+						{
+							if (ev==mtype)
+								$(this).trigger(mod+'_'+fl_events[mod][ev]);
+						}
+				}
+			
+			mod = null;
+			ev = null;				
+		}	
 	,parseTable: function (){} // override on a module
 
 };
-
-/* 
-Flexigrid Modules 
-
-Can add/remove additional functionality for flexigrid
-
-Format for adding modules:
-1. Add comment description at begining specifying:
-	name:
-	purpose: 
-	requirement: 
-	when to load:
-	
-2. Declare as fl_mod[name_of_mod]
-3. Add to flexigrid using: fl_grid.prototype = $.extend(fl_grid.prototype,fl_mod[name_of_mod]);
-4. Must be extendable as well
-
-*/
-
 
 (function( $ ){
   $.fn.flexigrid = function(p) {
@@ -131,7 +140,28 @@ Format for adding modules:
 						
 						//apply custom settings
 						$.extend(f,p);
-						$.extend(grid[gid],f);
+						$.extend(g,f);
+						
+						if (g.custom)
+							{
+								for (var m=0; m<g.custom.length;m++)
+									{
+										$.extend(g,fl_mod[g.custom[m]]);
+									}
+							}							
+						else
+							{	
+							for (var m in fl_mod)
+								{
+									if (g.except_modules)
+										if ($.inArray(m,g.except_module)>-1)
+											{
+											continue;
+											}
+										$.extend(g,fl_mod[m]);
+								}
+							}
+						
 						f = null;
 
 						//add identifiers
@@ -181,8 +211,7 @@ Format for adding modules:
   		// destroy and unbind
   		fl_grid = null;
   		fl_mod = null;
-  		fl_beforeRender = null;
-  		fl_afterRender = null;
+  		fl_events = null;
   		}
   );
   
