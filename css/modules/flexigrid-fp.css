@@ -1,0 +1,16 @@
+
+	.fl-fpane-left .fl-table
+		{
+		border-right: 0;
+		}
+		
+		.fl-fpane-left .fl-hdiv
+			{
+			border-right: 1px solid #ccc;
+			}
+
+			.fl-fpane-left .fl-td-div, .fl-fpane-left .fl-th-div
+			,.fl-fpane-right .fl-td-div, .fl-fpane-right .fl-th-div
+				{
+				white-space: nowrap;
+				}

@@ -1,0 +1,26 @@
+
+
+	.fl-grid-fw .fl-bdiv
+		{
+		overflow: hidden;
+		overflow-y: auto;
+		}
+
+		.fl-grid-fw .fl-bdiv-inner
+			{
+			float: none;
+			}
+
+
+	.fl-grid-fw .fl-table
+		{
+		width: 100%;
+		border-right: 0px;
+		border-left: 0px;
+		}
+
+	.fl-grid-fw .fl-hdiv .fl-table
+		{
+		border-right: 1px solid #fff;
+		}
+		

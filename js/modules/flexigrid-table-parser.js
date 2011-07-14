@@ -16,7 +16,17 @@ fl_mod['fl_table_parser'] = {
 			//events
 			parseTable: function (tableobj)
 				{
+				g = this;
 				//get column headers
+				$('thead th',tableobj).each
+					(
+						function ()
+							{
+							
+							}
+					);
+				
+				g = null;	
 				//get rows into data
 				}
 
