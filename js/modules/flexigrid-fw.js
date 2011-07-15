@@ -9,7 +9,6 @@ name: fl_fw
 purpose: makes flexigrid use percentage width for columns making use of the full width of the grid
 requirement: none
 when to load: after core
-
 */
 
 fl_mod['fl_fw'] = {
@@ -21,7 +20,9 @@ fl_mod['fl_fw'] = {
 		if (this.fullwidth)
 		{
 		$(this).addClass('fl-grid-fw');
+		
 		var w2 = $('.fl-bdiv .fl-table',this).outerWidth();
+		
 		$('.fl-hdiv .fl-hdiv-inner',this).width(w2+2);
 		}
 		

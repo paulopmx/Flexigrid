@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="../css/modules/flexigrid-fw.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-fp.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-menu.css" />
-		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic"  />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic" />
 		
 		<style>
 			body
@@ -31,12 +31,15 @@
 	</head>
 	<body>
 
-	<button type="button" onclick="toggle()">Toggle Classic Theme</button>
+	<button type="button" onclick="toggle()">Toggle Theme</button> 
+	
+	<!-- <input type="button" value="Show Container" onclick="$('.ftable').parents(':hidden').show();" /> -->
 	
 	<br />
 
 	<h2>Flexigrid</h2>
 
+	<div>
 	
 	<table class="ftable">
 <!--
@@ -52,16 +55,21 @@
 		</tbody>
 -->
 	</table>
-
+	
+	</div>
+	
 	<script type="text/javascript" src="../lib/jquery162.js"></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-fw.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-table-parser.js" ></script>
+	
 	<script type="text/javascript">
 	
 		var opt = {
 			fullwidth: true
+			,height: 300
+			,width: 500
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
@@ -85,6 +93,8 @@
 				$('#classic').removeAttr('disabled');
 			else
 				$('#classic').attr('disabled','disabled');
+			
+			$('.ftable').trigger('resize');
 			
 			}
 

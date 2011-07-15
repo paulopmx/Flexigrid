@@ -9,8 +9,16 @@
  * $Date: 2011-07-13 16:53:00 +0800 (Tue, 13 Jul 2011) $
  */
 
+/*
 
-/* 
+Caveat:
+Some features require flexigrid to be in a visible container to work properly.
+
+So when creating a flexigrid
+
+1. Set autorender = false;
+2. Add $("name_of_selector").flexigrid().trigger("render") to the show event of the container;
+ 
 New - Flexigrid Modules 
 
 You can add/remove additional functionality for flexigrid
@@ -35,7 +43,7 @@ var fl_events = {};
 fl_grid.prototype = {
 	
 	//appearance
-	height: 100
+	height: 'auto'
 	,width: 'auto'
 	,className: 'fl-grid'
 	,min_col_width: 30
@@ -82,9 +90,10 @@ fl_grid.prototype = {
 		$(this).empty();
 		
 		$(this).append(this.fl_grid());
-		$('.fl-bdiv',this).height(this.height);
 		
 		this.build_header();
+		
+		//$(this).trigger('resize');
 		
 		//trigger module afterRender events
 		
@@ -107,7 +116,7 @@ fl_grid.prototype = {
 							/* alert(this.column_order.length); */
 							this.column_order[this.column_order.length] = k;
 						}
-					k = null;	
+/* 					k = null;	 */
 					}
 				}
 
@@ -139,12 +148,32 @@ fl_grid.prototype = {
 					$(tr).append(th);
 				
 				}
-			co = null;
+/* 			co = null; */
 				
 			$('.fl-hdiv thead',this).append(tr);
 			
 			
-		}	
+		}
+	,resize: function ()
+		{
+		
+			if (this.height == 'auto') return true;
+			
+			var gh = $(this).height();
+			var bh = $('.fl-bdiv').height();
+			
+			var nh = this.height - (gh-bh);
+			
+			if (nh<0) nh = 0;
+			
+			$('.fl-bdiv').height(nh);
+			
+			if (this.width == 'auto') return true;
+			
+			$(this).width(this.width);
+
+			
+		}		
 	,module_events: function (mtype)
 		{
 			
@@ -160,8 +189,10 @@ fl_grid.prototype = {
 						}
 				}
 			
+/*
 			mod = null;
 			ev = null;				
+*/
 		}
 	,parseTable: function (){} // override on a module
 
@@ -221,8 +252,10 @@ fl_grid.prototype = {
 
 						$.extend(g,p);
 						
+/*
 						m = null;
 						f = null;
+*/
 
 						//add identifiers
 						$(g).addClass(oldclass);
@@ -249,7 +282,7 @@ fl_grid.prototype = {
 							$(g).trigger('load');
 							
 						grid[gid] = g;
-						g = null;
+/* 						g = null; */
 						
 					}
 				else

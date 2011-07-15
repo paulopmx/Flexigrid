@@ -63,7 +63,7 @@ fl_mod['fl_menu'] = {
 								}
 								
 							$('.fl-menu tbody',this).append(tr);
-							tr = null;
+/* 							tr = null; */
 						}
 				
 					//add coltog button
