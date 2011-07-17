@@ -12,6 +12,8 @@ when to load: after render
 
 */
 
+(function( $ ){
+
 fl_mod['fl_menu'] = {
 			//layouts
 			 fl_menu_col1: '<td class="fl-menu-td fl-menu-col1"><span class="fl-icon"></span></td>'
@@ -38,6 +40,8 @@ fl_mod['fl_menu'] = {
 				{
 					//add fl-menu
 					$(this).prepend(this.fl_menu);
+					
+					this.fl_menu = $('.fl-menu',this);
 					
 					//menu items processor --> move to a function for recursion
 					for (var m = 0; m < this.menu_items.length; m++)
@@ -75,11 +79,20 @@ fl_mod['fl_menu'] = {
 							{
 							$(this).parents('.fl-grid').prop('colTarget',$(this).parents('th').prop('column_name'));
 			
-							var l = this.offsetLeft+$(this).parents('div.fl-hbdiv').get(0).offsetLeft+$(this).parents('.fl-th').get(0).offsetLeft;
+							var l = this.offsetLeft+$(this).parents('div.fl-hbdiv').get(0).offsetLeft+$(this).parents('.fl-th').get(0).offsetLeft+$(this).parents('.fl-fpane').get(0).offsetLeft;
 							var t = this.offsetTop+$(this).parents('div.fl-hdiv').next().get(0).offsetTop+$(this).height()+$(this).parents('div.fl-hbdiv').get(0).offsetTop;
 							
+							//console.log(l);
+							
+							var pos = $(this).offset();
+							
+							//var l = pos.left;
+							//var t = pos.top;
+							
+							//alert(pos.top);
+							
 							var w = $(this).parents('.fl-grid').width();
-							var w2 = $('.fl-menu:first').width();
+							var w2 = $(this).parents('.fl-grid').find('.fl-menu:first').width();
 							
 							if ((l+w2)>w) 
 								{
@@ -87,12 +100,12 @@ fl_mod['fl_menu'] = {
 								}
 							
 							var k = l+'px';
-							var k2 = $('.fl-menu:first').css('left');
+							var k2 = $(this).parents('.fl-grid').find('.fl-menu:first').css('left');
 							
 							if (k==k2) 
-								$('.fl-menu:first').toggle('fast');
+								$(this).parents('.fl-grid').find('.fl-menu:first').toggle('fast');
 							else
-								$('.fl-menu:first').css({left:l,top:t}).show('fast');
+								$(this).parents('.fl-grid').find('.fl-menu:first').css({left:l,top:t}).show('fast');
 							
 							}
 					);
@@ -123,3 +136,4 @@ fl_mod['fl_menu'] = {
 fl_events['fl_menu'] = {afterRender:'init'};
 
 
+})( jQuery );

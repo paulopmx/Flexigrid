@@ -35,17 +35,14 @@
 		background: #fff;
 		}
 
-	.fl-fpane
-		{
-		}
-		
 		.fl-fpane-left
 			{
-			border-right: 0px solid #ccc;
 			position: absolute;
 			top: 0px;
 			left: 0px;
+			border-right: 1px solid #ccc;
 			}
+
 		
 	.fl-hdiv
 		{
@@ -73,6 +70,11 @@
 			float: left;
 			padding-bottom: 0px;
 			}
+
+		.fl-fpane-left .fl-bdiv
+			{
+			overflow: hidden;
+			}	
 			
 		.fl-fpane-left .fl-bdiv-inner
 			{
@@ -88,7 +90,7 @@
 	margin-left: -1px;
 	border-right: 1px solid #ccc;
 	}
-	
+
 	.fl-td, .fl-th
 		{
 		vertical-align: top;
@@ -108,6 +110,11 @@
 			border-right: 0px;
 			padding: 0px 1px;
 			}
+			
+			.fl-tr:hover .fl-td, .fl-tr-hover .fl-td
+				{
+				background: #eee;
+				}
 			
 			.fl-th-con
 				{

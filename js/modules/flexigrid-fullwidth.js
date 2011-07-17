@@ -11,15 +11,23 @@ requirement: none
 when to load: after core
 */
 
+(function( $ ){
+
 fl_mod['fl_fw'] = {
-			//events
-	fullwidth: false		
-	,fl_fw_fixfw: function ()
+
+	//layouts
+	fl_view_fullwidth: function () 
+		{ 
+		$(this).addClass('fl-grid-fw');
+		$(this).append('<div class="fl-grid-inner"><div class="fl-hbdiv">' + this.fl_fpane() + '</div></div>'); 
+		}
+
+	//events
+	,fl_fw_fixwidth: function ()
 		{
 		
-		if (this.fullwidth)
+		if (this.viewtype=='fullwidth')
 		{
-		$(this).addClass('fl-grid-fw');
 		
 		var w2 = $('.fl-bdiv .fl-table',this).outerWidth();
 		
@@ -29,12 +37,14 @@ fl_mod['fl_fw'] = {
 		}
 }
 
-fl_events['fl_fw'] = {afterRender:'fixfw'};		
+fl_events['fl_fw'] = {afterReload:'fixwidth'};		
 
   $(window)
   .resize(
   	function()
   		{
-  		$('.fl-grid-fw').trigger('fl_fw_fixfw');
+  		$('.fl-grid-fw').trigger('fl_fw_fixwidth');
   		}
   );
+
+})( jQuery );

@@ -12,6 +12,8 @@ when to load: manually triggered
 
 */
 
+(function( $ ){
+
 fl_mod['fl_table_parser'] = {
 			//events
 			parseTable: function (tableobj)
@@ -30,3 +32,5 @@ fl_mod['fl_table_parser'] = {
 
 		};
 
+
+})( jQuery );

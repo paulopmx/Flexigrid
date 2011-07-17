@@ -3,6 +3,7 @@
 		{
 		background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
 		border-left: 1px solid #ccc;
+		border-bottom: 1px solid orange;
 		}
 
 	.fl-grid
@@ -35,7 +36,7 @@
 	.fl-hdiv
 		{
 		background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
-		border-bottom: 0px;
+		border-bottom: 1px solid #ccc;
 		}
 
 	.fl-grid-fw .fl-hdiv .fl-table
@@ -50,26 +51,32 @@
 		
 		.fl-fpane-left
 			{
-			border-right: 1px solid #ccc !important;
+/* 			border-right: 1px solid #ccc !important; */
 			}
 		
 		.fl-th-div
 			{
-			padding-bottom: 6px;
+/*
+			padding-bottom: 5px;
+			border-bottom: 1px solid #ccc;
+*/
 			}
 			
-			.fl-th-div:hover
+			.fl-th:hover .fl-th-div
 				{
 				border-bottom: 1px solid orange;
-				padding-bottom: 5px;
+				padding-bottom: 4px;
 				}
 				
 
+/*
 		.fl-td
 			{
 			padding: 0px;
-/*
+
 			border-left: 1px solid #ccc;
 			border-right: 1px solid #fff;
-*/
+
 			}
+*/
+			

@@ -7,31 +7,6 @@
  *
  * $Version: 2.0
  * $Date: 2011-07-13 16:53:00 +0800 (Tue, 13 Jul 2011) $
- */
-
-/*
-
-Caveat:
-Some features require flexigrid to be in a visible container to work properly.
-
-So when creating a flexigrid
-
-1. Set autorender = false;
-2. Add $("name_of_selector").flexigrid().trigger("render") to the show event of the container;
- 
-New - Flexigrid Modules 
-
-You can add/remove additional functionality for flexigrid
-
-Format for making modules:
-1. Add comment description at begining specifying:
-	name:
-	purpose: 
-	requirement: 
-	when to load:
-	
-2. Declare as fl_mod[name_of_mod]
-3. Declare which module specific events to be trigger at certain times as fl_events[name_of_mod]
 
 */
 
@@ -40,6 +15,8 @@ var fl_grid = function (){};
 var fl_mod = {};
 var fl_events = {};
 
+(function( $ ){
+
 fl_grid.prototype = {
 	
 	//appearance
@@ -47,6 +24,7 @@ fl_grid.prototype = {
 	,width: 'auto'
 	,className: 'fl-grid'
 	,min_col_width: 30
+	,viewtype: 'standard'
 	
 	//state
 	,page: 1
@@ -70,12 +48,17 @@ fl_grid.prototype = {
 	//layouts
 	,fl_hdiv: '<div class="fl-hdiv"><div class="fl-hdiv-inner"><table class="fl-table" cellspacing="0"><thead></thead></table></div></div>'
 	,fl_bdiv: '<div class="fl-bdiv"><div class="fl-bdiv-inner"><table class="fl-table" cellspacing="0"><tbody></tbody></table></div></div>'
-	,fl_fpane: function () { return '<div class="fl-fpane">' + this.fl_hdiv + this.fl_bdiv +'</div>'; }
+	,fl_fpane: function (c) 
+		{ 
+		return '<div class="fl-fpane '+ c +' ">' + this.fl_hdiv + this.fl_bdiv +'</div>'; 
+		}
 	,fl_td: '<div class="fl-td-div"></div>'
 	,fl_th: '<div class="fl-th-div"></div>'
 	,fl_th_con: '<div class="fl-th-con"><div class="fl-coldrag"></div></div>'  
-	,fl_grid: function () { return '<div class="fl-grid-inner"><div class="fl-hbdiv">' + this.fl_fpane() + '</div></div>' }
-	
+	,fl_view_standard: function () 
+		{ 
+		$(this).append('<div class="fl-grid-inner"><div class="fl-hbdiv">' + this.fl_fpane() + '</div></div>'); 
+		}
 
 	//default events
 	,render: function ()
@@ -89,11 +72,14 @@ fl_grid.prototype = {
 		$("*",this).unbind();
 		$(this).empty();
 		
-		$(this).append(this.fl_grid());
+		//build view type
+		this['fl_view_' + this.viewtype ]();
 		
 		this.build_header();
+		this.reload();
+		this.sync_scroll();
 		
-		//$(this).trigger('resize');
+		$(this).show().trigger('resize');
 		
 		//trigger module afterRender events
 		
@@ -103,9 +89,6 @@ fl_grid.prototype = {
 	,build_header: function ()
 		{
 		
-			
-			var tr = $('<tr />').addClass('fl-tr');
-			
 			//if no order specified create one
 			if (!this.column_order.length)
 				{
@@ -113,13 +96,24 @@ fl_grid.prototype = {
 					{
 					for (var k in this.colModel)
 						{
-							/* alert(this.column_order.length); */
+							if (this.freezepanes) 
+								if ($.inArray(k,this.freezepanes)>=0) continue;
 							this.column_order[this.column_order.length] = k;
 						}
-/* 					k = null;	 */
 					}
 				}
 
+			
+			$('thead',this).each(
+				function ()
+					{
+					
+					var tr = $('<tr />').addClass('fl-tr');
+					$(this).append(tr);
+					
+					}
+			)
+			
 			//add columns base on column order
 			for (var co=0; co<this.column_order.length; co++)
 				{
@@ -138,24 +132,84 @@ fl_grid.prototype = {
 					;
 					
 					if (cm.align)
-						$(th).css('text-alignment',cm.align);
+						$(th).css({'text-align':cm.align});
 						
 					$(th)
 					.wrapInner(this.fl_th)
 					.append(this.fl_th_con)
-					;			
+					;
+					
+					
+					var pane = '.fl-fpane';
+					if (cm.pane) pane += '-'+cm.pane;			
 
-					$(tr).append(th);
+					$(pane+' thead tr',this).append(th);
 				
 				}
-/* 			co = null; */
 				
-			$('.fl-hdiv thead',this).append(tr);
 			
+			
+		}
+	,reload: function ()
+		{
+		
+			var rows = $(this).data('rows');
+
+			if (!rows) return true;
+			
+			for (var i=0; i<dt.length; i++)
+				{
+
+				$('tbody',this).each(
+					function ()
+						{
+						
+						var tr = $('<tr />').addClass('fl-tr');
+						$(this).append(tr);
+						
+						}
+				)
+
+
+				for (var co=0; co<this.column_order.length; co++)
+					{
+						var td = $('<td />')
+								.addClass('fl-td')
+								.prop('column_name',this.column_order[co])
+								;
+								
+						var row = rows[i][this.column_order[co]];
+						var cm = this.colModel[this.column_order[co]];
+
+						$(td).append(row);
+						
+						if (i==0)
+							$(td).width(cm.width);
+						
+						if (cm.align)
+							$(td).css({'text-align':cm.align});
+							
+						$(td)
+						.wrapInner(this.fl_td)
+						;			
+	
+						var pane = '.fl-fpane';
+						if (cm.pane) pane += '-'+cm.pane;			
+	
+						$(pane+' tbody tr:last',this).append(td);
+					
+					}
+
+				}
+			
+			
+			$(this).trigger('resize');	
+			this.module_events('afterReload')
 			
 		}
 	,resize: function ()
 		{
+		
 		
 			if (this.height == 'auto') return true;
 			
@@ -164,16 +218,46 @@ fl_grid.prototype = {
 			
 			var nh = this.height - (gh-bh);
 			
-			if (nh<0) nh = 0;
+			if (nh<0) nh = 'auto';
 			
 			$('.fl-bdiv').height(nh);
 			
-			if (this.width == 'auto') return true;
-			
 			$(this).width(this.width);
+			
+			this.module_events('afterResize');
 
 			
-		}		
+		}
+	,sync_scroll: function ()
+		{
+
+		$('.fl-bdiv',this).scroll
+		(
+			function ()
+				{
+				var t = this;
+				$(this).prev().each
+				(
+					function ()
+						{
+						this.scrollLeft = t.scrollLeft;
+						}
+				);
+
+				$(this).parent().siblings().find('.fl-bdiv').each
+				(
+					function ()
+						{
+						this.scrollTop = t.scrollTop;
+						}
+				);
+				
+				}
+		);
+		
+		this.module_events('afterSyncScroll');	
+
+		}
 	,module_events: function (mtype)
 		{
 			
@@ -189,16 +273,11 @@ fl_grid.prototype = {
 						}
 				}
 			
-/*
-			mod = null;
-			ev = null;				
-*/
 		}
 	,parseTable: function (){} // override on a module
 
 };
 
-(function( $ ){
   $.fn.flexigrid = function(p) {
 	
 	var grid = [];
@@ -251,11 +330,6 @@ fl_grid.prototype = {
 						
 
 						$.extend(g,p);
-						
-/*
-						m = null;
-						f = null;
-*/
 
 						//add identifiers
 						$(g).addClass(oldclass);
@@ -273,16 +347,15 @@ fl_grid.prototype = {
 							$(this).remove();
 						}
 						
-						fid = $('fl-grid').length;
+						fid = $('.fl-grid').length;
 						g.fid = fid;
 						
 						if (g.autorender)
 							$(g).trigger('render');
-						if (g.autoload)
-							$(g).trigger('load');
+						else
+							$(g).hide();
 							
 						grid[gid] = g;
-/* 						g = null; */
 						
 					}
 				else
@@ -310,3 +383,5 @@ fl_grid.prototype = {
   );
   
 })( jQuery );
+
+

@@ -5,10 +5,10 @@
 
 
 		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
-		<link rel="stylesheet" href="../css/modules/flexigrid-fw.css" />
-		<link rel="stylesheet" href="../css/modules/flexigrid-fp.css" />
+		<link rel="stylesheet" href="../css/modules/flexigrid-fullwidth.css" />
+		<link rel="stylesheet" href="../css/modules/flexigrid-freezepane.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-menu.css" />
-		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic" />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic"  />
 		
 		<style>
 			body
@@ -32,8 +32,6 @@
 	<body>
 
 	<button type="button" onclick="toggle()">Toggle Theme</button> 
-	
-	<!-- <input type="button" value="Show Container" onclick="$('.ftable').parents(':hidden').show();" /> -->
 	
 	<br />
 
@@ -60,30 +58,45 @@
 	
 	<script type="text/javascript" src="../lib/jquery162.js"></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
-	<script type="text/javascript" src="../js/modules/flexigrid-fw.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-fullwidth.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-freezepane.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-table-parser.js" ></script>
 	
 	<script type="text/javascript">
 	
 		var opt = {
-			fullwidth: true
-			,height: 300
-			,width: 500
+			viewtype: 'freezepane'
+			,height: 150
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
-					,width: '60%'
+					,width: '160px'
+					,pane: 'left'
 				}
 				,'country_code': {
 					display: "Country Code"
-					,width: '40%'
+					,width: '360px'
+					,pane: 'right'
 				}
 			}
 		}
+		
+		var dt = [
+			 {country_name: 'Philippines',country_code: 'PH'}
+			,{country_name: 'United States', country_code: 'US'}
+			,{country_name: 'China', country_code: 'CN'}
+			,{country_name: 'JAPAN', country_code: 'JP'}
+			,{country_name: 'United Kingdom', country_code: 'GB'}
+			,{country_name: 'Singapore', country_code: 'SG'}
+			,{country_name: 'India', country_code: 'IN'}
+		];
 	
 	
-		$('.ftable').flexigrid(opt);
+		$('.ftable').flexigrid(opt)
+			.data('rows',dt)
+			.trigger('reload')
+			;
 
 		function toggle()
 			{
@@ -97,6 +110,7 @@
 			$('.ftable').trigger('resize');
 			
 			}
+			
 
 	</script>
 
