@@ -79,17 +79,16 @@ fl_mod['fl_menu'] = {
 							{
 							$(this).parents('.fl-grid').prop('colTarget',$(this).parents('th').prop('column_name'));
 			
-							var l = this.offsetLeft+$(this).parents('div.fl-hbdiv').get(0).offsetLeft+$(this).parents('.fl-th').get(0).offsetLeft+$(this).parents('.fl-fpane').get(0).offsetLeft;
-							var t = this.offsetTop+$(this).parents('div.fl-hdiv').next().get(0).offsetTop+$(this).height()+$(this).parents('div.fl-hbdiv').get(0).offsetTop;
+
+							var l = this.offsetLeft;
+							l += $(this).parents('.fl-fpane').get(0).offsetLeft;
+							l += $(this).parents('.fl-hbdiv').get(0).offsetLeft;
+							l -= $(this).parents('.fl-hdiv').get(0).scrollLeft;
+
+							var t = this.offsetTop;
 							
-							//console.log(l);
-							
-							var pos = $(this).offset();
-							
-							//var l = pos.left;
-							//var t = pos.top;
-							
-							//alert(pos.top);
+							t = $(this).parents('.fl-hbdiv').find('.fl-bdiv').get(0).offsetTop;
+							t += $(this).parents('.fl-hbdiv').get(0).offsetTop;
 							
 							var w = $(this).parents('.fl-grid').width();
 							var w2 = $(this).parents('.fl-grid').find('.fl-menu:first').width();
