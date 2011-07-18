@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+	<head>
+		<title>Test</title>
+	</head>
+	<body>
+
+	<script type="text/javascript" src="../lib/jquery162.js"></script>
+	<script type="text/javascript">
+		
+
+			var grid = function () {
+			this.prototype = {
+				column_order: []
+				,build_header: function ()
+					{
+						if (!this.column_order.length)
+							{
+							console.log(this.column_order);
+							this.column_order[0] = 1;
+							this.column_order[1] = 2;
+							}
+					}
+			   }
+			}
+			
+			k = {
+				k: 3
+				,build_test: function ()
+					{
+					if (this.k==3)
+						{
+						console.log('hi');
+						this.k = 4;
+						}
+					}
+			}
+			
+			
+			var grid1 = new grid();
+			var grid2 = new grid();
+			
+			$.extend(grid1,k);
+			$.extend(grid2,k);
+
+			
+			grid1
+				.build_test()
+				;
+			grid2
+				.build_test()
+				;
+			
+	</script>
+	</body>
+</html>

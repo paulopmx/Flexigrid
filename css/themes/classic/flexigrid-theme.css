@@ -41,7 +41,7 @@
 
 	.fl-grid-fw .fl-hdiv .fl-table
 		{
-		border-right: 1px solid #dedede;
+		border-right: 0px solid #dedede;
 		}
 
 	.fl-fpane-left .fl-table
@@ -69,6 +69,7 @@
 				}
 				
 
+
 /*
 		.fl-td
 			{
@@ -79,4 +80,5 @@
 
 			}
 */
+
 			

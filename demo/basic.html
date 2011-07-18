@@ -32,6 +32,7 @@
 	<body>
 
 	<button type="button" onclick="toggle()">Toggle Theme</button> 
+	<button type="button" onclick="$('.fl-grid').trigger('resize')">Resize</button>
 	
 	<br />
 
@@ -39,20 +40,16 @@
 
 	<div>
 	
-	<table class="ftable">
-<!--
-		<thead>
-			<tr>
-				<th>column 1</th>
-				<th>column 2</th>
-				<th>column 3</th>
-			</tr>	
-		</thead>
-		<tbody>
-		
-		</tbody>
--->
-	</table>
+	<div class="ftable"></div>
+	
+	<br />
+	
+	<div class="ftable2"></div>
+
+	<br />
+	
+	<div class="ftable3"></div>
+
 	
 	</div>
 	
@@ -68,6 +65,7 @@
 		var opt = {
 			viewtype: 'freezepane'
 			,height: 150
+			,dpane: 'right'
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
@@ -77,26 +75,74 @@
 				,'country_code': {
 					display: "Country Code"
 					,width: '360px'
-					,pane: 'right'
 				}
 			}
 		}
 		
 		var dt = [
-			 {country_name: 'Philippines',country_code: 'PH'}
-			,{country_name: 'United States', country_code: 'US'}
-			,{country_name: 'China', country_code: 'CN'}
-			,{country_name: 'JAPAN', country_code: 'JP'}
-			,{country_name: 'United Kingdom', country_code: 'GB'}
-			,{country_name: 'Singapore', country_code: 'SG'}
-			,{country_name: 'India', country_code: 'IN'}
+			 {country_name: 'Philippines',country_code: 'PH',id:1}
+			,{country_name: 'United States', country_code: 'US',id:2}
+			,{country_name: 'China', country_code: 'CN',id:3}
+			,{country_name: 'Japan', country_code: 'JP',id:4}
+			,{country_name: 'United Kingdom', country_code: 'GB',id:5}
+			,{country_name: 'Singapore', country_code: 'SG',id:6}
+			,{country_name: 'India', country_code: 'IN',id:7}
 		];
 	
 	
-		$('.ftable').flexigrid(opt)
+		$('.xftable').flexigrid(opt)
 			.data('rows',dt)
 			.trigger('reload')
 			;
+
+		var opt2 = {
+			height: 150
+			,colModel: {
+				'country_name': {
+					 display: "Country Name"
+					,width: '160px'
+				}
+				,'country_code': {
+					display: "Country Code"
+					,width: '360px'
+				}
+			}
+		}
+
+
+		$('.ftable2').flexigrid(opt2)
+			.data('rows',dt)
+			.trigger('reload')
+			;
+
+		var opt3 = {
+			height: 150
+			,viewtype: 'fullwidth'
+			,rp: 3
+			,page: 1
+			,colModel: {
+				'country_name': {
+					 display: "Country Name"
+					,width: '40%'
+				}
+				,'country_code': {
+					display: "Country Code"
+					,width: '30%'
+				}
+				,'id': {
+					display: "Country ID"
+					,width: '20%'
+				}
+			}
+		}
+
+
+		$('.ftable3').flexigrid(opt3)
+			.data('rows',dt)
+			.trigger('reload')
+			;
+
+
 
 		function toggle()
 			{
@@ -107,9 +153,32 @@
 			else
 				$('#classic').attr('disabled','disabled');
 			
-			$('.ftable').trigger('resize');
+			$('.fl-grid').trigger('resize');
 			
 			}
+
+
+/*
+		$('.ftable2').prop('column_order',null);
+		console.log($('.ftable2').prop('column_order'));
+		console.log($('.ftable3').prop('column_order'));
+*/
+		
+/*
+		array page caching test
+
+		var dt2 = [];
+		
+		dt2[5] = 1;
+		dt2[6] = 1;
+		dt2[7] = 1;
+		dt2[8] = 1;
+		dt2[9] = 1;
+		
+		console.log(dt2.length);
+		console.log(dt2[5]);
+*/
+		
 			
 
 	</script>

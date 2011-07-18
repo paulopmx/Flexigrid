@@ -11,6 +11,10 @@
 			float: none;
 			}
 
+	.fl-grid-fw .fl-hdiv-inner
+		{
+		width: 100%;
+		}
 
 	.fl-grid-fw .fl-table
 		{

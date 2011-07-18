@@ -98,9 +98,8 @@
 		padding: 0px;
 		position: relative;
 		border-left: 1px solid #ccc;
-		border-right: 1px solid #fff;
+		padding-right: 1px;
 		border-top: 1px solid #ddd;
-		cursor: default;
 		}
 
 		
@@ -126,7 +125,7 @@
 			.fl-coldrag
 				{
 				height: 300px;
-				width: 5px;
+				width: 10px;
 				position: absolute;
 				bottom: 0px;
 				right: -4px;
@@ -184,3 +183,19 @@
 	vertical-align: top;
 	position: relative;
 	}
+
+.fl-colguide
+	{
+	position: absolute;
+	background: orange;
+	display: none;
+	height: 3000px;
+	width: 3px;
+	z-index: 10;
+	}
+	
+.fl-colresize
+	{
+	cursor: col-resize;
+	}	
+	

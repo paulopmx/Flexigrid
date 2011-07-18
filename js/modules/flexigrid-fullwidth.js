@@ -35,16 +35,53 @@ fl_mod['fl_fw'] = {
 		}
 		
 		}
+	,colresize_fullwidth: function ()
+		{
+		
+		if (this.viewtype=='fullwidth')
+			{
+			var start = this.mouse_state_start;
+			var end = this.mouse_state_end;
+			var col = $('.fl-th-'+this.colTarget,this);
+			
+			
+			//if (!s_col) return true;
+			
+			var w = col.width();
+			
+			var diff = end.pageX - start.pageX;
+			
+			var tw = $(this).width();
+			
+			var df = Math.floor((diff/tw) * 100);
+
+			var s_col = col.siblings().get(0);
+			
+			var s_target = $(s_col).prop('column_name');
+			
+			var cm = this.colModel[this.colTarget];
+			var s_cm = this.colModel[s_target];
+						
+			var ow = parseInt(cm.width);
+			var s_ow = parseInt(s_cm.width);
+
+			var s_pw = s_ow - df;
+			var pw = ow + df;
+			
+			cm.width = pw;
+			s_cm.width = s_pw;
+
+			console.log(s_pw + ' ' + pw);
+
+			col.width(pw+'%');
+			$(s_col).width(s_pw+'%')
+			
+			$('.fl-td-'+this.colTarget+':first',this).width(pw+'%');
+			$('.fl-td-'+s_target+':first',this).width(s_pw+'%');
+			
+			}
+		
+		}	
 }
-
-fl_events['fl_fw'] = {afterReload:'fixwidth'};		
-
-  $(window)
-  .resize(
-  	function()
-  		{
-  		$('.fl-grid-fw').trigger('fl_fw_fixwidth');
-  		}
-  );
 
 })( jQuery );

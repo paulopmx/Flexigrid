@@ -81,10 +81,11 @@ fl_mod['fl_menu'] = {
 			
 
 							var l = this.offsetLeft;
+							l += $(this).parents('.fl-th').get(0).offsetLeft;
 							l += $(this).parents('.fl-fpane').get(0).offsetLeft;
 							l += $(this).parents('.fl-hbdiv').get(0).offsetLeft;
 							l -= $(this).parents('.fl-hdiv').get(0).scrollLeft;
-
+							
 							var t = this.offsetTop;
 							
 							t = $(this).parents('.fl-hbdiv').find('.fl-bdiv').get(0).offsetTop;

@@ -14,7 +14,8 @@ when to load: after core
 (function( $ ){
 
 fl_mod['fl_fp'] = {
-
+	
+	
 	//layouts
 	fl_view_freezepane: function () 
 		{ 
@@ -64,7 +65,7 @@ fl_mod['fl_fp'] = {
 		}	
 }
 
-fl_events['fl_fp'] = {afterRender:'fixwidth',afterReload: 'sync_hover'};
+fl_events['fl_fp'] = {afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth'};
 
   $(window)
   .resize(
