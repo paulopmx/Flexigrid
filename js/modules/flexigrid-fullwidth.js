@@ -53,10 +53,15 @@ fl_mod['fl_fw'] = {
 			
 			var tw = $(this).width();
 			
-			var df = Math.floor((diff/tw) * 100);
+			var df = Math.ceil((diff/tw) * 100);
 
-			var s_col = col.siblings().get(0);
-			
+
+			if ($(col).next().length)
+				var s_col = $(col).next().get(0);
+			else
+				var s_col = $(col).prev().get(0);
+				
+				
 			var s_target = $(s_col).prop('column_name');
 			
 			var cm = this.colModel[this.colTarget];
@@ -68,10 +73,26 @@ fl_mod['fl_fw'] = {
 			var s_pw = s_ow - df;
 			var pw = ow + df;
 			
-			cm.width = pw;
-			s_cm.width = s_pw;
+			console.log(pw + ' + ' + s_pw + ' = ' + (pw+s_pw));
+			
+			var mw = Math.ceil((this.min_col_width/tw)*100);
+			
+			if (pw<mw)
+				{
+				pw = mw;
+				s_pw = (ow+s_ow) - mw;
+				}
+				
+			if (s_pw<mw)
+				{
+				s_pw = mw;
+				pw = (ow+s_ow) - mw;
+				}	
 
-			console.log(s_pw + ' ' + pw);
+			console.log(pw + ' + ' + s_pw + ' = ' + (pw+s_pw));
+			
+			cm.width = pw+'%';
+			s_cm.width = s_pw+'%';
 
 			col.width(pw+'%');
 			$(s_col).width(s_pw+'%')

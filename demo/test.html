@@ -1,56 +1,108 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>Test</title>
+		<title>Prototype Bug</title>
+		<style>
+			body
+				{
+				font: 14px Helvetica Neue;
+				padding: 20px;
+				margin: 0;
+				}
+			pre 
+			{
+			font: 14px Helvetica Neue;
+			}
+		</style>
 	</head>
 	<body>
+	
+	<h2>Weird bug when assigning arrays to instance of a prototype</h2>
+	
+<pre>
+
+	var a = function (v) {this.id=v;};
+	
+	a.prototype = {
+		arr: []
+		,val: 0
+		,reset: function () {this.arr = []}
+		,list_arr: function () {document.write('\n instance '+ this.id + ' : ' + this.arr)} 
+		,set_arr:function()
+			{
+			this.arr[0] = 1;
+			this.arr[1] = 2;
+			}
+		,set_arr2: function ()
+			{
+			var k = [];
+			k[0] = 1;
+			k[1] = 2;
+			this.arr = k;
+			}	
+				 
+	};
+	
+	var b = new a('b');
+	var c = new a('c');
+	
+	b.set_arr();
+	b.list_arr();
+	c.list_arr();
+	
+	b.reset();
+	c.reset();
+	
+	b.set_arr2();
+	b.list_arr();
+	c.list_arr();
+
 
 	<script type="text/javascript" src="../lib/jquery162.js"></script>
 	<script type="text/javascript">
-		
-
-			var grid = function () {
-			this.prototype = {
-				column_order: []
-				,build_header: function ()
-					{
-						if (!this.column_order.length)
-							{
-							console.log(this.column_order);
-							this.column_order[0] = 1;
-							this.column_order[1] = 2;
-							}
-					}
-			   }
+	
+	var a = function (v) {this.id=v;};
+	
+	a.prototype = {
+		arr: []
+		,val: 0
+		,reset: function () {this.arr = []}
+		,list_arr: function () {document.write('\n instance '+ this.id + ' : ' + this.arr)} 
+		,set_arr:function()
+			{
+			this.arr[0] = 1;
+			this.arr[1] = 2;
 			}
-			
-			k = {
-				k: 3
-				,build_test: function ()
-					{
-					if (this.k==3)
-						{
-						console.log('hi');
-						this.k = 4;
-						}
-					}
-			}
-			
-			
-			var grid1 = new grid();
-			var grid2 = new grid();
-			
-			$.extend(grid1,k);
-			$.extend(grid2,k);
-
-			
-			grid1
-				.build_test()
-				;
-			grid2
-				.build_test()
-				;
+		,set_arr2: function ()
+			{
+			var k = [];
+			k[0] = 1;
+			k[1] = 2;
+			this.arr = k;
+			}	
+				 
+	};
+	
+	var b = new a('b');
+	var c = new a('c');
+	
+	
+	document.write('\nResult');
+	document.write('\n\nMethod 1: all instances are overwritten');
+	b.set_arr();
+	b.list_arr();
+	c.list_arr();
+	
+	b.reset();
+	c.reset();
+	
+	document.write('\n\nMethod 2: only instance b is overwritten');
+	b.set_arr2();
+	b.list_arr();
+	c.list_arr();
 			
 	</script>
+	
+	</pre>
 	</body>
 </html>

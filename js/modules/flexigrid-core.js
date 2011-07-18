@@ -11,20 +11,19 @@
 */
 
 
+var fl_grid = function (){};
 var fl_mod = {};
 var fl_events = {};
 
 (function( $ ){
 
-var fl_grid = function (){
-
-this.prototype = {
+fl_grid.prototype = {
 	
 	//appearance
 	height: 'auto'
 	,width: 'auto'
 	,className: 'fl-grid'
-	,min_col_width: 30
+	,min_col_width: 50
 	,viewtype: 'standard'
 	
 	//state
@@ -101,13 +100,16 @@ this.prototype = {
 				{
 				if (this.colModel)
 					{
+					
+					var c = [];
+					
 					for (var k in this.colModel)
 						{
-							//console.log(k);
-							console.log(this.className + ' - ' + $(this).prop('column_order').length);
-							this.column_order[this.column_order.length] = k;
+							c[c.length] = k;
 						}
 					}
+					
+					this.column_order = c;
 				}
 
 
@@ -211,9 +213,6 @@ this.prototype = {
 			else
 				this.colresize_standard();	
 			
-			//record new widths in cm
-			
-			
 			//trigger module events
 			this.module_events('afterColResize');			
 			
@@ -232,6 +231,9 @@ this.prototype = {
 			if (w<this.min_col_width) w = this.min_col_width;
 			
 			col.width(w);
+			
+			this.colModel[this.colTarget] = w;
+			
 			$('.fl-td-'+this.colTarget+':first',this).width(w);
 
 		}	
@@ -375,8 +377,6 @@ this.prototype = {
 			
 		}
 	,parseTable: function (){} // override on a module
-
-};
 
 };
 

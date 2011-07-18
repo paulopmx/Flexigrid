@@ -69,12 +69,16 @@
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
-					,width: '160px'
+					,width: '100'
 					,pane: 'left'
 				}
 				,'country_code': {
 					display: "Country Code"
-					,width: '360px'
+					,width: '360'
+				}
+				,'id': {
+					display: "Country ID"
+					,width: '200'
 				}
 			}
 		}
@@ -90,7 +94,7 @@
 		];
 	
 	
-		$('.xftable').flexigrid(opt)
+		$('.ftable').flexigrid(opt)
 			.data('rows',dt)
 			.trigger('reload')
 			;
@@ -119,11 +123,11 @@
 			height: 150
 			,viewtype: 'fullwidth'
 			,rp: 3
-			,page: 1
+			,page: 2
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
-					,width: '40%'
+					,width: '50%'
 				}
 				,'country_code': {
 					display: "Country Code"
