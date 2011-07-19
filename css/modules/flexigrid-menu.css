@@ -1,5 +1,38 @@
 /* fl-menu module */
 
+			.fl-coltog
+				{
+				display: none;
+				background: #fff;
+				height: 300px;
+				width: 15px;
+				position: absolute;
+				bottom: 0px;
+				right: 0px;
+				z-index: 4;
+				}
+				
+				.fl-th:hover .fl-coltog
+					{
+					display: block;
+					}
+				
+				.fl-coltogged
+					{
+					display: block;
+					}
+				
+				.fl-coltog-inner
+					{
+					position: absolute;
+					width: 16px;
+					height: 16px;
+					bottom: 2px;
+					left: 0px;
+					background: url(images/ddn.png) no-repeat center;
+					}
+
+
 .fl-menu
 	{
 	border: 1px solid #ccc;
@@ -27,6 +60,7 @@
 		{
 		border: 0px solid #fff;
 		width: auto;
+		border-spacing: 0;
 		}
 	
 	.fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr .fl-menu-td

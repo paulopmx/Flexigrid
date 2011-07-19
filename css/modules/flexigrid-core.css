@@ -89,6 +89,7 @@
 	margin-top: -1px;
 	margin-left: -1px;
 	border-right: 1px solid #ccc;
+	border-spacing: 0;
 	}
 
 	.fl-td, .fl-th
@@ -127,54 +128,11 @@
 				height: 0px;
 				}
 		
-			.fl-coldrag
-				{
-				height: 300px;
-				width: 10px;
-				position: absolute;
-				bottom: 0px;
-				right: -4px;
-				cursor: col-resize;
-				z-index: 6;
-				}
-				
-			.fl-coltog
-				{
-				display: none;
-				background: #fff;
-				height: 300px;
-				width: 15px;
-				position: absolute;
-				bottom: 0px;
-				right: 0px;
-				z-index: 4;
-				}
-				
-				.fl-th:hover .fl-coltog
-					{
-					display: block;
-					}
-				
-				.fl-coltogged
-					{
-					display: block;
-					}
-				
-				.fl-coltog-inner
-					{
-					position: absolute;
-					width: 16px;
-					height: 16px;
-					bottom: 2px;
-					left: 0px;
-					background: url(images/ddn.png) no-repeat center;
-					}
-				
 			.fl-td-div, .fl-th-div
 				{
 				white-space: nowrap;
 				overflow: hidden;
-				padding: 5px;
+				padding: 5px 10px;
 				text-overflow: ellipsis;
 				-o-text-overflow: ellipsis;
 				}
@@ -189,68 +147,4 @@
 	position: relative;
 	}
 
-.fl-colguide
-	{
-	position: absolute;
-	background: orange;
-	display: none;
-	height: 3000px;
-	width: 3px;
-	z-index: 10;
-	}
-	
-.fl-colresizing
-	{
-	cursor: col-resize;
-	}
-	
-.fl-colmoving
-	{
-	cursor: move;
-	}	
-	
-.fl-th-dragged
-	{
-	background: #fff;
-	}
-	
-	.fl-th-dragged .fl-th-div
-		{
-		visibility: hidden;
-		}	
 
-		.fl-th-dragged:hover .fl-coltog
-			{
-			display: none;
-			}
-
-	
-.fl-colmove
-	{
-	position: absolute;
-	display: none;
-	top: 0px;
-	left: 0px;
-	padding: 5px 10px;
-	margin: 10px 0px;
-	border: 1px solid #bbb;
-	background: #fff;
-	white-space: nowrap;
-	z-index: 10;
-	font-weight: bold;
-
-	-webkit-box-shadow: #999 0px 5px 20px;
-	-moz-box-shadow: #999 0px 5px 20px;
-	box-shadow: #999 0px 5px 20px;
-
-	}		
-
-.fl-colmove-allowed
-	{
-	border: 1px solid #42b549;
-	}
-	
-.fl-colmove-not-allowed
-	{
-	border: 1px solid red;	
-	}		

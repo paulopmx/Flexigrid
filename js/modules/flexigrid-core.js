@@ -23,7 +23,6 @@ fl_grid.prototype = {
 	height: 'auto'
 	,width: 'auto'
 	,className: 'fl-grid'
-	,min_col_width: 50
 	,viewtype: 'standard'
 	
 	//state
@@ -47,8 +46,8 @@ fl_grid.prototype = {
 	,onError: false	
 	
 	//layouts
-	,fl_hdiv: '<div class="fl-hdiv"><div class="fl-hdiv-inner"><table class="fl-table" cellspacing="0"><thead></thead></table></div></div>'
-	,fl_bdiv: '<div class="fl-bdiv"><div class="fl-bdiv-inner"><table class="fl-table" cellspacing="0"><tbody></tbody></table></div></div>'
+	,fl_hdiv: '<div class="fl-hdiv"><div class="fl-hdiv-inner"><table class="fl-table" ><thead></thead></table></div></div>'
+	,fl_bdiv: '<div class="fl-bdiv"><div class="fl-bdiv-inner"><table class="fl-table" ><tbody></tbody></table></div></div>'
 	,fl_fpane: function (c) 
 		{
 		if (!c) c = this.dpane;
@@ -56,7 +55,7 @@ fl_grid.prototype = {
 		}
 	,fl_td: '<div class="fl-td-div"></div>'
 	,fl_th: '<div class="fl-th-div"></div>'
-	,fl_th_con: '<div class="fl-th-con"><div class="fl-coldrag"></div></div>'  
+	,fl_th_con: '<div class="fl-th-con"></div>'  
 	,fl_view_standard: function () 
 		{ 
 		$(this).append('<div class="fl-grid-inner"><div class="fl-hbdiv">' + this.fl_fpane() + '</div></div>'); 
@@ -82,9 +81,6 @@ fl_grid.prototype = {
 		this.sync_scroll();
 		
 		$(this).show().trigger('resize');
-		
-		$('.fl-hbdiv',this).prepend('<div class="fl-colguide"></div>');
-		$('.fl-hbdiv',this).prepend('<div class="fl-colmove"></div>');
 		
 		//trigger module afterRender events
 		
@@ -162,87 +158,6 @@ fl_grid.prototype = {
 				
 				}
 
-			//add column move feature				
-			$('.fl-th-div',this)
-				.mousedown(
-					function (e)
-						{
-						$(this).parents('.fl-grid')
-						.prop('dragType','colmove')
-						.prop('mouse_state_start',e)
-						.prop('colTarget',$(this).parent().prop('column_name'))
-						.trigger('disableSelection')
-						.trigger('dragStart')
-						.addClass('fl-colmoving')
-						;
-						}
-				)		
-				.mouseenter(
-						function ()
-						{
-						
-							var self = $(this).parents('.fl-grid').get(0);
-							
-							if (self.dragType!='colmove') return true;
-							
-							var dt = $(this).parents('th').prop('column_name');
-							var cm = self.colModel[self.colTarget];
-
-							var cpane = '.fl-fpane';
-							if (cm.pane) 
-								cpane += '-'+cm.pane;			
-							else if (self.dpane)
-								cpane += '-'+self.dpane;
-								
-								
-							if ($(self).find(cpane+' thead .fl-th').length<=1)
-								$(self).find('.fl-colmove')
-								.addClass('fl-colmove-not-allowed')
-								.removeClass('fl-colmove-allowed');
-							else		
-								$(self)
-								.find('.fl-colmove')
-								.addClass('fl-colmove-allowed')
-								.removeClass('fl-colmove-not-allowed');
-							
-							self.dropTarget = dt;
-							
-						}		
-				)
-				.mouseleave(
-						function ()
-						{
-							
-							var self = $(this).parents('.fl-grid').get(0);
-						
-							if (self.dragType!='colmove') return true;
-							
-							$(self)
-							.prop('dropTarget','')
-							.find('.fl-colmove').removeClass('fl-colmove-allowed')
-							.removeClass('fl-colmove-not-allowed');
-							;						
-						}		
-				)
-				;
-			
-			
-			//add col-resize feature
-			$('.fl-coldrag',this)
-				.mousedown(
-					function (e)
-						{
-						$(this).parents('.fl-grid')
-							.prop('dragType','colresize')
-							.prop('mouse_state_start',e)
-							.prop('colTarget',$(this).parents('th').prop('column_name'))
-							.trigger('disableSelection')
-							.trigger('dragStart')
-							.addClass('fl-colresizing')
-							;
-						}
-				);
-			
 		}
 	,dragStart: function ()
 		{
@@ -263,197 +178,6 @@ fl_grid.prototype = {
 				this.dragType = '';
 				}
 		}
-	,dragStart_colmove: function ()
-		{
-
-			var col = this.colTarget;
-			var cm = this.colModel[col];
-
-			var xpos = this.mouse_state_start;
-			var tpos = $('.fl-col-'+col,this).offset();
-			var gpos = $(this).offset();
-
-			
-			var t = tpos.top-gpos.top;
-			var l = tpos.left-gpos.left;
-			var t2 = xpos.pageY-gpos.top;
-			var l2 = xpos.pageX-gpos.left;
-			
-			$('.fl-col-'+col,this).addClass('fl-th-dragged');
-
-			var ow = $('.fl-colmove',this)
-				.empty()
-				.append(cm.display)
-				.css({left:l,top:t})
-				.show()
-			;
-			
-			var ow = $('.fl-colmove',this).width('auto').width();
-			
-			$('.fl-colmove',this)
-				.width(cm.width)
-				.animate({width:ow,left:l2,top:t2},'fast')
-			;
-			
-		}	
-	,dragMove_colmove: function ()
-		{
-			var xpos = this.mouse_state_now;
-			var gpos = $('.fl-hbdiv',this).offset();
-
-			var t = xpos.pageY-gpos.top;
-			var l = xpos.pageX-gpos.left;
-			
-			$('.fl-colmove',this)
-				.css({left:l,top:t})
-				.show()
-				;
-				
-			pos = null;	
-		}
-	,dragEnd_colmove: function ()
-		{
-
-			var self = this;
-
-			var col = this.colTarget;
-			var cm = this.colModel[col];
-			
-			$('.fl-col-'+col,this).removeClass('fl-th-dragged');
-			$('.fl-colmove',this).hide();
-			$(this).removeClass('fl-colmoving');
-			
-			var dcol = this.dropTarget;
-
-			if (!dcol) return true;
-			if (dcol)
-			
-			var dm = this.colModel[dcol];
-			
-			var ct_i = $('.fl-th',this).index($('.fl-col-'+col,this));
-			var dt_i = $('.fl-th',this).index($('.fl-col-'+dcol,this));
-
-			var cpane = '.fl-fpane';
-			if (cm.pane) 
-				cpane += '-'+cm.pane;			
-			else if (this.dpane)
-				cpane += '-'+this.dpane;
-
-			var dpane = '.fl-fpane';
-			if (dm.pane) 
-				dpane += '-'+dm.pane;			
-			else if (this.dpane)
-				dpane += '-'+this.dpane;
-			
-			if ($(cpane+' thead .fl-th',this).length<=1) return true;	
-
-			if (ct_i>dt_i)
-				{
-
-				$('.fl-col-'+dcol,this).before($('.fl-col-'+col,this));
-
-				var tr_i = 0;	
-				$(dpane+' .fl-bdiv tr',this).each(function()
-					{
-						$('.fl-td-'+dcol,this).before($(cpane+' .fl-bdiv tr:eq(' + tr_i + ') .fl-td-'+col,$(self)));		
-						tr_i += 1;
-					}
-				);
-				
-				}
-			else
-				{
-				$('.fl-col-'+dcol,this).after($('.fl-col-'+col,this));
-
-				var tr_i = 0;	
-				$(dpane+' .fl-bdiv tr',this).each(function()
-					{
-						$('.fl-td-'+dcol,this).after($(cpane+' .fl-bdiv tr:eq(' + tr_i + ') .fl-td-'+col,$(self)));		
-						tr_i += 1;
-					}
-				);
-
-				}
-				
-			cm.pane = dm.pane;	
-				
-			$(this)
-				.trigger('col_resize')
-				.trigger('set_col_order')
-				;					
-			
-		
-		}
-	,set_col_order: function()
-		{
-			var c_o = [];
-			$('.fl-th',this).each(
-				function ()
-					{
-					c_o[c_o.length] = this.column_name;
-					}
-			);
-			//console.log(c_o);
-			this.column_order = c_o;
-		}			
-	,dragMove_colresize: function()
-		{
-			var pos = this.mouse_state_now;
-			var gpos = $('.fl-hbdiv',this).offset();
-			
-			var l = pos.pageX - gpos.left - 3;
-			$('.fl-colguide',this).css('left',l).show();
-			
-		}	
-	,dragEnd_colresize: function ()
-		{
-		
-			$('.fl-colguide',this).hide();
-		
-			this.dragType = '';
-			$(this).removeClass('fl-colresizing');
-			
-			if (this['set_colwidth_'+this.viewtype])
-				this['set_colwidth_'+this.viewtype]();
-			else
-				this.set_colwidth_standard();	
-			
-			$(this).trigger('col_resize');
-			
-		}
-	,set_colwidth_standard: function ()
-		{
-
-			var start = this.mouse_state_start;
-			var end = this.mouse_state_end;
-			var col = $('.fl-col-'+this.colTarget,this);
-			var w = col.width();
-			
-			w += end.pageX - start.pageX;
-			
-			if (w<this.min_col_width) w = this.min_col_width;
-			
-			this.colModel[this.colTarget].width = w;
-
-		}
-	,col_resize: function ()
-		{
-			
-			var co = this.column_order;
-		
-			for (var c=0; c<co.length; c++)
-				{
-				var cm = this.colModel[co[c]];
-
-				
-				$('.fl-col-'+co[c],this).width(cm.width);
-				$('.fl-td-'+co[c]+':first',this).width(cm.width);
-				
-				}
-
-			this.module_events('afterColResize');			
-							
-		}		
 	,disableSelection: function() {
 		$(this).bind( 'selectstart dragstart mousedown', function( event ) {
 				return false;
@@ -547,6 +271,24 @@ fl_grid.prototype = {
 
 			
 		}
+	,col_resize: function ()
+		{
+			
+			var co = this.column_order;
+		
+			for (var c=0; c<co.length; c++)
+				{
+				var cm = this.colModel[co[c]];
+
+				
+				$('.fl-col-'+co[c],this).width(cm.width);
+				$('.fl-td-'+co[c]+':first',this).width(cm.width);
+				
+				}
+
+			this.module_events('afterColResize');			
+							
+		}		
 	,sync_scroll: function ()
 		{
 

@@ -1,0 +1,51 @@
+
+.fl-colmoving
+	{
+	cursor: move;
+	}	
+	
+.fl-th-dragged
+	{
+	background: #fff;
+	}
+	
+	.fl-th-dragged .fl-th-div
+		{
+		visibility: hidden;
+		}	
+
+		.fl-th-dragged:hover .fl-coltog
+			{
+			display: none;
+			}
+
+	
+.fl-colmove
+	{
+	position: absolute;
+	display: none;
+	top: 0px;
+	left: 0px;
+	padding: 5px 10px;
+	margin: 10px 0px;
+	border: 1px solid #bbb;
+	background: #fff;
+	white-space: nowrap;
+	z-index: 10;
+	font-weight: bold;
+
+	-webkit-box-shadow: #999 0px 5px 20px;
+	-moz-box-shadow: #999 0px 5px 20px;
+	box-shadow: #999 0px 5px 20px;
+
+	}		
+
+.fl-colmove-allowed
+	{
+	border: 2px solid #42b549;
+	}
+	
+.fl-colmove-not-allowed
+	{
+	border: 2px solid red;	
+	}		

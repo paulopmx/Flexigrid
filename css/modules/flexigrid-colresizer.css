@@ -1,0 +1,27 @@
+
+			.fl-coldrag
+				{
+				height: 300px;
+				width: 10px;
+				position: absolute;
+				bottom: 0px;
+				right: -4px;
+				cursor: col-resize;
+				z-index: 6;
+				}
+
+
+				.fl-colguide
+					{
+					position: absolute;
+					background: orange;
+					display: none;
+					height: 3000px;
+					width: 3px;
+					z-index: 10;
+					}
+					
+				.fl-colresizing
+					{
+					cursor: col-resize;
+					}

@@ -45,14 +45,20 @@ fl_mod['fl_fp'] = {
 			function ()
 				{
 				var tr = this;
-				var i = $('tr',$(this).parent()).index(this);
+				var self = $(this).parents('.fl-grid').get(0);
 				
+				if (self.dragType) return false;
+				
+				var i = $('tr',$(this).parent()).index(this);
 				$(this).parents('.fl-fpane').siblings().find('.fl-bdiv tr:eq('+i+')').addClass('fl-tr-hover');
 				
 				}
 			,function ()
 				{
 				var tr = this;
+				var self = $(this).parents('.fl-grid').get(0);
+				
+				if (self.dragType) return false;
 				var i = $('tr',$(this).parent()).index(this);
 				
 				$(this).parents('.fl-fpane').siblings().find('.fl-bdiv tr:eq('+i+')').removeClass('fl-tr-hover');
