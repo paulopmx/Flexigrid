@@ -161,13 +161,16 @@ fl_mod['fl_colmove'] = {
 			var cm = this.colModel[col];
 			
 			$('.fl-col-'+col,this).removeClass('fl-th-dragged');
-			$('.fl-colmove',this).hide();
+			$('.fl-colmove',this)
+				.removeClass('fl-colmove-allowed')
+				.removeClass('fl-colmove-not-allowed')
+				.hide();
 			$(this).removeClass('fl-colmoving');
 			
 			var dcol = this.dropTarget;
 
 			if (!dcol) return true;
-			if (dcol)
+			if (dcol==col) return true;
 			
 			var dm = this.colModel[dcol];
 			
@@ -216,13 +219,15 @@ fl_mod['fl_colmove'] = {
 
 				}
 				
-			cm.pane = dm.pane;	
+			cm.pane = dm.pane;
 				
 			$(this)
 				.trigger('set_col_order')
 				.trigger('col_resize')
 				;					
 			
+			this.colTarget = '';
+			this.dropTarget = '';
 		
 		}
 		
