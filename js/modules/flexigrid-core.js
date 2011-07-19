@@ -46,8 +46,8 @@ fl_grid.prototype = {
 	,onError: false	
 	
 	//layouts
-	,fl_hdiv: '<div class="fl-hdiv"><div class="fl-hdiv-inner"><table class="fl-table" ><thead></thead></table></div></div>'
-	,fl_bdiv: '<div class="fl-bdiv"><div class="fl-bdiv-inner"><table class="fl-table" ><tbody></tbody></table></div></div>'
+	,fl_hdiv: '<div class="fl-hdiv"><div class="fl-hdiv-inner"><table class="fl-table" cellspacing="0" ><thead></thead></table></div></div>'
+	,fl_bdiv: '<div class="fl-bdiv"><div class="fl-bdiv-inner"><table class="fl-table" cellspacing="0" ><tbody></tbody></table></div></div>'
 	,fl_fpane: function (c) 
 		{
 		if (!c) c = this.dpane;
@@ -74,7 +74,10 @@ fl_grid.prototype = {
 		$(this).empty();
 		
 		//build view type
-		this['fl_view_' + this.viewtype ]();
+		if (this['fl_view_' + this.viewtype ])
+			this['fl_view_' + this.viewtype ]();
+		else
+			this.fl_view_standard();	
 		
 		this.build_header();
 		this.reload();
@@ -121,7 +124,6 @@ fl_grid.prototype = {
 					}
 			)
 			
-			
 			//add columns base on column order
 			for (var co=0; co<this.column_order.length; co++)
 				{
@@ -154,9 +156,19 @@ fl_grid.prototype = {
 					else if (this.dpane)
 						pane += '-'+this.dpane;
 					
+					//handle misconfigured panes --> consider removing and let user fix it	
+					if (!$(pane+' thead tr',this).length) 
+						{
+						pane = '.fl-fpane';
+						this.dpane = '';
+						cm.pane = '';	
+						}
+						
 					$(pane+' thead tr',this).append(th);
 				
 				}
+			
+			//alert($('.fl-hdiv .fl-table',this).html());		
 
 		}
 	,dragStart: function ()
@@ -197,11 +209,11 @@ fl_grid.prototype = {
 			var end = start + this.rp;
 			
 			if (end>rows.length) end = rows.length;
-			
+
 			for (var i=start; i<end; i++)
 				{
 
-				$('tbody',this).each(
+				$('.fl-bdiv tbody',this).each(
 					function ()
 						{
 						
@@ -243,8 +255,11 @@ fl_grid.prototype = {
 						$(pane+' tbody tr:last',this).append(td);
 					
 					}
-
+					
 				}
+
+
+				//alert($(this).html());
 
 			$(this).trigger('resize');	
 			this.module_events('afterReload')

@@ -19,7 +19,7 @@ fl_mod['fl_menu'] = {
 			 fl_menu_col1: '<td class="fl-menu-td fl-menu-col1"><span class="fl-icon"></span></td>'
 			,fl_menu_col3: '<td class="fl-menu-td fl-menu-col3"><span class="fl-icon"></span></td>'
 			,fl_menu_item: function (lbl) { return this.fl_menu_col1 + '<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + lbl + '</span></td>' + this.fl_menu_col3; }
-			,fl_menu: '<div class="fl-menu"><table class="fl-menu-table"><tbody></tbody></table></div>'
+			,fl_menu: '<div class="fl-menu"><table class="fl-menu-table" cellspacing="0" ><tbody></tbody></table></div>'
 			,fl_menu_br: '<td class="fl-menu-td" colspan="3"><div class="fl-menu-br-div"></div></td>'
 			,fl_coltog: '<div class="fl-coltog"><div class="fl-coltog-inner"></div></div>' //insert into th
 
