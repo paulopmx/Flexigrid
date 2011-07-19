@@ -35,14 +35,14 @@ fl_mod['fl_fw'] = {
 		}
 		
 		}
-	,colresize_fullwidth: function ()
+	,set_colwidth_fullwidth: function ()
 		{
 		
 		if (this.viewtype=='fullwidth')
 			{
 			var start = this.mouse_state_start;
 			var end = this.mouse_state_end;
-			var col = $('.fl-th-'+this.colTarget,this);
+			var col = $('.fl-col-'+this.colTarget,this);
 			
 			
 			//if (!s_col) return true;
@@ -73,8 +73,6 @@ fl_mod['fl_fw'] = {
 			var s_pw = s_ow - df;
 			var pw = ow + df;
 			
-			console.log(pw + ' + ' + s_pw + ' = ' + (pw+s_pw));
-			
 			var mw = Math.ceil((this.min_col_width/tw)*100);
 			
 			if (pw<mw)
@@ -89,16 +87,8 @@ fl_mod['fl_fw'] = {
 				pw = (ow+s_ow) - mw;
 				}	
 
-			console.log(pw + ' + ' + s_pw + ' = ' + (pw+s_pw));
-			
 			cm.width = pw+'%';
 			s_cm.width = s_pw+'%';
-
-			col.width(pw+'%');
-			$(s_col).width(s_pw+'%')
-			
-			$('.fl-td-'+this.colTarget+':first',this).width(pw+'%');
-			$('.fl-td-'+s_target+':first',this).width(s_pw+'%');
 			
 			}
 		

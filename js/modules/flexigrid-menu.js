@@ -77,7 +77,10 @@ fl_mod['fl_menu'] = {
 					(
 						function ()
 							{
-							$(this).parents('.fl-grid').prop('colTarget',$(this).parents('th').prop('column_name'));
+							
+							var self = $(this).parents('.fl-grid').get(0);
+							
+							$(self).prop('colTarget',$(this).parents('th').prop('column_name'));
 			
 
 							var l = this.offsetLeft;
@@ -91,8 +94,8 @@ fl_mod['fl_menu'] = {
 							t = $(this).parents('.fl-hbdiv').find('.fl-bdiv').get(0).offsetTop;
 							t += $(this).parents('.fl-hbdiv').get(0).offsetTop;
 							
-							var w = $(this).parents('.fl-grid').width();
-							var w2 = $(this).parents('.fl-grid').find('.fl-menu:first').width();
+							var w = $(self).width();
+							var w2 = $(self).find('.fl-menu:first').width();
 							
 							if ((l+w2)>w) 
 								{
@@ -100,12 +103,12 @@ fl_mod['fl_menu'] = {
 								}
 							
 							var k = l+'px';
-							var k2 = $(this).parents('.fl-grid').find('.fl-menu:first').css('left');
+							var k2 = $(self).find('.fl-menu:first').css('left');
 							
 							if (k==k2) 
-								$(this).parents('.fl-grid').find('.fl-menu:first').toggle('fast');
+								$(self).find('.fl-menu:first').toggle('fast');
 							else
-								$(this).parents('.fl-grid').find('.fl-menu:first').css({left:l,top:t}).show('fast');
+								$(self).find('.fl-menu:first').css({left:l,top:t}).show('fast');
 							
 							}
 					);

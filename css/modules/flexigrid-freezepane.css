@@ -1,4 +1,10 @@
 
+	.fl-fpane-left
+		{
+		z-index: 2;
+		overflow: hidden;
+		}
+
 	.fl-fpane-left .fl-table
 		{
 		border-right: 0;
