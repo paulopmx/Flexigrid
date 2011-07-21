@@ -35,7 +35,7 @@
 	<body>
 
 	<button type="button" onclick="toggle()">Toggle Theme</button> 
-	<button type="button" onclick="$('.fl-grid').trigger('resize')">Resize</button>
+	<button type="button" onclick="$('.fl-grid').trigger('resize',['200'])">Resize</button>
 	
 	<br />
 
@@ -92,6 +92,7 @@
 					display: "Country Code"
 					,width: '360'
 					,pane: 'left'
+					,visible: false
 				}
 				,'id': {
 					display: "Country ID"
@@ -122,6 +123,7 @@
 				'country_name': {
 					 display: "Country Name"
 					,width: '160px'
+					,visible: false
 				}
 				,'country_code': {
 					display: "Country Code"
@@ -153,6 +155,7 @@
 				,'country_code': {
 					display: "Country Code"
 					,width: '30%'
+					,visible: false
 				}
 				,'id': {
 					display: "Country ID"

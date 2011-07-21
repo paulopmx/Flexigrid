@@ -60,14 +60,36 @@ fl_mod['fl_menu'] = {
 								
 						var sub = $('<div class="fl-menu" />').append(this.fl_menu_table);
 						
-						$(sub).append(this.fl_menu_build_items(item.subgroup));
+						$(sub)
+							.append(this.fl_menu_build_items(item.subgroup));
+						
+						$(tr)	
+							.mouseover( function ()
+								{
+									var self = $(this).parents('.fl-grid').get(0);
+									var l = parseInt($(self.fl_menu).css('left'));
+									var w = $(self).width();
+									var w2 = $(self.fl_menu).width();
+									var w3 = $('.fl-menu',this).width();
+									var w4 = $('.fl-submenu',this).position();
+									
+									if ((l+w2+w3)>=w)
+										$('.fl-menu',this).css('left',(0-w3-w4.left));
+									else
+										$('.fl-menu',this).css('left',(w2-w4.left));	
+									
+								}
+							);
+						
 						
 						$('.fl-submenu',tr).append(sub);
 								
 						return tr;
 					}
-			,fl_menu_item_colcheck: function (key,item)
+			,fl_menu_item_column_tog: function (key)
 					{
+					
+						var item = this.colModel[key];
 						
 						var chk = 'checked="checked"';
 						var self = this;
@@ -78,48 +100,37 @@ fl_mod['fl_menu'] = {
 								.append('<td class="fl-menu-td fl-menu-col1"><input type="checkbox" autocomplete="off" class="fl-cb" '+chk+' value="'+key+'" /></td>')
 								.append('<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + item.display + '</span></td>')
 								.append('<td class="fl-menu-td fl-menu-col3"><span class="fl-icon"></span></td>')
-								.click( function (e)
-									{
-									
-									var obj = (e.target || e.srcElement);
-									var cb = $('.fl-cb',this);
-									var tg = cb.val();
-									
-									if ($('.fl-th:visible',self).length==1&&cb.attr('checked')) return false;
-									
-									if (obj.nodeName!='INPUT') 
-										{
-										
-										if (cb.attr('checked'))
-											{
-											cb.attr('checked',false);
-											} else {
-											cb.attr('checked',true);
-											}
-											
-										}	
-										
-										$('.fl-col-'+key,self).toggle();
-										$('.fl-td-'+key,self).toggle();
-											
-										
-									}
-								)
 								;
+							$('input',tr).click(function(e)
+								{
+								$(this).parent('td').siblings().find('span.fl-label').trigger('click');
+								}
+							);
+								
+							$('td .fl-label',tr).click(function(e)
+									{
+									var obj = (e.target || e.srcElement);
+									if (obj.nodeName=='INPUT') return false;
+									var toggled = $(this).parents('.fl-grid').get(0).toggle_column(key);
+									$(this).parent('td').siblings().find('input').attr('checked',toggled);
+									}
+								);	
 								
 						return tr;
 					}		
 			//menu model
 			,menu_items: [
-					{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
-					,{type:'trigger',action:'align_column',display:'Align Right', value: 'right'}
+					 {type:'trigger',action:'align_column',display:'Align Left',value:'left'}
+					,{type:'trigger',action:'align_column',display:'Align Right',value:'right'}
+					,{type:'separator'}
+					,{type:'column_list'}
+/*
+					,{type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_list'}]}
+					,{type:'trigger',action:'sort_asc',display:'Sort Ascending'}
+					,{type:'trigger',action:'sort_desc',display:'Sort Ascending'}
+					,{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
 					,{type:'separator'}
 					,{type:'togglecol'}
-/*
-					,{type:'submenu',display:'Toggle Columns',subgroup:[{type:'togglecol'}]}
-					 {type:'trigger',action:'sort_asc',display:'Sort Ascending'}
-					,{type:'trigger',action:'sort_desc',display:'Sort Ascending'}
-					,{type:'separator'}
 */
 				]
 			//events - to avoid collision with other modules use module_name_functionname for module events
@@ -150,13 +161,13 @@ fl_mod['fl_menu'] = {
 					for (var m = 0; m < m_i.length; m++)
 						{
 						
-							if (m_i[m].type=='togglecol')
+							if (m_i[m].type=='column_list')
 							{
 								var co = this.column_order;
 								for (c=0;c<co.length;c++)
 									{
 									var cm = this.colModel[co[c]];
-									var item = this.fl_menu_item_colcheck(co[c],cm);
+									var item = this.fl_menu_item_column_tog(co[c]);
 									$(tbody).append(item);
 									}
 							}
@@ -201,7 +212,7 @@ fl_mod['fl_menu'] = {
 							t += $(this).parents('.fl-hbdiv').get(0).offsetTop;
 							
 							var w = $(self).width();
-							var w2 = $(self).find('.fl-menu:first').width();
+							var w2 = $(self.fl_menu).width();
 							
 							if ((l+w2)>w) 
 								{
@@ -209,12 +220,12 @@ fl_mod['fl_menu'] = {
 								}
 							
 							var k = l+'px';
-							var k2 = $(self).find('.fl-menu:first').css('left');
+							var k2 = $(self.fl_menu).css('left');
 							
 							if (k==k2) 
-								$(self).find('.fl-menu:first').toggle('fast');
+								$(self.fl_menu).toggle('fast');
 							else
-								$(self).find('.fl-menu:first').css({left:l,top:t}).show('fast');
+								$(self.fl_menu).css({left:l,top:t}).show('fast');
 							
 							}
 							

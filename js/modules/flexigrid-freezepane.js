@@ -71,7 +71,7 @@ fl_mod['fl_fp'] = {
 		}	
 }
 
-fl_events['fl_fp'] = {afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth'};
+fl_events['fl_fp'] = {afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth',afterColToggle:'fixwidth'};
 
   $(window)
   .resize(

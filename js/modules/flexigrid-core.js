@@ -145,6 +145,9 @@ fl_grid.prototype = {
 					if (cm.align)
 						$(th).css({'text-align':cm.align});
 						
+					if (cm.visible===false)
+						$(th).hide();	
+						
 					$(th)
 					.wrapInner(this.fl_th)
 					.append(this.fl_th_con)
@@ -255,6 +258,9 @@ fl_grid.prototype = {
 						
 						if (cm.align)
 							$(td).css({'text-align':cm.align});
+
+						if (cm.visible===false)
+							$(td).hide();	
 							
 						$(td)
 						.wrapInner(this.fl_td)
@@ -282,7 +288,6 @@ fl_grid.prototype = {
 	,resize: function ()
 		{
 		
-		
 			if (this.height == 'auto') return true;
 			
 			var gh = $(this).height();
@@ -300,7 +305,7 @@ fl_grid.prototype = {
 
 			
 		}
-	,col_resize: function ()
+	,resize_column: function ()
 		{
 			
 			var co = this.column_order;
@@ -317,7 +322,40 @@ fl_grid.prototype = {
 
 			this.module_events('afterColResize');			
 							
-		}		
+		}
+	,toggle_column: function (key)
+		{
+			var cm = this.colModel[key];
+			
+			if (cm.visible==undefined) cm.visible = true;
+			
+			var pane = '.fl-fpane';
+			if (cm.pane) 
+				pane += '-'+cm.pane;			
+			else if (this.dpane)
+				pane += '-'+this.dpane;
+			
+			var c = $(pane+' .fl-th:visible',this).length;
+			
+			if (cm.visible) 
+				{
+				if (c==1) return true;
+				$('.fl-col-'+key,this).hide();
+				$('.fl-td-'+key,this).hide();
+				cm.visible = false;
+				}
+				else
+				{
+				$('.fl-col-'+key,this).show();
+				$('.fl-td-'+key,this).show();
+				cm.visible = true;
+				}
+			
+			this.module_events('afterColToggle');
+			
+			return cm.visible;
+			
+		}			
 	,sync_scroll: function ()
 		{
 

@@ -85,7 +85,7 @@ fl_mod['fl_colres'] = {
 				else
 					this.set_colwidth_standard();	
 				
-				$(this).trigger('col_resize');
+				$(this).trigger('resize_column');
 				
 			}
 		

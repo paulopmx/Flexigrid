@@ -245,7 +245,7 @@ fl_mod['fl_colmove'] = {
 				
 			$(this)
 				.trigger('set_col_order')
-				.trigger('col_resize')
+				.trigger('resize_column')
 				;					
 			
 			this.colTarget = '';
