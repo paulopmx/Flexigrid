@@ -93,7 +93,7 @@ fl_grid.prototype = {
 	,build_header: function ()
 		{
 		
-		
+			this.module_events('beforeReload');
 			//if no order specified create one
 			
 			if (!this.column_order.length)
@@ -167,8 +167,9 @@ fl_grid.prototype = {
 					$(pane+' thead tr',this).append(th);
 				
 				}
+				
+				this.module_events('afterReload');
 			
-			//alert($('.fl-hdiv .fl-table',this).html());		
 
 		}
 	,dragStart: function ()
@@ -190,13 +191,19 @@ fl_grid.prototype = {
 				this.dragType = '';
 				}
 		}
-	,disableSelection: function() {
-		$(this).bind( 'selectstart dragstart mousedown', function( event ) {
+	,disableSelection: function(target) {
+	
+		if (!target) target = this;
+	
+		$(target).bind( 'selectstart dragstart mousedown', function( event ) {
 				return false;
 			});
 	}
-	,enableSelection: function() {
-		$(this).unbind('selectstart dragstart mousedown');
+	,enableSelection: function(target) {
+	
+		if (!target) target = this;
+	
+		$(target).unbind('selectstart dragstart mousedown');
 	}
 	,reload: function ()
 		{
@@ -217,22 +224,29 @@ fl_grid.prototype = {
 					function ()
 						{
 						
-						var tr = $('<tr />').addClass('fl-tr');
+						var tr = $('<tr />')
+							.addClass('fl-tr')
+							.prop('rowid',i)
+							;
 						$(this).append(tr);
 						
 						}
 				)
+				
+				var c = this.column_order;
 
-				for (var co=0; co<this.column_order.length; co++)
+				for (var co=0; co<c.length; co++)
 					{
 						var td = $('<td />')
 								.addClass('fl-td')
-								.addClass('fl-td-'+this.column_order[co])
+								.addClass('fl-td-'+c[co])
 								;
 
-						var cm = this.colModel[this.column_order[co]];
+						var cm = this.colModel[c[co]];
 
-						var row = rows[i][this.column_order[co]];
+						var row = rows[i][c[co]];
+						
+						if (cm.beforeDisplay) row = cm.beforeDisplay(c[co],rows[i],this.fid);
 
 						$(td).append(row);
 

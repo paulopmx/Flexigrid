@@ -1,71 +1,20 @@
 
-	.fl-coltog
-		{
-		background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
-		border-left: 1px solid #ccc;
-		border-bottom: 1px solid orange;
-		}
-
-	.fl-grid
-		{
-		background: #eee;
-
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-
-		}
-
-	.fl-grid-inner
-		{
-		padding: 5px;
-		border: 1px solid #fff;
-
-	-webkit-border-radius: 4px;
-	-moz-border-radius: 4px;
-	border-radius: 4px;
-
-		}
-		
-		.fl-hbdiv
-			{
-			border: 1px solid #ccc;
-			margin-left: -1px;
-			}
+/* default */
 
 	.fl-hdiv
 		{
 		background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
 		border-bottom: 1px solid #ccc;
 
-		-webkit-box-shadow: #ccc 0px 0px 5px;
-		-moz-box-shadow: #ccc 0px 0px 5px;
-		box-shadow: #ccc 0px 0px 5px;
+		-webkit-box-shadow: #bbb 0px 0px 5px;
+		-moz-box-shadow: #bbb 0px 0px 5px;
+		box-shadow: #bbb 0px 0px 5px;
 
 		}
 
-	.fl-grid-fw .fl-hdiv .fl-table
-		{
-		border-right: 0px solid #dedede;
-		}
-
-	.fl-fpane-left .fl-table
-		{
-		border-right: 0px solid #ccc;
-		}
-		
-		.fl-fpane-left
-			{
-/* 			border-right: 1px solid #ccc !important; */
-			}
-		
 		.fl-th-div
 			{
 			text-shadow: 0px 1px 0px #fff;
-/*
-			padding-bottom: 5px;
-			border-bottom: 1px solid #ccc;
-*/
 			}
 
 			
@@ -79,14 +28,58 @@
 			.fl-tr:hover .fl-td, .fl-tr-hover .fl-td
 				{
 				background: #eee;
-				
-/*
-			 	-moz-box-shadow:inset 0 2px 5px #ddd;
-			   	-webkit-box-shadow:inset 0 2px 5px #ddd;
-			   	box-shadow:inset 0 2px 5px #ddd;				
-*/
-				
 				}
+
+/* with pretty border class */
+
+	.fl-grid-pb
+		{
+		background: #eee;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+		}
+
+	.fl-grid-pb .fl-grid-inner
+		{
+		padding: 5px;
+		border: 1px solid #fff;
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+		}
+		
+	.fl-grid-pb .fl-hbdiv
+		{
+		border: 1px solid #ccc;
+		margin-left: -1px;
+		}
+
+/* fl-menu */
+
+	.fl-coltog
+		{
+		background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
+		border-left: 1px solid #ccc;
+		border-bottom: 1px solid orange;
+		}
+
+/* fl-fw */
+
+	.fl-grid-fw .fl-hdiv .fl-table
+		{
+		border-right: 0px solid #dedede;
+		}
+		
+/* fl-fp */
+
+	.fl-fpane-left .fl-table
+		{
+		border-right: 0px solid #ccc;
+		}
+		
+
+/* fl-colmover */
 
 .fl-colmove
 	{
@@ -94,15 +87,6 @@
 	background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
 	}
 
-/*
-		.fl-td
-			{
-			padding: 0px;
 
-			border-left: 1px solid #ccc;
-			border-right: 1px solid #fff;
-
-			}
-*/
 
 			

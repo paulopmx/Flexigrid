@@ -51,7 +51,7 @@
 	-webkit-border-radius: 4px;
 	-moz-border-radius: 4px;
 	border-radius: 4px;
-	padding: 4px 0px;	
+	padding: 5px 0px;	
 
 	
 	}
@@ -65,7 +65,7 @@
 	
 	.fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr .fl-menu-td
 		{
-		padding: 3px 5px;
+		padding: 3px 7px;
 		cursor: default;
 		background: none;
 		font-size: 13px;
@@ -102,7 +102,7 @@
 
 		.fl-menu-tr:hover .fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr:hover .fl-menu-td
 			{
-			background: #222;
+			background: #3100fd;
 			color: #fff;
 			}
 			

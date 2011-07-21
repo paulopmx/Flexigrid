@@ -51,7 +51,17 @@ fl_mod['fl_colmove'] = {
 							var dt = $(this).parents('th').prop('column_name');
 							var cm = self.colModel[self.colTarget];
 
+							var ct_i = $('.fl-th',self).index($('.fl-col-'+self.colTarget,self));
+							var dt_i = $('.fl-th',self).index($('.fl-col-'+dt,self));
+							
+							var dropdir = 'left';
+							
+							if (dt_i>ct_i) dropdir = 'right';
+							
+							$(this).parent().addClass('fl-th-drop'+dropdir);
+
 							var cpane = '.fl-fpane';
+
 							if (cm.pane) 
 								cpane += '-'+cm.pane;			
 							else if (self.dpane)
@@ -80,10 +90,15 @@ fl_mod['fl_colmove'] = {
 						
 							if (self.dragType!='colmove') return true;
 							
+							$(this).parent()
+							.removeClass('fl-th-dropleft')
+							.removeClass('fl-th-dropright')
+							;
+							
 							$(self)
 							.prop('dropTarget','')
 							.find('.fl-colmove').removeClass('fl-colmove-allowed')
-							.removeClass('fl-colmove-not-allowed');
+							.removeClass('fl-colmove-not-allowed')
 							;						
 						}		
 				)
@@ -165,12 +180,19 @@ fl_mod['fl_colmove'] = {
 				.removeClass('fl-colmove-allowed')
 				.removeClass('fl-colmove-not-allowed')
 				.hide();
+				
 			$(this).removeClass('fl-colmoving');
-			
+
 			var dcol = this.dropTarget;
 
 			if (!dcol) return true;
 			if (dcol==col) return true;
+
+
+			$('.fl-col-'+dcol,this)
+			.removeClass('fl-th-dropleft')
+			.removeClass('fl-th-dropright')
+			;
 			
 			var dm = this.colModel[dcol];
 			

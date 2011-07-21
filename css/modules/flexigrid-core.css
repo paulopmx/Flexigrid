@@ -50,6 +50,7 @@
 		overflow: hidden;
 		position: relative;
 		border-bottom: 2px solid #000;
+		z-index: 2;
 		}
 		
 		.fl-hdiv-inner
