@@ -68,7 +68,7 @@ fl_mod['fl_colmove'] = {
 								cpane += '-'+self.dpane;
 								
 								
-							if ($(self).find(cpane+' thead .fl-th').length<=1)
+							if ($(self).find(cpane+' thead .fl-th:visible').length<=1)
 								$(self).find('.fl-colmove')
 								.addClass('fl-colmove-not-allowed')
 								.removeClass('fl-colmove-allowed');
@@ -211,7 +211,7 @@ fl_mod['fl_colmove'] = {
 			else if (this.dpane)
 				dpane += '-'+this.dpane;
 			
-			if ($(cpane+' thead .fl-th',this).length<=1) return true;	
+			if ($(cpane+' thead .fl-th:visible',this).length<=1) return true;	
 
 			if (ct_i>dt_i)
 				{

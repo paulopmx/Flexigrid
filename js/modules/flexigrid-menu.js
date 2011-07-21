@@ -86,10 +86,10 @@ fl_mod['fl_menu'] = {
 								
 						return tr;
 					}
-			,fl_menu_item_column_tog: function (key)
+			,fl_menu_item_column_tog: function (i)
 					{
 					
-						var item = this.colModel[key];
+						var item = this.colModel[i.key];
 						
 						var chk = 'checked="checked"';
 						var self = this;
@@ -97,7 +97,7 @@ fl_mod['fl_menu'] = {
 						if (item.visible===false) chk = '';
 					
 						var tr = $('<tr class="fl-menu-tr" />')
-								.append('<td class="fl-menu-td fl-menu-col1"><input type="checkbox" autocomplete="off" class="fl-cb" '+chk+' value="'+key+'" /></td>')
+								.append('<td class="fl-menu-td fl-menu-col1"><input type="checkbox" autocomplete="off" class="fl-cb" '+chk+' value="'+i.key+'" /></td>')
 								.append('<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + item.display + '</span></td>')
 								.append('<td class="fl-menu-td fl-menu-col3"><span class="fl-icon"></span></td>')
 								;
@@ -105,26 +105,23 @@ fl_mod['fl_menu'] = {
 								{
 								$(this).parent('td').siblings().find('span.fl-label').trigger('click');
 								}
-							);
-								
-							$('td .fl-label',tr).click(function(e)
-									{
-									var obj = (e.target || e.srcElement);
-									if (obj.nodeName=='INPUT') return false;
-									var toggled = $(this).parents('.fl-grid').get(0).toggle_column(key);
-									$(this).parent('td').siblings().find('input').attr('checked',toggled);
-									}
+							)
+							.parent().siblings().click(function(e)
+								{
+								var toggled = $(this).parents('.fl-grid').get(0).toggle_column(i.key);
+								$(this).siblings().find('input').attr('checked',toggled);
+								}
 								);	
 								
 						return tr;
 					}		
 			//menu model
 			,menu_items: [
+					{type:'column_list'}
+/*
 					 {type:'trigger',action:'align_column',display:'Align Left',value:'left'}
 					,{type:'trigger',action:'align_column',display:'Align Right',value:'right'}
 					,{type:'separator'}
-					,{type:'column_list'}
-/*
 					,{type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_list'}]}
 					,{type:'trigger',action:'sort_asc',display:'Sort Ascending'}
 					,{type:'trigger',action:'sort_desc',display:'Sort Ascending'}
@@ -161,13 +158,15 @@ fl_mod['fl_menu'] = {
 					for (var m = 0; m < m_i.length; m++)
 						{
 						
+							
+						
 							if (m_i[m].type=='column_list')
 							{
 								var co = this.column_order;
 								for (c=0;c<co.length;c++)
 									{
 									var cm = this.colModel[co[c]];
-									var item = this.fl_menu_item_column_tog(co[c]);
+									var item = this.fl_menu_item_column_tog({key:co[c]});
 									$(tbody).append(item);
 									}
 							}
@@ -175,9 +174,7 @@ fl_mod['fl_menu'] = {
 							{
 						
 								if (!this['fl_menu_item_'+m_i[m].type]) continue;
-	
 								var item = this['fl_menu_item_'+m_i[m].type](m_i[m]);
-									
 								$(tbody).append(item);
 							}
 						}
