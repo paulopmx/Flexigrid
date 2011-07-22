@@ -16,120 +16,20 @@ when to load: after render
 
 fl_mod['fl_menu'] = {
 
-			//layouts
-			 fl_menu_table: '<table class="fl-menu-table" cellspacing="0" ></table>'
-			,fl_coltog: '<div class="fl-coltog"><div class="fl-coltog-inner"></div></div>'
-			,fl_menu_item_trigger: function (item)
-					{
-						var self = this;
-					
-						var tr = $('<tr class="fl-menu-tr" />')
-								.append('<td class="fl-menu-td fl-menu-col1"><span class="fl-icon"></span></td>')
-								.append('<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + item.display + '</span></td>')
-								.append('<td class="fl-menu-td fl-menu-col3"><span class="fl-icon"></span></td>')
-								.click(function()
-									{
-									var val = false;
-									if (item.value) val = item.value;
-									if (self[item.action])
-										self[item.action](val);
-									else
-										$('.fl-label',this).addClass('fl-label-disabled');	
-									}
-								)
-								;
-								
-						if (item.class) $(tr).addClass(item.class);
-						
-						return tr;
-					}
-			,fl_menu_item_separator: function (item)
-					{
-						var tr = $('<tr class="fl-menu-br" />')
-							.append('<td class="fl-menu-td" colspan="3"><div class="fl-menu-br-div"></div></td>')
-							;
-						return tr;
-					}
-			,fl_menu_item_submenu: function (item)
-					{
-						var tr = $('<tr class="fl-menu-tr fl-menu-sm" />')
-								.append('<td class="fl-menu-td fl-menu-col1"><span class="fl-icon"></span></td>')
-								.append('<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + item.display + '</span></td>')
-								.append('<td class="fl-menu-td fl-menu-col3"><span class="fl-submenu"></span></td>')
-								;
-								
-						var sub = $('<div class="fl-menu" />').append(this.fl_menu_table);
-						
-						$(sub)
-							.append(this.fl_menu_build_items(item.subgroup));
-						
-						$(tr)	
-							.mouseover( function ()
-								{
-									var self = $(this).parents('.fl-grid').get(0);
-									var l = parseInt($(self.fl_menu).css('left'));
-									var w = $(self).width();
-									var w2 = $(self.fl_menu).width();
-									var w3 = $('.fl-menu',this).width();
-									var w4 = $('.fl-submenu',this).position();
-									
-									if ((l+w2+w3)>=w)
-										$('.fl-menu',this).css('left',(0-w3-w4.left));
-									else
-										$('.fl-menu',this).css('left',(w2-w4.left));	
-									
-								}
-							);
-						
-						
-						$('.fl-submenu',tr).append(sub);
-								
-						return tr;
-					}
-			,fl_menu_item_column_tog: function (i)
-					{
-					
-						var item = this.colModel[i.key];
-						
-						var chk = 'checked="checked"';
-						var self = this;
-						
-						if (item.visible===false) chk = '';
-					
-						var tr = $('<tr class="fl-menu-tr" />')
-								.append('<td class="fl-menu-td fl-menu-col1"><input type="checkbox" autocomplete="off" class="fl-cb" '+chk+' value="'+i.key+'" /></td>')
-								.append('<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + item.display + '</span></td>')
-								.append('<td class="fl-menu-td fl-menu-col3"><span class="fl-icon"></span></td>')
-								;
-							$('input',tr).click(function(e)
-								{
-								$(this).parent('td').siblings().find('span.fl-label').trigger('click');
-								}
-							)
-							.parent().siblings().click(function(e)
-								{
-								var toggled = $(this).parents('.fl-grid').get(0).toggle_column(i.key);
-								$(this).siblings().find('input').attr('checked',toggled);
-								}
-								);	
-								
-						return tr;
-					}		
 			//menu model
-			,menu_items: [
-					{type:'column_list'}
-/*
-					 {type:'trigger',action:'align_column',display:'Align Left',value:'left'}
+			menu_items: [
+					{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
+					,{type:'trigger',action:'align_column',display:'Align Center',value:'center'}
 					,{type:'trigger',action:'align_column',display:'Align Right',value:'right'}
 					,{type:'separator'}
-					,{type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_list'}]}
-					,{type:'trigger',action:'sort_asc',display:'Sort Ascending'}
-					,{type:'trigger',action:'sort_desc',display:'Sort Ascending'}
-					,{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
-					,{type:'separator'}
-					,{type:'togglecol'}
-*/
+					,{type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_tog',sub_list:'column_order'}]}
 				]
+			//layouts
+			,fl_menu_table: '<table class="fl-menu-table" cellspacing="0" ></table>'
+			,fl_menu_col1: '<td class="fl-menu-td fl-menu-col1"><span class="fl-icon"></span></td>'
+			,fl_menu_col2: function (d) {return '<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + d + '</span></td>'}
+			,fl_menu_col3: '<td class="fl-menu-td fl-menu-col3"><span class="fl-icon"></span></td>'
+			,fl_coltog: '<div class="fl-coltog"><div class="fl-coltog-inner"></div></div>'
 			//events - to avoid collision with other modules use module_name_functionname for module events
 			,fl_menu_init: function () 
 				{
@@ -158,25 +58,25 @@ fl_mod['fl_menu'] = {
 					for (var m = 0; m < m_i.length; m++)
 						{
 						
-							
 						
-							if (m_i[m].type=='column_list')
+							if (m_i[m].sub_list)
 							{
-								var co = this.column_order;
-								for (c=0;c<co.length;c++)
+								var s_l = this[m_i[m].sub_list];
+								for (var k in s_l)
 									{
-									var cm = this.colModel[co[c]];
-									var item = this.fl_menu_item_column_tog({key:co[c]});
+									var item = this['fl_menu_item_'+m_i[m].type](k,s_l[k]);
 									$(tbody).append(item);
 									}
 							}
 							else
 							{
-						
 								if (!this['fl_menu_item_'+m_i[m].type]) continue;
-								var item = this['fl_menu_item_'+m_i[m].type](m_i[m]);
+								var item = this['fl_menu_item_'+m_i[m].type](m,m_i[m]);
 								$(tbody).append(item);
 							}
+						
+							
+						
 						}
 					
 					return tbody;	
@@ -195,7 +95,7 @@ fl_mod['fl_menu'] = {
 							var self = $(this).parents('.fl-grid').get(0);
 							
 							$(self).prop('colTarget',$(this).parents('th').prop('column_name'));
-							self.module_events('beforeTogColClick');
+							self.trigger_events('beforeTogColClick');
 
 							var l = this.offsetLeft;
 							l += $(this).parents('.fl-th').get(0).offsetLeft;
@@ -248,7 +148,122 @@ fl_mod['fl_menu'] = {
 
 
 				}
-			//basic trigger events can be transferred to different module
+			// item builders	
+			,fl_menu_item_trigger: function (key,item)
+					{
+						var self = this;
+						
+						var tr = $('<tr class="fl-menu-tr fl-menu-key-'+key+'" />')
+								.append(this.fl_menu_col1)
+								.append(this.fl_menu_col2(item.display))
+								.append(this.fl_menu_col3)
+								.click(function()
+									{
+									var val = false;
+									if (item.value) val = item.value;
+									if (self[item.action])
+										self[item.action](val,self.fid);
+									else
+										$('.fl-label',this).addClass('fl-label-disabled');	
+									}
+								)
+								;
+								
+						if (item.class) $(tr).addClass(item.class);
+						
+						return tr;
+					}
+			,fl_menu_item_separator: function (key,item)
+					{
+						var tr = $('<tr class="fl-menu-br" />')
+							.append('<td class="fl-menu-td" colspan="3"><div class="fl-menu-br-div"></div></td>')
+							;
+						return tr;
+					}
+			,fl_menu_item_submenu: function (key,item)
+					{
+						var tr = $('<tr class="fl-menu-tr fl-menu-sm" />')
+								.append(this.fl_menu_col1)
+								.append(this.fl_menu_col2(item.display))
+								.append('<td class="fl-menu-td fl-menu-col3"><span class="fl-submenu"></span></td>')
+								;
+								
+						var sub = $('<div class="fl-menu" />').append(this.fl_menu_table);
+						
+						$(sub)
+							.append(this.fl_menu_build_items(item.subgroup));
+						
+						$(tr)	
+							.mouseover( function ()
+								{
+									var self = $(this).parents('.fl-grid').get(0);
+									var l = parseInt($(self.fl_menu).css('left'));
+									var w = $(self).width();
+									var w2 = $(self.fl_menu).width();
+									var w3 = $('.fl-menu:first',this).width();
+									var w4 = $('.fl-submenu',this).position();
+									
+									if ((l+w2+w3)>=w)
+										$('.fl-menu:first',this).css('left',(0-w3-w4.left));
+									else
+										$('.fl-menu:first',this).css('left',(w2-w4.left));	
+									
+								}
+							)
+							;
+						
+						
+						$('.fl-submenu',tr).append(sub);
+								
+						return tr;
+					}
+			,fl_menu_update_togs: function ()
+					{
+						//update our column togs if toggle_column was triggered externally
+						var key = this.lastToggled;
+						cm = this.colModel[key];
+						$('.fl-cb[value='+key+']',this.fl_menu).prop('checked',cm.visible);
+					}		
+			,fl_menu_item_column_tog: function (k,i)
+					{
+					
+						if (i.display)
+						{
+							var item = i;
+							var key = k;
+						}
+						else
+						{
+							var item = this.colModel[i];
+							var key = i;
+						}
+						
+						var chk = 'checked="checked"';
+						var self = this;
+						
+						if (item.visible===false) chk = '';
+						if (item.toggleable===false) return true;
+					
+						var tr = $('<tr class="fl-menu-tr fl-column-tog" />')
+								.append('<td class="fl-menu-td fl-menu-col1"><input type="checkbox" autocomplete="off" class="fl-cb" '+chk+' value="'+key+'" /></td>')
+								.append(this.fl_menu_col2(item.display))
+								.append(this.fl_menu_col3)
+								;
+							$('input',tr).change(function(e)
+								{
+								var toggle = $(this).parents('.fl-grid').get(0).toggle_column(key);
+								this.checked = toggle;
+								}
+							)
+							.parent().siblings().click(function(e)
+								{
+								$(this).siblings().find('input').trigger('change');
+								}
+								);	
+								
+						return tr;
+					}		
+			//sample trigger events can be transferred to different module
 			,align_column: function (atype)
 				{
 					var col = this.colTarget;
@@ -263,7 +278,7 @@ fl_mod['fl_menu'] = {
 		};
 
 
-fl_events['fl_menu'] = {afterRender:'init'};
+fl_events['fl_menu'] = {afterRender:['init'],afterColToggle:'update_togs'};
 
 
 })( jQuery );

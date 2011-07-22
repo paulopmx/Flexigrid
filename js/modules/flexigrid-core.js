@@ -67,7 +67,7 @@ fl_grid.prototype = {
 
 		//trigger module beforeRender events
 		
-		this.module_events('beforeRender');
+		this.trigger_events('beforeRender');
 					
 		//first unbind and empty then add default content
 		$("*",this).unbind();
@@ -87,13 +87,13 @@ fl_grid.prototype = {
 		
 		//trigger module afterRender events
 		
-		this.module_events('afterRender');
+		this.trigger_events('afterRender');
 		
 		}
 	,build_header: function ()
 		{
 		
-			this.module_events('beforeReload');
+			this.trigger_events('beforeReload');
 			//if no order specified create one
 			
 			if (!this.column_order.length)
@@ -171,43 +171,10 @@ fl_grid.prototype = {
 				
 				}
 				
-				this.module_events('afterReload');
+				this.trigger_events('afterReload');
 			
 
 		}
-	,dragStart: function ()
-		{
-			if (this.dragType)
-				$(this).trigger('dragStart_'+this.dragType);
-		}
-	,dragMove: function ()
-		{	
-			if (this.dragType)
-				$(this).trigger('dragMove_'+this.dragType)
-				;
-		}
-	,dragEnd:	function ()
-		{	
-			if (this.dragType)
-				{
-				$(this).trigger('dragEnd_'+this.dragType);
-				this.dragType = '';
-				}
-		}
-	,disableSelection: function(target) {
-	
-		if (!target) target = this;
-	
-		$(target).bind( 'selectstart dragstart mousedown', function( event ) {
-				return false;
-			});
-	}
-	,enableSelection: function(target) {
-	
-		if (!target) target = this;
-	
-		$(target).unbind('selectstart dragstart mousedown');
-	}
 	,reload: function ()
 		{
 		
@@ -279,10 +246,8 @@ fl_grid.prototype = {
 				}
 
 
-				//alert($(this).html());
-
 			$(this).trigger('resize');	
-			this.module_events('afterReload')
+			this.trigger_events('afterReload')
 			
 		}
 	,resize: function ()
@@ -301,7 +266,7 @@ fl_grid.prototype = {
 			
 			$(this).width(this.width);
 			
-			this.module_events('afterResize');
+			this.trigger_events('afterResize');
 
 			
 		}
@@ -320,7 +285,7 @@ fl_grid.prototype = {
 				
 				}
 
-			this.module_events('afterColResize');			
+			this.trigger_events('afterColResize');			
 							
 		}
 	,toggle_column: function (key)
@@ -351,7 +316,11 @@ fl_grid.prototype = {
 				cm.visible = true;
 				}
 			
-			this.module_events('afterColToggle');
+			
+			// allow 3rd party code to detect which column was toggled
+			this.lastToggled = key;
+			
+			this.trigger_events('afterColToggle');
 			
 			return cm.visible;
 			
@@ -383,21 +352,80 @@ fl_grid.prototype = {
 				}
 		);
 		
-		this.module_events('afterSyncScroll');	
+		this.trigger_events('afterSyncScroll');	
 
 		}
-	,module_events: function (mtype)
+	,dragStart: function ()
+		{
+			if (this.dragType)
+				$(this).trigger('dragStart_'+this.dragType);
+		}
+	,dragMove: function ()
+		{	
+			if (this.dragType)
+				$(this).trigger('dragMove_'+this.dragType)
+				;
+		}
+	,dragEnd:	function ()
+		{	
+			if (this.dragType)
+				{
+				$(this).trigger('dragEnd_'+this.dragType);
+				this.dragType = '';
+				}
+		}
+	,disableSelection: function(target) {
+	
+		if (!target) target = this;
+	
+		$(target).bind( 'selectstart dragstart mousedown', function( event ) {
+				return false;
+			});
+	}
+	,enableSelection: function(target) {
+	
+		if (!target) target = this;
+	
+		$(target).unbind('selectstart dragstart mousedown');
+	}
+	,trigger_events: function (mtype)
 		{
 			
 			var mod;
 			var ev;
-		
-			for (mod in fl_events)
+			var events = fl_events;
+			
+			if (this[mtype])
 				{
-					for (var ev in fl_events[mod])
+				var l = this[mtype];
+				if ($.isArray(l))
+					{
+					for (var m in l)
+						{
+						$(this).trigger(l[m]);
+						}
+					}
+				else
+					$(this).trigger(l);
+				}
+				
+			for (mod in events)
+				{
+					for (var ev in events[mod])
 						{
 							if (ev==mtype)
-								$(this).trigger(mod+'_'+fl_events[mod][ev]);
+								{
+								var v = events[mod][ev];
+								if ($.isArray(v))
+									{
+									for (var i in v)
+										{
+										$(this).trigger(mod+'_'+v[i]);
+										}
+									}
+								else
+									$(this).trigger(mod+'_'+v);
+								}
 						}
 				}
 			

@@ -63,7 +63,9 @@
 		border-spacing: 0;
 		}
 	
-	.fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr .fl-menu-td
+	.fl-menu-td
+	, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr .fl-menu-td
+	/* , .fl-menu-tr:hover .fl-menu-tr:hover .fl-menu-td .fl-menu-tr .fl-menu-td */
 		{
 		padding: 3px 7px;
 		cursor: default;
@@ -100,7 +102,9 @@
 			border-top: 1px solid #eee;
 			}
 
-		.fl-menu-tr:hover .fl-menu-td, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr:hover .fl-menu-td
+		.fl-menu-tr:hover .fl-menu-td
+		, .fl-menu-tr:hover .fl-menu-td .fl-menu-tr:hover .fl-menu-td
+		/* , .fl-menu-tr:hover .fl-menu-tr:hover .fl-menu-td .fl-menu-tr:hover .fl-menu-td */
 			{
 			background: #3100fd;
 			color: #fff;

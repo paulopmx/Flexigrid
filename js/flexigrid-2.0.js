@@ -67,7 +67,7 @@ fl_grid.prototype = {
 
 		//trigger module beforeRender events
 		
-		this.module_events('beforeRender');
+		this.trigger_events('beforeRender');
 					
 		//first unbind and empty then add default content
 		$("*",this).unbind();
@@ -84,7 +84,7 @@ fl_grid.prototype = {
 		
 		//trigger module afterRender events
 		
-		this.module_events('afterRender');
+		this.trigger_events('afterRender');
 		
 		}
 	,build_header: function ()
@@ -247,7 +247,7 @@ fl_grid.prototype = {
 				}
 
 			$(this).trigger('resize');	
-			this.module_events('afterReload')
+			this.trigger_events('afterReload')
 			
 		}
 	,resize: function ()
@@ -267,7 +267,7 @@ fl_grid.prototype = {
 			
 			$(this).width(this.width);
 			
-			this.module_events('afterResize');
+			this.trigger_events('afterResize');
 
 			
 		}
@@ -286,7 +286,7 @@ fl_grid.prototype = {
 				
 				}
 
-			this.module_events('afterColResize');			
+			this.trigger_events('afterColResize');			
 							
 		}		
 	,sync_scroll: function ()
@@ -316,10 +316,10 @@ fl_grid.prototype = {
 				}
 		);
 		
-		this.module_events('afterSyncScroll');	
+		this.trigger_events('afterSyncScroll');	
 
 		}
-	,module_events: function (mtype)
+	,trigger_events: function (mtype)
 		{
 			
 			var mod;
@@ -1181,7 +1181,7 @@ fl_mod['fl_menu'] = {
 							var self = $(this).parents('.fl-grid').get(0);
 							
 							$(self).prop('colTarget',$(this).parents('th').prop('column_name'));
-							self.module_events('beforeTogColClick');
+							self.trigger_events('beforeTogColClick');
 
 							var l = this.offsetLeft;
 							l += $(this).parents('.fl-th').get(0).offsetLeft;
