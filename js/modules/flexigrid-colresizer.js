@@ -16,11 +16,12 @@ when to load: after core
 fl_mod['fl_colres'] = {
 	
 	//appearance
-		min_col_width: 50
+		 min_col_width: 50
 	//layouts
 		,fl_div_coldrag: '<div class="fl-coldrag"></div>'
 		,fl_div_colguide: '<div class="fl-colguide"></div>'
 	//events
+		,fl_events_fl_colres : {afterRender:'addResizer'}	
 		,fl_colres_addResizer: function () {
 
 			//add guide
@@ -91,8 +92,6 @@ fl_mod['fl_colres'] = {
 		
 			
 }
-
-fl_events['fl_colres'] = {afterRender:'addResizer'};
 
 
 })( jQuery );

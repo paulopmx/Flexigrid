@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 	<head>
-		<title>Flexigrid Feature Page</title>
+		<title>Flexigrid Features Test</title>
 
 
 		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
@@ -18,14 +18,15 @@
 				margin: 0;
 				padding: 20px;
 				font-family: Arial;
-				background: #f7f7f7;
+				background: #fff;
 				}
 				
-			h2
+			h1
 				{
-				font-size: 24px;
+				font-size: 30px;
 				margin: 15px 0px;
 				font-weight: normal;
+				font-family: 'Helvetica Neue';
 				color: #555;
 				}
 				
@@ -39,7 +40,7 @@
 	
 	<br />
 
-	<h2>Flexigrid</h2>
+	<h1>Flexigrid Features Test</h1>
 
 	<div>
 	
@@ -60,6 +61,7 @@
 
 	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
+	
 	<script type="text/javascript" src="../js/modules/flexigrid-colresizer.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-colmover.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-fullwidth.js" ></script>
@@ -91,8 +93,6 @@
 				,'country_code': {
 					display: "Country Code"
 					,width: '360'
-					,pane: 'left'
-					,visible: false
 				}
 				,'id': {
 					display: "Country ID"
@@ -123,7 +123,7 @@
 				'country_name': {
 					 display: "Country Name"
 					,width: '160px'
-					,visible: false
+					,moveable: false
 				}
 				,'country_code': {
 					display: "Country Code"
@@ -147,6 +147,8 @@
 			,viewtype: 'fullwidth'
 			,rp: 3
 			,page: 2
+			,exclude: ['fl_menu']
+			,usePager: true
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"

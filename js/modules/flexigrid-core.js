@@ -55,7 +55,9 @@ fl_grid.prototype = {
 		}
 	,fl_td: '<div class="fl-td-div"></div>'
 	,fl_th: '<div class="fl-th-div"></div>'
-	,fl_th_con: '<div class="fl-th-con"></div>'  
+	,fl_th_con: '<div class="fl-th-con"></div>'
+	,fl_header: '<div class="fl-header"></div>'
+	,fl_footer: '<div class="fl-footer"></div>'  
 	,fl_view_standard: function () 
 		{ 
 		$(this).append('<div class="fl-grid-inner"><div class="fl-hbdiv">' + this.fl_fpane() + '</div></div>'); 
@@ -64,6 +66,8 @@ fl_grid.prototype = {
 	//default events
 	,render: function ()
 		{
+		
+		this.build_events();
 
 		//trigger module beforeRender events
 		
@@ -83,6 +87,12 @@ fl_grid.prototype = {
 		this.reload();
 		this.sync_scroll();
 		
+		//add header and footer --> add conditions later
+		$('.fl-grid-inner',this).prepend(this.fl_header);
+		$('.fl-grid-inner',this).append(this.fl_footer);
+		
+		
+		this.build_pager();
 		$(this).show().trigger('resize');
 		
 		//trigger module afterRender events
@@ -90,6 +100,33 @@ fl_grid.prototype = {
 		this.trigger_events('afterRender');
 		
 		}
+	,build_events: function ()
+		{
+			
+			var events = [];
+			for (var x in this)
+			{
+				//console.log(x.substring(0,9));
+				if (x.substring(0,10)=='fl_events_')
+					events[events.length] = x;
+			}
+			
+			this.fl_events = events;
+			//console.log(events);
+		}	
+	,fl_toolbar: '<div class="fl-toolbar" />'	
+	,fl_pager: '<div class="fl-pager"><button type="button" class="fl-button fl-button-first"><span class="fl-icon"></span></button><button type="button" class="fl-button fl-button-prev"><span class="fl-icon"></span></button> <button type="button" class="fl-button fl-button-next"><span class="fl-icon"></span></button><button type="button" class="fl-button fl-button-last"><span class="fl-icon"></span></button><button type="button" class="fl-button fl-button-reload"><span class="fl-icon"></span></button></div>'
+	,build_pager: function ()
+		{
+			//if (this.usePager!=true)	return false;
+			
+			var tb = $(this.fl_toolbar);
+			
+			$(tb).append(this.fl_pager);
+			
+			$('.fl-header',this).append(tb);
+			
+		}	
 	,build_header: function ()
 		{
 		
@@ -391,9 +428,11 @@ fl_grid.prototype = {
 	,trigger_events: function (mtype)
 		{
 			
+			
 			var mod;
 			var ev;
-			var events = fl_events;
+			var events = this.fl_events;
+			
 			
 			if (this[mtype])
 				{
@@ -408,26 +447,33 @@ fl_grid.prototype = {
 				else
 					$(this).trigger(l);
 				}
+			
 				
 			for (mod in events)
 				{
-					for (var ev in events[mod])
-						{
+
+					
+					
+					for (var ev in this[events[mod]])
+					{
+					
 							if (ev==mtype)
 								{
-								var v = events[mod][ev];
+								var v = this[events[mod]][ev];
 								if ($.isArray(v))
 									{
 									for (var i in v)
 										{
-										$(this).trigger(mod+'_'+v[i]);
+										$(this).trigger(events[mod].substring(10)+'_'+v[i]);
 										}
 									}
 								else
-									$(this).trigger(mod+'_'+v);
+									$(this).trigger(events[mod].substring(10)+'_'+v);
 								}
-						}
-				}
+
+					}
+				}	
+				
 			
 		}
 	,parseTable: function (){} // override on a module
@@ -464,7 +510,7 @@ fl_grid.prototype = {
 						//apply custom settings
 						$.extend(g,f);
 						
-						if (g.custom)
+						if (p.custom)
 							{
 								for (var m=0; m<g.custom.length;m++)
 									{
@@ -475,8 +521,8 @@ fl_grid.prototype = {
 							{	
 							for (var m in fl_mod)
 								{
-									if (g.except_modules)
-										if ($.inArray(m,g.except_module)>-1)
+									if (p.exclude)
+										if ($.inArray(m,p.exclude)>-1)
 											{
 											continue;
 											}

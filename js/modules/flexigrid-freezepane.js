@@ -23,6 +23,7 @@ fl_mod['fl_fp'] = {
 		}
 
 	//events
+	,fl_events_fl_fp : {afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth',afterColToggle:'fixwidth'}		
 	,fl_fp_fixwidth: function ()
 		{
 		
@@ -68,10 +69,8 @@ fl_mod['fl_fp'] = {
 		);
 
 		
-		}	
+		}
 }
-
-fl_events['fl_fp'] = {afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth',afterColToggle:'fixwidth'};
 
   $(window)
   .resize(

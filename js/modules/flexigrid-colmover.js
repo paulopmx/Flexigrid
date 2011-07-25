@@ -19,6 +19,7 @@ fl_mod['fl_colmove'] = {
 	//layouts
 	fl_div_colmove: '<div class="fl-colmove"></div>'
 	//events
+	,fl_events_fl_colmove : {afterRender:'addMover'}
 	,fl_colmove_addMover: function () {
 
 			//add column move guide
@@ -30,18 +31,23 @@ fl_mod['fl_colmove'] = {
 				.mousedown(
 					function (e)
 						{
-						$(this).parents('.fl-grid')
+						var self = $(this).parents('.fl-grid');
+						var c = $(this).parent().prop('column_name');
+						
+						if ($(self).prop('colModel')[c].moveable===false) return true;
+						
+						$(self)
 						.prop('dragType','colmove')
 						.prop('mouse_state_start',e)
-						.prop('colTarget',$(this).parent().prop('column_name'))
+						.prop('colTarget',c)
 						.trigger('disableSelection')
 						.trigger('dragStart')
 						.addClass('fl-colmoving')
 						;
 						}
 				)		
-				.mouseenter(
-						function ()
+				.mousemove(
+						function (e)
 						{
 						
 							var self = $(this).parents('.fl-grid').get(0);
@@ -51,15 +57,23 @@ fl_mod['fl_colmove'] = {
 							var dt = $(this).parents('th').prop('column_name');
 							var cm = self.colModel[self.colTarget];
 
-							var ct_i = $('.fl-th',self).index($('.fl-col-'+self.colTarget,self));
-							var dt_i = $('.fl-th',self).index($('.fl-col-'+dt,self));
-							
-							var dropdir = 'left';
-							
-							if (dt_i>ct_i) dropdir = 'right';
-							
-							$(this).parent().addClass('fl-th-drop'+dropdir);
+							if ($(self).prop('colModel')[dt].moveable===false) return true;
 
+							var dropdir = 'left';
+
+							var pos = $(this).offset();
+							var w = $(this).width() / 2;
+							var l =  e.pageX - pos.left;
+
+							if (l>w) dropdir = 'right'; 
+							
+							$(this).parent()
+								.removeClass('fl-th-dropleft')
+								.removeClass('fl-th-dropright')
+								.addClass('fl-th-drop'+dropdir);
+							
+							self.dropDir = dropdir;
+							
 							var cpane = '.fl-fpane';
 
 							if (cm.pane) 
@@ -196,9 +210,6 @@ fl_mod['fl_colmove'] = {
 			
 			var dm = this.colModel[dcol];
 			
-			var ct_i = $('.fl-th',this).index($('.fl-col-'+col,this));
-			var dt_i = $('.fl-th',this).index($('.fl-col-'+dcol,this));
-
 			var cpane = '.fl-fpane';
 			if (cm.pane) 
 				cpane += '-'+cm.pane;			
@@ -211,9 +222,9 @@ fl_mod['fl_colmove'] = {
 			else if (this.dpane)
 				dpane += '-'+this.dpane;
 			
-			if ($(cpane+' thead .fl-th:visible',this).length<=1) return true;	
-
-			if (ct_i>dt_i)
+			if ($(cpane+' thead .fl-th:visible',this).length<=1) return true;
+			
+			if (this.dropDir=='left')
 				{
 
 				$('.fl-col-'+dcol,this).before($('.fl-col-'+col,this));
@@ -255,8 +266,6 @@ fl_mod['fl_colmove'] = {
 		
 			
 }
-
-fl_events['fl_colmove'] = {afterRender:'addMover'};
 
 
 })( jQuery );

@@ -9,21 +9,21 @@
 	background: #fff;
 	}
 	
-	.fl-th-dragged .fl-th-div
+	.fl-th-dragged .fl-th-div, .fl-th-dropleft .fl-coltog, .fl-th-dropright .fl-coltog
 		{
 		visibility: hidden;
 		}	
+
+	.fl-th-dropleft, .fl-th-dropright
+		{
+		background: #eee;
+		box-shadow: inset #bbb 0px 0px 5px;
+		}
 
 		.fl-th-dragged:hover .fl-coltog
 			{
 			display: none;
 			}
-
-	.fl-th-dropleft, .fl-th-dropright
-		{
-		background: #eee;
-		box-shadow: #fff 0px 0px 5px;
-		}
 	
 .fl-colmove
 	{

@@ -149,4 +149,112 @@
 	position: relative;
 	}
 
+.fl-button::-moz-focus-inner { 
+    border: 0;
+    padding: 0;
+}
 
+	.fl-button
+		{
+		padding: 4px;
+		background: none;
+
+		border: 0;
+		margin: 1px;
+		margin-top: 5px;
+		margin-right: 1px;
+
+		-webkit-border-radius: 4px;
+		-moz-border-radius: 4px;
+		border-radius: 4px;
+		cursor: pointer;
+		
+		}
+		
+		.fl-button:hover
+			{
+			position: relative;
+			z-index: 2;
+			border: 1px solid #aaa;
+			margin: 0px;
+			margin-top: 4px;
+			margin-right: 0px;
+			background: #cfcfcf;
+
+			-webkit-box-shadow: inset #fff 0px 0px 10px;
+			-moz-box-shadow: inset #fff 0px 0px 10px;
+			box-shadow: inset #fff 0px 5px 10px;
+
+			}
+			
+			.fl-button-first .fl-icon
+				{
+				background: url(images/first.png) no-repeat;
+				}
+				
+			.fl-button-next .fl-icon
+				{
+				background: url(images/next.png) no-repeat;
+				}	
+
+			.fl-button-prev .fl-icon
+				{
+				background: url(images/prev.png) no-repeat;
+				}
+				
+			.fl-button-last .fl-icon
+				{
+				background: url(images/last.png) no-repeat;
+				}	
+
+			.fl-button-reload .fl-icon
+				{
+				background: url(images/reload.png) no-repeat;
+				}	
+
+
+	
+	.fl-header
+		{
+		background: url(images/wbg.gif) repeat-x -1px -1px #cfcfcf;
+		width: 100%;
+		overflow: hidden;
+		border-bottom: 1px solid #bbb;
+		}
+
+	.fl-footer
+		{
+		}
+
+		.fl-toolbar
+			{
+			margin: 5px;
+			margin-top: 0px;
+			width: 100%;
+			}
+			
+			.fl-toolbar-input
+				{
+				border: 1px;
+				padding: 4px;
+				line-height: 16px;
+				font-family: Arial;
+				margin: 0px;
+				margin-top: 4px;
+				vertical-align: bottom;
+				
+				border: 1px solid #bbb;
+
+				-webkit-border-radius: 3px;
+				-moz-border-radius: 3px;
+				border-radius: 3px;
+
+				}
+
+
+	.fl-grid-pb .fl-header
+			{
+			border: 1px solid #bbb;
+			border-bottom: 0px;
+			margin-left: -1px;
+			}

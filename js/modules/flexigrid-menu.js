@@ -18,11 +18,12 @@ fl_mod['fl_menu'] = {
 
 			//menu model
 			menu_items: [
-					{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
-					,{type:'trigger',action:'align_column',display:'Align Center',value:'center'}
-					,{type:'trigger',action:'align_column',display:'Align Right',value:'right'}
-					,{type:'separator'}
-					,{type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_tog',sub_list:'column_order'}]}
+				 {type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_tog',sub_list:'column_order'}]}
+				,{type:'separator'}
+				,{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
+				,{type:'trigger',action:'align_column',display:'Align Center',value:'center'}
+				,{type:'trigger',action:'align_column',display:'Align Right',value:'right'}
+				,{type:'trigger',action:'freeze_pane',display:'Freeze Pane',name:'freeze_pane'}
 				]
 			//layouts
 			,fl_menu_table: '<table class="fl-menu-table" cellspacing="0" ></table>'
@@ -30,7 +31,9 @@ fl_mod['fl_menu'] = {
 			,fl_menu_col2: function (d) {return '<td class="fl-menu-td fl-menu-col2"><span class="fl-label">' + d + '</span></td>'}
 			,fl_menu_col3: '<td class="fl-menu-td fl-menu-col3"><span class="fl-icon"></span></td>'
 			,fl_coltog: '<div class="fl-coltog"><div class="fl-coltog-inner"></div></div>'
+
 			//events - to avoid collision with other modules use module_name_functionname for module events
+			,fl_events_fl_menu : {afterRender:['init'],afterColToggle:'update_togs'}		
 			,fl_menu_init: function () 
 				{
 				
@@ -95,18 +98,15 @@ fl_mod['fl_menu'] = {
 							var self = $(this).parents('.fl-grid').get(0);
 							
 							$(self).prop('colTarget',$(this).parents('th').prop('column_name'));
+							
+							//add events to set status of menu items --> can make code to big consider as optional only
 							self.trigger_events('beforeTogColClick');
 
-							var l = this.offsetLeft;
-							l += $(this).parents('.fl-th').get(0).offsetLeft;
-							l += $(this).parents('.fl-fpane').get(0).offsetLeft;
-							l += $(this).parents('.fl-hbdiv').get(0).offsetLeft;
-							l -= $(this).parents('.fl-hdiv').get(0).scrollLeft;
+							var pos = $(this).offset();
+							var gpos = $(self).offset();
 							
-							var t = this.offsetTop;
-							
-							t = $(this).parents('.fl-hbdiv').find('.fl-bdiv').get(0).offsetTop;
-							t += $(this).parents('.fl-hbdiv').get(0).offsetTop;
+							var l = pos.left - gpos.left;
+							var t = pos.top - gpos.top + $(this).height();
 							
 							var w = $(self).width();
 							var w2 = $(self.fl_menu).width();
@@ -152,6 +152,8 @@ fl_mod['fl_menu'] = {
 			,fl_menu_item_trigger: function (key,item)
 					{
 						var self = this;
+						
+						if (item.name) key = item.name;
 						
 						var tr = $('<tr class="fl-menu-tr fl-menu-key-'+key+'" />')
 								.append(this.fl_menu_col1)
@@ -273,12 +275,8 @@ fl_mod['fl_menu'] = {
 						$('.fl-td-'+col,this).css('text-align',atype);
 						$('.fl-col-'+col,this).css('text-align',atype);
 						}
-				}	
+				}
 			
 		};
-
-
-fl_events['fl_menu'] = {afterRender:['init'],afterColToggle:'update_togs'};
-
 
 })( jQuery );
