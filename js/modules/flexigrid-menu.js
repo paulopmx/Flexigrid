@@ -23,7 +23,6 @@ fl_mod['fl_menu'] = {
 				,{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
 				,{type:'trigger',action:'align_column',display:'Align Center',value:'center'}
 				,{type:'trigger',action:'align_column',display:'Align Right',value:'right'}
-				,{type:'trigger',action:'freeze_pane',display:'Freeze Pane',name:'freeze_pane'}
 				]
 			//layouts
 			,fl_menu_table: '<table class="fl-menu-table" cellspacing="0" ></table>'

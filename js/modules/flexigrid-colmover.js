@@ -141,7 +141,7 @@ fl_mod['fl_colmove'] = {
 
 			var xpos = this.mouse_state_start;
 			var tpos = $('.fl-col-'+col,this).offset();
-			var gpos = $(this).offset();
+			var gpos = $('.fl-hbdiv',this).offset();
 
 			
 			var t = tpos.top-gpos.top;

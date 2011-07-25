@@ -19,6 +19,16 @@
 		background: #eee;
 		box-shadow: inset #bbb 0px 0px 5px;
 		}
+		
+		.fl-th-dropleft
+			{
+			background: url(images/dropleft.png) center left no-repeat;
+			}
+
+		.fl-th-dropright
+			{
+			background: url(images/dropright.png) center right no-repeat;
+			}
 
 		.fl-th-dragged:hover .fl-coltog
 			{

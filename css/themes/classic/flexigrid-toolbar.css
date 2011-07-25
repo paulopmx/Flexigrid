@@ -1,0 +1,53 @@
+
+.fl-header, .fl-footer
+	{
+	background: url(images/wbg.gif) repeat-x -1px -1px #cfcfcf;
+	}
+	
+	.fl-header
+		{
+		border-bottom: 1px solid #bbb;
+		}
+
+	.fl-footer
+		{
+		border-top: 1px solid #bbb;
+		}
+
+	.fl-button
+		{
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		text-shadow: 0px 1px 0px #fff;
+		}
+
+
+		.fl-button:hover
+			{
+			background: #cfcfcf;
+			-webkit-box-shadow: inset #fff 0px 0px 10px;
+			-moz-box-shadow: inset #fff 0px 0px 10px;
+			box-shadow: inset #fff 0px 5px 10px;
+			}
+
+
+/* pretty border toolbar */
+
+.fl-grid-pb .fl-header, .fl-grid-pb .fl-footer
+	{
+	border: 1px solid #bbb;
+	margin-left: -1px;
+	}
+			
+	.fl-grid-pb .fl-header
+			{
+			border-bottom: 0px;
+			}
+
+	.fl-grid-pb .fl-footer
+			{
+			border-top: 0px;
+			}
+
+

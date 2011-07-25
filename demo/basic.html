@@ -6,11 +6,13 @@
 
 		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-menu.css" />
+		<link rel="stylesheet" href="../css/modules/flexigrid-toolbar.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-colresizer.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-colmover.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-fullwidth.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-freezepane.css" />
-		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" id="classic"  />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-theme.css" class="classic"  />
+		<link rel="stylesheet" href="../css/themes/classic/flexigrid-toolbar.css" class="classic"  />
 		
 		<style>
 			body
@@ -40,7 +42,7 @@
 	
 	<br />
 
-	<h1>Flexigrid Features Test</h1>
+	<h1><b>Flexigrid</b> Features Test Page</h1>
 
 	<div>
 	
@@ -61,7 +63,7 @@
 
 	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
-	
+	<script type="text/javascript" src="../js/modules/flexigrid-toolbar.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-colresizer.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-colmover.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-fullwidth.js" ></script>
@@ -82,7 +84,7 @@
 	
 		var opt = {
 			viewtype: 'freezepane'
-			,height: 150
+			,height: 200
 			,dpane: 'right'
 			,colModel: {
 				'country_name': {
@@ -175,12 +177,12 @@
 
 		function toggle()
 			{
-			var state = $('#classic').attr('disabled');
+			var state = $('.classic').attr('disabled');
 			
 			if (state)
-				$('#classic').removeAttr('disabled');
+				$('.classic').removeAttr('disabled');
 			else
-				$('#classic').attr('disabled','disabled');
+				$('.classic').attr('disabled','disabled');
 			
 			$('.fl-grid').trigger('resize');
 			

@@ -13,7 +13,6 @@
 
 var fl_grid = function (){};
 var fl_mod = {};
-var fl_events = {};
 
 (function( $ ){
 
@@ -56,8 +55,6 @@ fl_grid.prototype = {
 	,fl_td: '<div class="fl-td-div"></div>'
 	,fl_th: '<div class="fl-th-div"></div>'
 	,fl_th_con: '<div class="fl-th-con"></div>'
-	,fl_header: '<div class="fl-header"></div>'
-	,fl_footer: '<div class="fl-footer"></div>'  
 	,fl_view_standard: function () 
 		{ 
 		$(this).append('<div class="fl-grid-inner"><div class="fl-hbdiv">' + this.fl_fpane() + '</div></div>'); 
@@ -87,17 +84,11 @@ fl_grid.prototype = {
 		this.reload();
 		this.sync_scroll();
 		
-		//add header and footer --> add conditions later
-		$('.fl-grid-inner',this).prepend(this.fl_header);
-		$('.fl-grid-inner',this).append(this.fl_footer);
-		
-		
-		this.build_pager();
-		$(this).show().trigger('resize');
-		
 		//trigger module afterRender events
 		
 		this.trigger_events('afterRender');
+
+		$(this).show().trigger('resize');
 		
 		}
 	,build_events: function ()
@@ -106,26 +97,11 @@ fl_grid.prototype = {
 			var events = [];
 			for (var x in this)
 			{
-				//console.log(x.substring(0,9));
 				if (x.substring(0,10)=='fl_events_')
 					events[events.length] = x;
 			}
 			
 			this.fl_events = events;
-			//console.log(events);
-		}	
-	,fl_toolbar: '<div class="fl-toolbar" />'	
-	,fl_pager: '<div class="fl-pager"><button type="button" class="fl-button fl-button-first"><span class="fl-icon"></span></button><button type="button" class="fl-button fl-button-prev"><span class="fl-icon"></span></button> <button type="button" class="fl-button fl-button-next"><span class="fl-icon"></span></button><button type="button" class="fl-button fl-button-last"><span class="fl-icon"></span></button><button type="button" class="fl-button fl-button-reload"><span class="fl-icon"></span></button></div>'
-	,build_pager: function ()
-		{
-			//if (this.usePager!=true)	return false;
-			
-			var tb = $(this.fl_toolbar);
-			
-			$(tb).append(this.fl_pager);
-			
-			$('.fl-header',this).append(tb);
-			
 		}	
 	,build_header: function ()
 		{
@@ -597,13 +573,12 @@ fl_grid.prototype = {
 				}
 		);
 
-	//destry and unbind grids
+	//destroy and unbind grids
 	$(window)
 	.unload(
 		function()
 			{
 			fl_grid = null;
-			fl_mod = null;
 			fl_events = null;
 			}
 	);
