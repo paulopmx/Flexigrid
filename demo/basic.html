@@ -6,6 +6,7 @@
 
 		<link rel="stylesheet" href="../css/modules/flexigrid-core.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-menu.css" />
+		<link rel="stylesheet" href="../css/modules/flexigrid-titlebar.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-toolbar.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-colresizer.css" />
 		<link rel="stylesheet" href="../css/modules/flexigrid-colmover.css" />
@@ -38,7 +39,9 @@
 	<body>
 
 	<button type="button" onclick="toggle()">Toggle Theme</button> 
-	<button type="button" onclick="$('.fl-grid').trigger('resize',['200'])">Resize</button>
+	<button type="button" onclick="$('.fl-grid').prop('height',200).trigger('resize')">Resize 200</button>
+	<button type="button" onclick="$('.fl-grid').prop('height',150).trigger('resize')">Resize 150</button>
+	<button type="button" onclick="$('.fl-grid').prop('height','auto').trigger('resize')">Resize Auto Height</button>
 	
 	<br />
 
@@ -64,6 +67,7 @@
 	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-toolbar.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-titlebar.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-colresizer.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-colmover.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-fullwidth.js" ></script>
@@ -84,6 +88,7 @@
 	
 		var opt = {
 			viewtype: 'freezepane'
+			,titleText: 'Freeze Pane Grid'
 			,height: 200
 			,dpane: 'right'
 			,colModel: {
@@ -120,7 +125,8 @@
 			;
 
 		var opt2 = {
-			height: 150
+			height: 200
+			,titleText: 'Standard Grid'
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
@@ -145,7 +151,8 @@
 			;
 
 		var opt3 = {
-			height: 150
+			height: 200
+			,titleText: 'Percentage Width Grid'
 			,viewtype: 'fullwidth'
 			,rp: 3
 			,page: 2

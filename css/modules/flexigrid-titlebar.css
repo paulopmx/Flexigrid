@@ -1,0 +1,38 @@
+.fl-title
+	{
+	width: 100%;
+	border: 1px solid #bbb;
+	margin-top: -1px;
+	margin-left: -1px;
+	margin-bottom: -1px;
+	position: relative;
+	overflow: hidden;
+	}
+	
+	.fl-title-inner
+		{
+		padding: 8px 10px;
+		font-weight: bold;
+		font-size: 14px;
+		line-height: 16px;
+		position: relative;
+		text-shadow: 0px 1px 0px #fff;
+		white-space: nowrap;
+		}
+		
+	.fl-title-tog
+		{
+		position: absolute;
+		top: 4px;
+		right: 4px;
+		}
+		
+		.fl-title-tog .fl-icon
+			{
+			background: url(images/sortup.png) no-repeat center;
+			}
+			
+		.fl-title-tog-up .fl-icon
+			{
+			background: url(images/sortdown.png) no-repeat center !important;
+			}		

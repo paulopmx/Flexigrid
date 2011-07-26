@@ -14,7 +14,6 @@ when to load: after core
 (function( $ ){
 
 fl_mod['fl_toolbar'] = {
-/*
 
 	//options
 	toolbars_header: {
@@ -26,11 +25,11 @@ fl_mod['fl_toolbar'] = {
 					,'prev':{type:'button',class:'fl-button-prev'}
 					,'next':{type:'button',class:'fl-button-next'}
 					,'last':{type:'button',class:'fl-button-last'}
-					,'reload':{type:'button',class:'fl-button-reload',display:'Reload'}
+					,'reload':{type:'button',class:'fl-button-reload'}
 					}
 				}
 			}	
-*/
+/*
 	toolbars_header: {
 			'pager': 
 				{
@@ -40,7 +39,7 @@ fl_mod['fl_toolbar'] = {
 					,'prev':{type:'button',class:'fl-button-prev'}
 					,'next':{type:'button',class:'fl-button-next'}
 					,'last':{type:'button',class:'fl-button-last'}
-					,'reload':{type:'button',class:'fl-button-reload',display:'Reload'}
+					,'reload':{type:'button',class:'fl-button-reload'}
 					}
 				,width:'50%'
 				}
@@ -52,18 +51,19 @@ fl_mod['fl_toolbar'] = {
 					,'prev':{type:'button',class:'fl-button-prev'}
 					,'next':{type:'button',class:'fl-button-next'}
 					,'last':{type:'button',class:'fl-button-last'}
-					,'reload':{type:'button',class:'fl-button-reload',display:'Reload'}
+					,'reload':{type:'button',class:'fl-button-reload'}
 					}
 				,width:'50%'
 				}
 			}
+*/
 
 	//layouts
 	,fl_header: '<div class="fl-header"></div>'
 	,fl_footer: '<div class="fl-footer"></div>'  
 	,fl_toolbar: '<div class="fl-toolbar" />'
 	,fl_button: '<button type="button" class="fl-button" />'
-	,fl_icon: '<span class="fl-icon" /></span>'
+	,fl_icon: '<span class="fl-icon"></span>'
 	,fl_button_label: '<span class="fl-button-label"></span>'
 	
 	//events
@@ -74,12 +74,15 @@ fl_mod['fl_toolbar'] = {
 		//add header and footer --> add conditions later
 		if (this.toolbars_header)
 			{
-			$('.fl-grid-inner',this).prepend(this.fl_header);
+			//$('.fl-grid-inner',this).prepend(this.fl_header);
+			$(this.fl_header).insertBefore($('.fl-hbdiv',this));
 			this.build_toolbars('header');
 			}
 		if (this.toolbars_footer)	
 			{
-			$('.fl-grid-inner',this).append(this.fl_footer);
+			//$('.fl-grid-inner',this).append(this.fl_footer);
+			$(this.fl_footer).insertAfter($('.fl-hbdiv',this));
+
 			this.build_toolbars('footer');
 			}
 
@@ -100,8 +103,6 @@ fl_mod['fl_toolbar'] = {
 					if (tbm.width) $(tb).width(tbm.width);
 					if (tbm.align) $(tb).css('text-align',tbm.align);
 					if (tbm.visible===false) $(tb).hide();
-					
-					console.log(tb_i);
 					
 					for (var bs in tbm) //for each items
 						{

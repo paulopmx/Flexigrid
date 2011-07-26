@@ -266,7 +266,11 @@ fl_grid.prototype = {
 	,resize: function ()
 		{
 		
-			if (this.height == 'auto') return true;
+			if (this.height == 'auto') 
+				{
+				$('.fl-bdiv',this).height('auto');
+				return true;
+				}
 			
 			var gh = $(this).height();
 			var bh = $('.fl-bdiv',this).height();

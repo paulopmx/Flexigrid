@@ -27,11 +27,12 @@
 			
 			.fl-toolbar-inner
 				{
-				margin: 5px;
+				padding: 5px;
 				}
 			
 .fl-button-label
 	{
+	display: -moz-inline-stack;
 	display: inline-block;
 	padding: 2px 5px;
 	margin: 0px;
@@ -60,8 +61,6 @@
 		
 		.fl-button:hover
 			{
-			position: relative;
-			z-index: 2;
 			border: 1px solid #aaa;
 			margin: 0px;
 			margin-right: 0px;

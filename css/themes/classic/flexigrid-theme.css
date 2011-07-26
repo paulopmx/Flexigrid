@@ -87,6 +87,10 @@
 	background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
 	}
 
-
-
+/* fl-titlebar */
+	
+.fl-title
+	{
+	background: #eee url(images/tbg.png) repeat-x
+	}	
 			
