@@ -266,24 +266,26 @@ fl_grid.prototype = {
 	,resize: function ()
 		{
 		
-			if (this.height == 'auto') 
-				{
-				$('.fl-bdiv',this).height('auto');
-				return true;
-				}
 			
+		if (this.height == 'auto') 
+			{
+			$('.fl-bdiv',this).height('auto');
+			}
+		else
+			{	
 			var gh = $(this).height();
-			var bh = $('.fl-bdiv',this).height();
+			var bh = $('.fl-bdiv:last',this).height();
 			
 			var nh = this.height - (gh-bh);
 			
 			if (nh<0) nh = 'auto';
 			
 			$('.fl-bdiv',this).height(nh);
+			}
 			
-			$(this).width(this.width);
-			
-			this.trigger_events('afterResize');
+		$(this).width(this.width);
+		
+		this.trigger_events('afterResize');
 
 			
 		}
@@ -455,6 +457,11 @@ fl_grid.prototype = {
 				}	
 				
 			
+		}
+	,firstPage: function ()
+		{
+			this.page = 1;
+			this.reload();
 		}
 	,parseTable: function (){} // override on a module
 

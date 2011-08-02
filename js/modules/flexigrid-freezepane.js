@@ -23,7 +23,13 @@ fl_mod['fl_fp'] = {
 		}
 
 	//events
-	,fl_events_fl_fp : {afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth',afterColToggle:'fixwidth'}		
+	,fl_events_fl_fp : {beforeRender:'setPane',afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth',afterColToggle:'fixwidth'}		
+	,fl_events_fl_fw: {}
+	,fl_fp_setPane: function () 
+		{
+		if (this.viewtype=='freezepane')
+			this.dpane = 'right';
+		}
 	,fl_fp_fixwidth: function ()
 		{
 		

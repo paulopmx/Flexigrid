@@ -16,6 +16,11 @@
 		<link rel="stylesheet" href="../css/themes/classic/flexigrid-toolbar.css" class="classic"  />
 		
 		<style>
+			html
+				{
+				margin: 0;
+				padding: 0;
+				}
 			body
 				{
 				margin: 0;
@@ -49,11 +54,11 @@
 
 	<div>
 	
-	<div class="ftable fl-grid-pb"></div>
+	<div class="ftable fl-grid-pbx"></div>
 	
 	<br />
 	
-	<div class="ftable2 fl-grid-pb"></div>
+	<div class="ftable2 fl-grid-pbx"></div>
 
 	<br />
 	
@@ -66,15 +71,18 @@
 
 	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-freezepane.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-colmover.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-colresizer.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-fullwidth.js" ></script>
+	<script type="text/javascript" src="../js/modules/flexigrid-table-parser.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-toolbar.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-titlebar.js" ></script>
-	<script type="text/javascript" src="../js/modules/flexigrid-colresizer.js" ></script>
-	<script type="text/javascript" src="../js/modules/flexigrid-colmover.js" ></script>
-	<script type="text/javascript" src="../js/modules/flexigrid-fullwidth.js" ></script>
-	<script type="text/javascript" src="../js/modules/flexigrid-freezepane.js" ></script>
-	<script type="text/javascript" src="../js/modules/flexigrid-table-parser.js" ></script>
 
 	<!-- 
+
+
+
 
 	<script type="text/javascript" src="../js/flexigrid-2.0.min.js" ></script>
 	
@@ -89,8 +97,7 @@
 		var opt = {
 			viewtype: 'freezepane'
 			,titleText: 'Freeze Pane Grid'
-			,height: 200
-			,dpane: 'right'
+			,height: 150
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
@@ -125,13 +132,14 @@
 			;
 
 		var opt2 = {
-			height: 200
+			height: 150
 			,titleText: 'Standard Grid'
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
 					,width: '160px'
 					,moveable: false
+					,pane: 'left'
 				}
 				,'country_code': {
 					display: "Country Code"
@@ -151,13 +159,13 @@
 			;
 
 		var opt3 = {
-			height: 200
+			height: 150
 			,titleText: 'Percentage Width Grid'
 			,viewtype: 'fullwidth'
-			,rp: 3
-			,page: 2
+			,rp: 6
+			,page: 1
 			,exclude: ['fl_menu']
-			,usePager: true
+			,toolbars: [{type:'pager'}]
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"

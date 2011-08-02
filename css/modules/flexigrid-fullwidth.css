@@ -28,3 +28,9 @@
 		border-right: 1px solid #fff;
 		}
 		
+		.fl-addyscroll
+			{
+			overflow-y: scroll;
+			}
+		
+		

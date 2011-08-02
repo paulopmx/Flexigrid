@@ -18,12 +18,15 @@ fl_mod['fl_menu'] = {
 
 			//menu model
 			menu_items: [
-				 {type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_tog',sub_list:'column_order'}]}
+				{type:'submenu',display:'Toggle Columns',subgroup:[{type:'column_tog',sub_list:'column_order'}]}
 				,{type:'separator'}
-				,{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
+				,{type:'trigger',sub_list:'fl_menu_align'}
+				]
+			,fl_menu_align: [
+				{type:'trigger',action:'align_column',display:'Align Left',value:'left'}
 				,{type:'trigger',action:'align_column',display:'Align Center',value:'center'}
 				,{type:'trigger',action:'align_column',display:'Align Right',value:'right'}
-				]
+				]	
 			//layouts
 			,fl_menu_table: '<table class="fl-menu-table" cellspacing="0" ></table>'
 			,fl_menu_col1: '<td class="fl-menu-td fl-menu-col1"><span class="fl-icon"></span></td>'
@@ -45,7 +48,7 @@ fl_mod['fl_menu'] = {
 					//add fl-menu
 					$(this).prepend(this.fl_menu);
 					
-					$(this.fl_menu).append(this.fl_menu_build_items(m_i));
+					$('table',this.fl_menu).append(this.fl_menu_build_items(m_i));
 					
 					this.disableSelection(this.fl_menu);
 					
@@ -122,8 +125,12 @@ fl_mod['fl_menu'] = {
 								$(self.fl_menu).toggle('fast');
 							else
 								$(self.fl_menu).css({left:l,top:t}).show('fast');
+
+							//alert($(self.fl_menu).html());
+
 							
 							}
+							
 							
 							
 					);
@@ -170,7 +177,7 @@ fl_mod['fl_menu'] = {
 								)
 								;
 								
-						if (item.class) $(tr).addClass(item.class);
+						if (item.class_name) $(tr).addClass(item.class_name);
 						
 						return tr;
 					}
@@ -191,7 +198,7 @@ fl_mod['fl_menu'] = {
 								
 						var sub = $('<div class="fl-menu" />').append(this.fl_menu_table);
 						
-						$(sub)
+						$('table',sub)
 							.append(this.fl_menu_build_items(item.subgroup));
 						
 						$(tr)	
@@ -212,7 +219,6 @@ fl_mod['fl_menu'] = {
 								}
 							)
 							;
-						
 						
 						$('.fl-submenu',tr).append(sub);
 								

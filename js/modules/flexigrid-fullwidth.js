@@ -23,27 +23,34 @@ fl_mod['fl_fw'] = {
 		}
 
 	//events
+	,fl_events_fl_fw : {afterResize:['fixwidth']}
 	,fl_fw_fixwidth: function ()
 		{
-		
+
 		if (this.viewtype=='fullwidth')
 		{
 		
-		var w2 = $('.fl-bdiv .fl-table',this).outerWidth();
+		var w1 = $('.fl-hdiv .fl-table',this).width();
+		var w2 = $('.fl-bdiv .fl-table',this).width();
 		
-		$('.fl-hdiv .fl-hdiv-inner',this).width(w2+2);
+		if (w1>w2)
+			$('.fl-hdiv',this).addClass('fl-addyscroll');
+		else
+			$('.fl-hdiv',this).removeClass('fl-addyscroll');
+			
+					
+		
 		}
 		
 		}
 	,set_colwidth_fullwidth: function ()
 		{
-		
+
 		if (this.viewtype=='fullwidth')
 			{
 			var start = this.mouse_state_start;
 			var end = this.mouse_state_end;
 			var col = $('.fl-col-'+this.colTarget,this);
-			
 			
 			//if (!s_col) return true;
 			

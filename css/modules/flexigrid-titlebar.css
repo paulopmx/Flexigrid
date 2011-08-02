@@ -1,10 +1,6 @@
 .fl-title
 	{
 	width: 100%;
-	border: 1px solid #bbb;
-	margin-top: -1px;
-	margin-left: -1px;
-	margin-bottom: -1px;
 	position: relative;
 	overflow: hidden;
 	}
@@ -20,7 +16,7 @@
 		white-space: nowrap;
 		}
 		
-	.fl-title-tog
+	.fl-title .fl-title-tog
 		{
 		position: absolute;
 		top: 4px;

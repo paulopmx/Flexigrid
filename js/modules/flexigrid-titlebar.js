@@ -47,7 +47,7 @@ fl_mod['fl_titlebar'] = {
 						function ()
 							{
 							$(this).toggleClass('fl-title-tog-up');
-							$(this).parents('.fl-title').siblings().slideToggle();
+							$(this).parents('.fl-title').siblings().slideToggle('fast');
 							}
 				);	
 			}

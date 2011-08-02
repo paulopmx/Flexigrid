@@ -149,21 +149,31 @@ fl_mod['fl_colmove'] = {
 			var t2 = xpos.pageY-gpos.top;
 			var l2 = xpos.pageX-gpos.left;
 			
-			$('.fl-col-'+col,this).addClass('fl-th-dragged');
+			var self = this;
 
-			var ow = $('.fl-colmove',this)
+			this.colTo = setTimeout(function(){
+
+			$('.fl-col-'+col,self).addClass('fl-th-dragged');
+			
+			var ow = $('.fl-colmove',self)
 				.empty()
 				.append(cm.display)
 				.css({left:l,top:t})
 				.show()
 			;
 			
-			var ow = $('.fl-colmove',this).width('auto').width();
+			var ow = $('.fl-colmove',self).width('auto').width();
 			
-			$('.fl-colmove',this)
+			$('.fl-colmove',self)
 				.width(cm.width)
 				.animate({width:ow,left:l2,top:t2},'fast')
 			;
+			
+			self = null;
+			ow = null;
+			cm = null;
+			
+			},100);
 			
 		}	
 	,dragMove_colmove: function ()
@@ -183,6 +193,8 @@ fl_mod['fl_colmove'] = {
 		}
 	,dragEnd_colmove: function ()
 		{
+		
+			clearTimeout(this.colTo);
 
 			var self = this;
 

@@ -21,8 +21,9 @@
 			white-space: nowrap;
 			overflow: hidden;
 			border-left: 1px solid #ccc;
-			margin-left: -1px;
+			left: -1px;
 			width: 100%;
+			position: relative;
 			}
 			
 			.fl-toolbar-inner
@@ -32,12 +33,15 @@
 			
 .fl-button-label
 	{
+	width: auto;
+	white-space: nowrap;
+	height: 12px;
+	line-height: 12px;
+	padding: 2px 5px;
 	display: -moz-inline-stack;
 	display: inline-block;
-	padding: 2px 5px;
-	margin: 0px;
-	height: 12px;
-	font-family: Arial;
+	vertical-align: top;
+	position: relative;
 	font-size: 12px;
 	font-weight: bold;
 	}
@@ -51,20 +55,35 @@
 		{
 		padding: 4px;
 		background: none;
-
 		border: 0;
-		margin: 1px;
-
+		margin: 1px 2px;
+		overflow: visible;
+		width: auto;
 		cursor: pointer;
 		vertical-align: middle;
+		position: relative;
 		}
 		
 		.fl-button:hover
 			{
 			border: 1px solid #aaa;
-			margin: 0px;
-			margin-right: 0px;
+			padding: 3px;
 			}
+
+			/* ie 7 hacks */
+			*:first-child+html .fl-button 
+				{
+				padding-bottom: 0px;
+				}
+
+				*:first-child+html .fl-button:hover 
+					{
+					padding: 2px;
+					padding-bottom: 0px;
+					}
+
+
+/* icon classing consider moving */
 			
 			.fl-button-first .fl-icon
 				{
