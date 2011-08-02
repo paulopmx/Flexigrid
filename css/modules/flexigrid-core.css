@@ -26,9 +26,7 @@
 	
 	.fl-hbdiv
 		{
-
 		position: relative;
-		width: 100%;
 		overflow: hidden;
 		background: #fff;
 		clear: both;
@@ -135,6 +133,7 @@
 				padding: 5px 10px;
 				text-overflow: ellipsis;
 				-o-text-overflow: ellipsis;
+				text-align: inherit;
 				}
 
 .fl-icon

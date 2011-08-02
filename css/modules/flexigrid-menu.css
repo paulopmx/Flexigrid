@@ -43,6 +43,8 @@
 	left: 0px;
 	color: #111;
 	display: none;
+	
+	opacity: 0.85;
 
 	-webkit-box-shadow: #999 0px 5px 20px;
 	-moz-box-shadow: #999 0px 5px 20px;

@@ -48,12 +48,18 @@
 		-moz-border-radius: 4px;
 		border-radius: 4px;
 		}
+
 		
+
+
 	.fl-grid-pb .fl-hbdiv
 		{
+		width: auto;
 		border: 1px solid #ccc;
 		margin-left: -1px;
 		}	
+
+
 
 /* fl-menu */
 
@@ -87,10 +93,25 @@
 	background: #f9f9f9 url(images/fhbg.gif) repeat-x bottom;
 	}
 
+
 /* fl-titlebar */
 	
 .fl-title
 	{
 	background: #eee url(images/tbg.png) repeat-x;
-	}	
+	}
+	
+	.fl-title .fl-button
+		{
+		background: #eee url(images/tbg.png) repeat-x left -5px;
+		}
+	
+	.fl-grid-pb .fl-title
+		{
+		border: 1px solid #bbb;
+		border-bottom: 0px;
+		margin-left: -1px;
+		border-top-left-radius: 3px;
+		border-top-right-radius: 3px;
+		}	
 			

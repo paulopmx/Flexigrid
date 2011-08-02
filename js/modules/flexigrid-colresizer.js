@@ -64,13 +64,22 @@ fl_mod['fl_colres'] = {
 	
 			}
 	// drag events
+		,dragStart_colresize: function()
+			{
+				var pos = this.mouse_state_start;
+				var gpos = $('.fl-hbdiv',this).offset();
+				
+				var l = pos.pageX - gpos.left - 3;
+				$('.fl-colguide',this).css('left',l).fadeIn();
+			
+			}
 		,dragMove_colresize: function()
 			{
 				var pos = this.mouse_state_now;
 				var gpos = $('.fl-hbdiv',this).offset();
 				
 				var l = pos.pageX - gpos.left - 3;
-				$('.fl-colguide',this).css('left',l).show();
+				$('.fl-colguide',this).css('left',l);
 				
 			}	
 		,dragEnd_colresize: function ()

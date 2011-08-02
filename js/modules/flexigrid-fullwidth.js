@@ -30,12 +30,12 @@ fl_mod['fl_fw'] = {
 		if (this.viewtype=='fullwidth')
 		{
 		
-		var w1 = $('.fl-hdiv .fl-table',this).width();
-		var w2 = $('.fl-bdiv .fl-table',this).width();
+		var w1 = $('.fl-hdiv .fl-table',this).innerWidth();
+		var w2 = $('.fl-bdiv .fl-table',this).innerWidth();
 		
 		if (w1>w2)
 			$('.fl-hdiv',this).addClass('fl-addyscroll');
-		else
+		else if (w2>w1)
 			$('.fl-hdiv',this).removeClass('fl-addyscroll');
 			
 					

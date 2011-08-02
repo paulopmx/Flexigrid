@@ -43,10 +43,10 @@
 	</head>
 	<body>
 
-	<button type="button" onclick="toggle()">Toggle Theme</button> 
-	<button type="button" onclick="$('.fl-grid').prop('height',200).trigger('resize')">Resize 200</button>
-	<button type="button" onclick="$('.fl-grid').prop('height',150).trigger('resize')">Resize 150</button>
-	<button type="button" onclick="$('.fl-grid').prop('height','auto').trigger('resize')">Resize Auto Height</button>
+	<button type="button" onclick="toggle()">Toggle Theme</button>&nbsp; 
+	<button type="button" onclick="$('.fl-grid').prop('height',200).trigger('resize')">Resize 200</button>&nbsp;
+	<button type="button" onclick="$('.fl-grid').prop('height',150).trigger('resize')">Resize 150</button>&nbsp;
+	<button type="button" onclick="$('.fl-grid').prop('height','auto').trigger('resize')">Resize Auto Height</button>&nbsp;
 	
 	<br />
 
@@ -54,11 +54,11 @@
 
 	<div>
 	
-	<div class="ftable fl-grid-pbx"></div>
+	<div class="ftable fl-grid-pb"></div>
 	
 	<br />
 	
-	<div class="ftable2 fl-grid-pbx"></div>
+	<div class="ftable2 fl-grid-pb"></div>
 
 	<br />
 	
@@ -96,13 +96,14 @@
 	
 		var opt = {
 			viewtype: 'freezepane'
-			,titleText: 'Freeze Pane Grid'
+			,titleText: 'Freeze Pane Grid Freeze Pane Grid Freeze Pane Grid Freeze Pane Grid Freeze Pane Grid Freeze Pane Grid Freeze Pane Grid'
 			,height: 150
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"
 					,width: '100'
 					,pane: 'left'
+					,align: 'right'
 				}
 				,'country_code': {
 					display: "Country Code"
@@ -139,7 +140,6 @@
 					 display: "Country Name"
 					,width: '160px'
 					,moveable: false
-					,pane: 'left'
 				}
 				,'country_code': {
 					display: "Country Code"
@@ -165,7 +165,7 @@
 			,rp: 6
 			,page: 1
 			,exclude: ['fl_menu']
-			,toolbars: [{type:'pager'}]
+			,toolbars: [{type:'pager',width:'50%'},{type:'pager',width:'50%'}]
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"

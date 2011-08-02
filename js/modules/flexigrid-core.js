@@ -142,7 +142,9 @@ fl_grid.prototype = {
 				{
 
 
-					var th = $('<th />')
+					var th = $('<th />');
+					
+							th
 							.addClass('fl-th')
 							.addClass('fl-col-'+this.column_order[co])
 							.prop('column_name',this.column_order[co])
@@ -233,18 +235,18 @@ fl_grid.prototype = {
 
 						$(td).append(row);
 
+						$(td)
+						.wrapInner(this.fl_td)
+						;			
+
 						if (i==start)
 							$(td).width(cm.width);
 						
 						if (cm.align)
-							$(td).css({'text-align':cm.align});
+							$('.fl-td-div',td).css({'text-align':cm.align});
 
 						if (cm.visible===false)
 							$(td).hide();	
-							
-						$(td)
-						.wrapInner(this.fl_td)
-						;			
 
 						var pane = '.fl-fpane';
 						if (cm.pane) 

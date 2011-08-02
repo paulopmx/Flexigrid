@@ -3,6 +3,7 @@
 	{
 	width: 100%;
 	overflow: hidden;
+	position: relative;
 	}	
 
 	.fl-header
@@ -20,14 +21,14 @@
 			float: left;
 			white-space: nowrap;
 			overflow: hidden;
-			border-left: 1px solid #ccc;
-			left: -1px;
 			width: 100%;
+			margin-left: -1px;
 			position: relative;
 			}
 			
 			.fl-toolbar-inner
 				{
+				border-left: 1px solid #bbb;
 				padding: 5px;
 				}
 			

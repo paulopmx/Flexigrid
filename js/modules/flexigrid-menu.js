@@ -173,6 +173,7 @@ fl_mod['fl_menu'] = {
 										self[item.action](val,self.fid);
 									else
 										$('.fl-label',this).addClass('fl-label-disabled');	
+										
 									}
 								)
 								;
@@ -274,12 +275,20 @@ fl_mod['fl_menu'] = {
 			,align_column: function (atype)
 				{
 					var col = this.colTarget;
+					
+					
 					if (!col) return true;
 					if (atype)
 						{
-						$('.fl-td-'+col,this).css('text-align',atype);
-						$('.fl-col-'+col,this).css('text-align',atype);
+						$('.fl-td-'+col+' .fl-td-div',this).css('text-align',atype);
+						$('.fl-col-'+col+' .fl-th-div',this).css('text-align',atype);
+						
+						this.colModel[col].align = atype;
+						
 						}
+					
+					//alert($('.fl-bdiv .fl-tr:first',this).html());	
+	
 				}
 			
 		};
