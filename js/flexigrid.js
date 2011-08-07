@@ -29,6 +29,7 @@
 			rp: 15, //results per page
 			rpOptions: [10, 15, 20, 30, 50], //allowed per-page values 
 			title: false,
+			idProperty: 'id',
 			pagestat: 'Displaying {from} to {to} of {total} items',
 			pagetext: 'Page',
 			outof: 'of',
@@ -345,19 +346,24 @@
 						if (i % 2 && p.striped) {
 							tr.className = 'erow';
 						}
-						if (row.id) {
-							tr.id = 'row' + row.id;
+						if (row[p.idProperty]) {
+							tr.id = 'row' + row[p.idProperty];
 						}
 						$('thead tr:first th', g.hDiv).each( //add cell
 							function () {
 								var td = document.createElement('td');
 								var idx = $(this).attr('axis').substr(3);
 								td.align = this.align;
-								// If the json elements aren't named (which is typical), use numeric order
-								if (typeof row.cell[idx] != "undefined") {
-									td.innerHTML = (row.cell[idx] != null) ? row.cell[idx] : '';//null-check for Opera-browser
+								// If each row is the object itself (no 'cell' key)
+								if (typeof row.cell == 'undefined') {
+									td.innerHTML = row[p.colModel[idx].name];
 								} else {
-									td.innerHTML = row.cell[p.colModel[idx].name];
+									// If the json elements aren't named (which is typical), use numeric order
+									if (typeof row.cell[idx] != "undefined") {
+										td.innerHTML = (row.cell[idx] != null) ? row.cell[idx] : '';//null-check for Opera-browser
+									} else {
+										td.innerHTML = row.cell[p.colModel[idx].name];
+									}
 								}
 								$(td).attr('abbr', $(this).attr('abbr'));
 								$(tr).append(td);
@@ -760,9 +766,12 @@
 					});
 					btnDiv.onpress = btn.onpress;
 					btnDiv.name = btn.name;
+					if (btn.id) {
+						btnDiv.id = btn.id;
+					}
 					if (btn.onpress) {
 						$(btnDiv).click(function () {
-							this.onpress(this.name, g.gDiv);
+							this.onpress(this.id || this.name, g.gDiv);
 						});
 					}
 					$(tDiv2).append(btnDiv);
