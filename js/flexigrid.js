@@ -1251,4 +1251,7 @@
 			});
 		}
 	}; //end noSelect
+  $.fn.flexSearch = function(p) { // function to search grid
+    return this.each( function() { if (this.grid&&this.p.searchitems) this.grid.doSearch(); });
+  }; //end flexSearch
 })(jQuery);
