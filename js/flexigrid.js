@@ -681,14 +681,17 @@
 						var obj = (e.target || e.srcElement);
 						if (obj.href || obj.type) return true;
 						$(this).toggleClass('trSelected');
-						if (p.singleSelect) $(this).siblings().removeClass('trSelected');
+						if (p.singleSelect && ! g.multisel ) {
+							$(this).siblings().removeClass('trSelected');
+							$(this).toggleClass('trSelected');
+						}
 					}).mousedown(function (e) {
 						if (e.shiftKey) {
 							$(this).toggleClass('trSelected');
 							g.multisel = true;
 							this.focus();
 							$(g.gDiv).noSelect();
-						} else
+						}
 						if (e.ctrlKey)
 						{
 							$(this).toggleClass('trSelected'); 
@@ -701,7 +704,7 @@
 							$(g.gDiv).noSelect(false);
 						}
 					}).hover(function (e) {
-						if (g.multisel) {
+						if (g.multisel && e.shiftKey) {
 							$(this).toggleClass('trSelected');
 						}
 					}, function () {});
