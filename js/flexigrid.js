@@ -345,8 +345,11 @@
 				if (p.dataType == 'json') {
 					$.each(data.rows, function (i, row) {
 						var tr = document.createElement('tr');
-						if (i % 2 && p.striped) {
-							tr.className = 'erow';
+						if (row.name) tr.name = row.name;
+						if (row.color) {
+							$(tr).css('background',row.color);
+						} else {
+							if (i % 2 && p.striped) tr.className = 'erow';
 						}
 						if (row[p.idProperty]) {
 							tr.id = 'row' + row[p.idProperty];
@@ -367,6 +370,12 @@
 										td.innerHTML = row.cell[p.colModel[idx].name];
 									}
 								}
+								// If the content has a <BGCOLOR=nnnnnn> option, decode it.
+								var offs = td.innerHTML.indexOf( '<BGCOLOR=' );
+								if( offs >0 ) {
+									$(td).css('background',  text.substr(offs+7,7) );
+								}
+								
 								$(td).attr('abbr', $(this).attr('abbr'));
 								$(tr).append(td);
 								td = null;
@@ -393,9 +402,9 @@
 					$("rows row", data).each(function () {
 						i++;
 						var tr = document.createElement('tr');
-						if (row.name) tr.name = row.name;
-						if (row.color) {
-							$(tr).css('background',row.color);
+						if ($(this).attr('name')) tr.name = $(this).attr('name');
+						if ($(this).attr('color')) {
+							$(tr).css('background',$(this).attr('id'));
 						} else {
 							if (i % 2 && p.striped) tr.className = 'erow';
 						}
