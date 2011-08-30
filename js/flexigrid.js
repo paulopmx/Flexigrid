@@ -222,6 +222,8 @@
 					this.rePosDrag();
 					this.fixHeight();
 					this.colresize = false;
+					var name = p.colModel[n].name;		// Store the widths in the cookies
+					$.cookie('flexiwidths/'+name, nw);					
 				} else if (this.vresize) {
 					this.vresize = false;
 				} else if (this.colCopy) {
@@ -391,8 +393,11 @@
 					$("rows row", data).each(function () {
 						i++;
 						var tr = document.createElement('tr');
-						if (i % 2 && p.striped) {
-							tr.className = 'erow';
+						if (row.name) tr.name = row.name;
+						if (row.color) {
+							$(tr).css('background',row.color);
+						} else {
+							if (i % 2 && p.striped) tr.className = 'erow';
 						}
 						var nid = $(this).attr('id');
 						if (nid) {
@@ -404,7 +409,13 @@
 							var td = document.createElement('td');
 							var idx = $(this).attr('axis').substr(3);
 							td.align = this.align;
-							td.innerHTML = $("cell:eq(" + idx + ")", robj).text();
+							
+							var text = $("cell:eq(" + idx + ")", robj).text();
+							var offs = text.indexOf( '<BGCOLOR=' );
+							if( offs >0 ) {
+								$(td).css('background',  text.substr(offs+7,7) );
+							}
+							td.innerHTML = text;							
 							$(td).attr('abbr', $(this).attr('abbr'));
 							$(tr).append(td);
 							td = null;
@@ -668,9 +679,15 @@
 							g.multisel = true;
 							this.focus();
 							$(g.gDiv).noSelect();
+						} else
+						if (e.ctrlKey)
+						{
+							$(this).toggleClass('trSelected'); 
+							g.multisel = true; 
+							this.focus();
 						}
 					}).mouseup(function () {
-						if (g.multisel) {
+						if (g.multisel && ! e.ctrlKey) {
 							g.multisel = false;
 							$(g.gDiv).noSelect(false);
 						}
@@ -688,6 +705,21 @@
 					}
 				});
 			},
+			
+			combo_flag: true,
+			combo_resetIndex: function(selObj)
+			{
+				if(this.combo_flag) {
+					selObj.selectedIndex = 0;
+				}
+				this.combo_flag = true;
+			},
+			combo_doSelectAction: function(selObj)
+			{
+				eval( selObj.options[selObj.selectedIndex].value );
+				selObj.selectedIndex = 0;
+				this.combo_flag = false;
+			},			
 			pager: 0
 		};
 		if (p.colModel) { //create model if any
@@ -696,22 +728,33 @@
 			for (var i = 0; i < p.colModel.length; i++) {
 				var cm = p.colModel[i];
 				var th = document.createElement('th');
-				th.innerHTML = cm.display;
-				if (cm.name && cm.sortable) {
-					$(th).attr('abbr', cm.name);
-				}
 				$(th).attr('axis', 'col' + i);
-				if (cm.align) {
-					th.align = cm.align;
-				}
-				if (cm.width) {
-					$(th).attr('width', cm.width);
-				}
-				if ($(cm).attr('hide')) {
-					th.hidden = true;
-				}
-				if (cm.process) {
-					th.process = cm.process;
+				if( cm ) {	// only use cm if its defined
+					var cookie_width = 'flexiwidths/'+cm.name;		// Re-Store the widths in the cookies
+					if( $.cookie(cookie_width) != undefined ) {
+						cm.width = $.cookie(cookie_width);
+					}
+					if( cm.display != undefined ) {
+						th.innerHTML = cm.display;
+					}
+					if (cm.name && cm.sortable) {
+						$(th).attr('abbr', cm.name);
+					}
+					if (cm.align) {
+						th.align = cm.align;
+					}
+					if (cm.width) {
+						$(th).attr('width', cm.width);
+					}
+					if ($(cm).attr('hide')) {
+						th.hidden = true;
+					}
+					if (cm.process) {
+						th.process = cm.process;
+					}
+				} else {
+					th.innerHTML = "";
+					$(th).attr('width',30);
 				}
 				$(tr).append(th);
 			}
@@ -760,10 +803,17 @@
 				if (!btn.separator) {
 					var btnDiv = document.createElement('div');
 					btnDiv.className = 'fbutton';
-					btnDiv.innerHTML = "<div><span>" + btn.name + "</span></div>";
+					btnDiv.innerHTML = ("<div><span>") + (btn.hidename ? "&nbsp;" : btn.name) + ("</span></div>");
 					if (btn.bclass) $('span', btnDiv).addClass(btn.bclass).css({
 						paddingLeft: 20
 					});
+					if (btn.bimage) // if bimage defined, use its string as an image url for this buttons style (RS)
+						$('span',btnDiv).css( 'background', 'url('+btn.bimage+') no-repeat center left' );
+						$('span',btnDiv).css( 'paddingLeft', 20 );
+						
+					if (btn.tooltip) // add title if exists (RS)
+						$('span',btnDiv)[0].title = btn.tooltip;
+						
 					btnDiv.onpress = btn.onpress;
 					btnDiv.name = btn.name;
 					if (btn.id) {
@@ -791,6 +841,50 @@
 			$(g.gDiv).prepend(g.tDiv);
 		}
 		g.hDiv.className = 'hDiv';
+		
+		// Define a combo button set with custom action'ed calls when clicked.
+		if( p.combobuttons && $(g.tDiv2) )
+		{
+			var btnDiv = document.createElement('div');
+			btnDiv.className = 'fbutton';
+			
+			var tSelect = document.createElement('select');
+			$(tSelect).change( function () { g.combo_doSelectAction( tSelect ) } );
+			$(tSelect).click( function () { g.combo_resetIndex( tSelect) } );
+			tSelect.className = 'cselect';
+			$(btnDiv).append(tSelect);
+			
+			for (i=0;i<p.combobuttons.length;i++)
+			{
+				var btn = p.combobuttons[i];
+				if (!btn.separator)
+				{
+					var btnOpt = document.createElement('option');
+					btnOpt.innerHTML = btn.name;
+					
+					if (btn.bclass) 
+						$(btnOpt)
+						.addClass(btn.bclass)
+						.css({paddingLeft:20})
+						;
+					if (btn.bimage)  // if bimage defined, use its string as an image url for this buttons style (RS)
+						$(btnOpt).css( 'background', 'url('+btn.bimage+') no-repeat center left' );
+						$(btnOpt).css( 'paddingLeft', 20 );
+						
+					if (btn.tooltip) // add title if exists (RS)
+						$(btnOpt)[0].title = btn.tooltip;
+						
+					if (btn.onpress)
+					{
+						btnOpt.value = btn.onpress;
+					}
+					$(tSelect).append(btnOpt);
+				} 
+			}
+			$('.tDiv2').append(btnDiv);
+		}		
+	
+		
 		$(t).before(g.hDiv);
 		g.hTable.cellPadding = 0;
 		g.hTable.cellSpacing = 0;
