@@ -46,6 +46,7 @@
 			blockOpacity: 0.5,
 			preProcess: false,
 			addTitleToCell: false, // add a title attr to cells with truncated contents
+			dblClickResize: false, //auto resize column by double clicking
 			onDragCol: false,
 			onToggleCol: false,
 			onChangeSort: false,
@@ -758,6 +759,43 @@
 					}
 				}
 			},
+			autoResizeColumn: function (obj) {
+				if(!p.dblClickResize) {
+					return;
+				}
+				var n = $('div', this.cDrag).index(obj),
+					$th = $('th:visible div:eq(' + n + ')', this.hDiv),
+					ol = parseInt(obj.style.left),
+					ow = $th.width(),
+					nw = 0,
+					nl = 0,
+					$span = $('<span />');
+				$('body').children(':first').before($span);
+				$span.html($th.html());
+				$span.css('font-size', '' + $th.css('font-size'));
+				$span.css('padding-left', '' + $th.css('padding-left'));
+				$span.css('padding-right', '' + $th.css('padding-right'));
+				nw = $span.width();
+				$('tr', this.bDiv).each(function () {
+					var $tdDiv = $('td:visible div:eq(' + n + ')', this),
+						spanW = 0;
+					$span.html($tdDiv.html());
+					$span.css('font-size', '' + $tdDiv.css('font-size'));
+					$span.css('padding-left', '' + $tdDiv.css('padding-left'));
+					$span.css('padding-right', '' + $tdDiv.css('padding-right'));
+					spanW = $span.width();
+					nw = (spanW > nw) ? spanW : nw;
+				});
+				$span.remove();
+				nw = (p.minWidth > nw) ? p.minWidth : nw;
+				nl = ol + (nw - ow);
+				$('div:eq(' + n + ')', this.cDrag).css('left', nl);
+				this.colresize = {
+					nw: nw,
+					n: n
+				};
+				g.dragEnd();
+			},
 			pager: 0
 		};
 		if (p.colModel) { //create model if any
@@ -1064,6 +1102,8 @@
 					height: cdheight + hdheight
 				}).mousedown(function (e) {
 					g.dragStart('colresize', e, this);
+				}).dblclick(function(e){ 
+					g.autoResizeColumn(this); 
 				});
 				if ($.browser.msie && $.browser.version < 7.0) {
 					g.fixHeight($(g.gDiv).height());
