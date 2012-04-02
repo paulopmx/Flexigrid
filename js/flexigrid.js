@@ -45,6 +45,8 @@
 			autoload: true,
 			blockOpacity: 0.5,
 			preProcess: false,
+			addTitleToCell: false, // add a title attr to cells with truncated contents
+			dblClickResize: false, //auto resize column by double clicking
 			onDragCol: false,
 			onToggleCol: false,
 			onChangeSort: false,
@@ -213,7 +215,9 @@
 					$('th:visible div:eq(' + n + ')', this.hDiv).css('width', nw);
 					$('tr', this.bDiv).each(
 						function () {
-							$('td:visible div:eq(' + n + ')', this).css('width', nw);
+							var $tdDiv = $('td:visible div:eq(' + n + ')', this);
+							$tdDiv.css('width', nw);
+							g.addTitleToCell($tdDiv);
 						}
 					);
 					this.hDiv.scrollLeft = this.bDiv.scrollLeft;
@@ -653,6 +657,7 @@
 						if (pth.process) pth.process(tdDiv, pid);
 					}
 					$(this).empty().append(tdDiv).removeAttr('width'); //wrap content
+					g.addTitleToCell(tdDiv);
 				});
 			},
 			getCellDim: function (obj) {// get cell prop for editable event
@@ -732,6 +737,65 @@
 				selObj.selectedIndex = 0;
 				this.combo_flag = false;
 			},			
+			//Add title attribute to div if cell contents is truncated
+			addTitleToCell: function(tdDiv) {
+				if(p.addTitleToCell) {
+					var $span = $('<span />').css('display', 'none'),
+						$div = (tdDiv instanceof jQuery) ? tdDiv : $(tdDiv),
+						div_w = $div.outerWidth(),
+						span_w = 0;
+					
+					$('body').children(':first').before($span);
+					$span.html($div.html());
+					$span.css('font-size', '' + $div.css('font-size'));
+					$span.css('padding-left', '' + $div.css('padding-left'));
+					span_w = $span.innerWidth();
+					$span.remove();
+					
+					if(span_w > div_w) {
+						$div.attr('title', $div.text());
+					} else {
+						$div.removeAttr('title');
+					}
+				}
+			},
+			autoResizeColumn: function (obj) {
+				if(!p.dblClickResize) {
+					return;
+				}
+				var n = $('div', this.cDrag).index(obj),
+					$th = $('th:visible div:eq(' + n + ')', this.hDiv),
+					ol = parseInt(obj.style.left),
+					ow = $th.width(),
+					nw = 0,
+					nl = 0,
+					$span = $('<span />');
+				$('body').children(':first').before($span);
+				$span.html($th.html());
+				$span.css('font-size', '' + $th.css('font-size'));
+				$span.css('padding-left', '' + $th.css('padding-left'));
+				$span.css('padding-right', '' + $th.css('padding-right'));
+				nw = $span.width();
+				$('tr', this.bDiv).each(function () {
+					var $tdDiv = $('td:visible div:eq(' + n + ')', this),
+						spanW = 0;
+					$span.html($tdDiv.html());
+					$span.css('font-size', '' + $tdDiv.css('font-size'));
+					$span.css('padding-left', '' + $tdDiv.css('padding-left'));
+					$span.css('padding-right', '' + $tdDiv.css('padding-right'));
+					spanW = $span.width();
+					nw = (spanW > nw) ? spanW : nw;
+				});
+				$span.remove();
+				nw = (p.minWidth > nw) ? p.minWidth : nw;
+				nl = ol + (nw - ow);
+				$('div:eq(' + n + ')', this.cDrag).css('left', nl);
+				this.colresize = {
+					nw: nw,
+					n: n
+				};
+				g.dragEnd();
+			},
 			pager: 0
 		};
 		if (p.colModel) { //create model if any
@@ -1038,6 +1102,8 @@
 					height: cdheight + hdheight
 				}).mousedown(function (e) {
 					g.dragStart('colresize', e, this);
+				}).dblclick(function(e){ 
+					g.autoResizeColumn(this); 
 				});
 				if ($.browser.msie && $.browser.version < 7.0) {
 					g.fixHeight($(g.gDiv).height());
