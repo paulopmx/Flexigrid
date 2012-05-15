@@ -688,7 +688,7 @@
 						$(this).toggleClass('trSelected');
 						if (p.singleSelect && ! g.multisel ) {
 							$(this).siblings().removeClass('trSelected');
-							$(this).toggleClass('trSelected');
+							$(this).addClass('trSelected');
 						}
 					}).mousedown(function (e) {
 						if (e.shiftKey) {
