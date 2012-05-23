@@ -76,7 +76,7 @@
 					var n = $('thead tr:first th:visible', g.hDiv).index(this);
 					var cdpos = parseInt($('div', this).width());
 					if (cdleft == 0) cdleft -= Math.floor(p.cgwidth / 2);
-					cdpos = cdpos + cdleft + cdpad;
+					cdpos = cdpos + cdleft + cdpad - 1;
 					if (isNaN(cdpos)) {
 						cdpos = 0;
 					}
