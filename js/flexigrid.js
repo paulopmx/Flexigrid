@@ -879,7 +879,7 @@
 				if (!btn.separator) {
 					var btnDiv = document.createElement('div');
 					btnDiv.className = 'fbutton';
-					btnDiv.innerHTML = ("<div><span>") + (btn.hidename ? "&nbsp;" : btn.name) + ("</span></div>");
+					btnDiv.innerHTML = "<div><span>" + (btn.display ? btn.display : (btn.hidename ? "&nbsp;" : btn.name)) + "</span></div>";
 					if (btn.bclass) $('span', btnDiv).addClass(btn.bclass).css({
 						paddingLeft: 20
 					});
