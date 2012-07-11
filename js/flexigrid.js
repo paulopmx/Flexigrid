@@ -52,7 +52,8 @@
 			onChangeSort: false,
 			onSuccess: false,
 			onError: false,
-			onSubmit: false //using a custom populate function
+			onSubmit: false, //using a custom populate function
+			disableSelect: false //disables row selection
 		}, p);
 		$(t).show() //show if hidden
 			.attr({
@@ -683,6 +684,7 @@
 			addRowProp: function () {
 				$('tbody tr', g.bDiv).each(function () {
 					$(this).click(function (e) {
+						if (p.disableSelect) return true;
 						var obj = (e.target || e.srcElement);
 						if (obj.href || obj.type) return true;
 						$(this).toggleClass('trSelected');
@@ -691,6 +693,7 @@
 							$(this).toggleClass('trSelected');
 						}
 					}).mousedown(function (e) {
+						if (p.disableSelect) return true;
 						if (e.shiftKey) {
 							$(this).toggleClass('trSelected');
 							g.multisel = true;
@@ -704,6 +707,7 @@
 							this.focus();
 						}
 					}).mouseup(function () {
+						if (p.disableSelect) return true;
 						if (g.multisel && ! e.ctrlKey) {
 							g.multisel = false;
 							$(g.gDiv).noSelect(false);
