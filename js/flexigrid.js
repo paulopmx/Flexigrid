@@ -50,6 +50,7 @@
 			onDragCol: false,
 			onToggleCol: false,
 			onChangeSort: false,
+			onDoubleClick: false,
 			onSuccess: false,
 			onError: false,
 			onSubmit: false //using a custom populate function
@@ -707,6 +708,10 @@
 						if (g.multisel && ! e.ctrlKey) {
 							g.multisel = false;
 							$(g.gDiv).noSelect(false);
+						}
+					}).dblclick(function () {
+						if (p.onDoubleClick) {
+							p.onDoubleClick(this, g, p);
 						}
 					}).hover(function (e) {
 						if (g.multisel && e.shiftKey) {
