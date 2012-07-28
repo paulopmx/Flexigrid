@@ -689,7 +689,6 @@
 						$(this).toggleClass('trSelected');
 						if (p.singleSelect && ! g.multisel ) {
 							$(this).siblings().removeClass('trSelected');
-							$(this).toggleClass('trSelected');
 						}
 					}).mousedown(function (e) {
 						if (e.shiftKey) {
@@ -704,7 +703,7 @@
 							g.multisel = true; 
 							this.focus();
 						}
-					}).mouseup(function () {
+					}).mouseup(function (e) {
 						if (g.multisel && ! e.ctrlKey) {
 							g.multisel = false;
 							$(g.gDiv).noSelect(false);
