@@ -97,8 +97,10 @@
 					}
 				);
 				var nd = parseInt($(g.nDiv).height());
-				if (nd > newH) $(g.nDiv).height(newH).width(200);
-				else $(g.nDiv).height('auto').width('auto');
+				//if (nd > newH) $(g.nDiv).height(newH).width(200);
+				//else $(g.nDiv).height('auto').width('auto');
+				//NOTE: 欄位顯示壞掉修正
+				$(g.nDiv).height('auto').width('auto');
 				$(g.block).css({
 					height: newH,
 					marginBottom: (newH * -1)
@@ -139,6 +141,9 @@
 						hgo: hgo
 					};
 				} else if (dragtype == 'colMove') {//column header drag
+					
+					// 欄位交換位置
+					if(!p.nocolheaderdrag){
 					$(g.nDiv).hide();
 					$(g.nBtn).hide();
 					this.hset = $(this.hDiv).offset();
@@ -149,6 +154,7 @@
 					this.colCopy = document.createElement("div");
 					this.colCopy.className = "colCopy";
 					this.colCopy.innerHTML = obj.innerHTML;
+					
 					if ($.browser.msie) {
 						this.colCopy.className = "colCopy ie";
 					}
@@ -160,6 +166,7 @@
 					});
 					$('body').append(this.colCopy);
 					$(this.cDrag).hide();
+					}
 				}
 				$('body').noSelect();
 			},
@@ -372,7 +379,14 @@
 									if (typeof row.cell[idx] != "undefined") {
 										td.innerHTML = (row.cell[idx] != null) ? row.cell[idx] : '';//null-check for Opera-browser
 									} else {
-										td.innerHTML = row.cell[p.colModel[idx].name];
+										if(p.colModel[idx].show_model=='pic')
+										{
+											td.innerHTML = "<img src='"+row.cell[p.colModel[idx].name]+"' width='50' height='50' />";  // 圖片處理
+										}
+										else
+										{
+											td.innerHTML = row.cell[p.colModel[idx].name];  // 值
+										}
 									}
 								}
 								// If the content has a <BGCOLOR=nnnnnn> option, decode it.
@@ -482,6 +496,7 @@
 				}
 				$(th).addClass('sorted').siblings().removeClass('sorted');
 				$('.sdesc', this.hDiv).removeClass('sdesc');
+				// 調整時移除原有欄位頭
 				$('.sasc', this.hDiv).removeClass('sasc');
 				$('div', th).addClass('s' + p.sortorder);
 				p.sortname = $(th).attr('abbr');
@@ -506,6 +521,10 @@
 				$('.pPageStat', this.pDiv).html(stat);
 			},
 			populate: function () { //get latest data
+				
+				if($.browser.chrome){
+					//$(g.colCopy).css({display: 'none'});
+				}
 				if (this.loading) {
 					return true;
 				}
@@ -803,7 +822,7 @@
 			},
 			pager: 0
 		};
-		if (p.colModel) { //create model if any
+		if (p.colModel) { //create model if any [Model處理]
 			thead = document.createElement('thead');
 			var tr = document.createElement('tr');
 			for (var i = 0; i < p.colModel.length; i++) {
@@ -831,7 +850,7 @@
 						th.hidden = true;
 					}
 					if (cm.process) {
-						th.process = cm.process;
+						th.process = cm.process;  //可以偵測是否按下
 					}
 				} else {
 					th.innerHTML = "";
@@ -969,6 +988,15 @@
 		$(t).before(g.hDiv);
 		g.hTable.cellPadding = 0;
 		g.hTable.cellSpacing = 0;
+		
+		// NOTE: 修正表頭不能選取[Google Chrome使用]
+		if($.browser.chrome)
+		{
+		 $(g.hDiv).attr('unselectable', 'on')
+                 .css('user-select', 'none')
+                 .on('selectstart', false);
+		}
+
 		$(g.hDiv).append('<div class="hDivBox"></div>');
 		$('div', g.hDiv).append(g.hTable);
 		var thead = $("thead:first", t).get(0);
@@ -1002,7 +1030,7 @@
 			thdiv.innerHTML = this.innerHTML;
 			$(this).empty().append(thdiv).removeAttr('width').mousedown(function (e) {
 				g.dragStart('colMove', e, this);
-			}).hover(function () {
+			}).hover(function () { //滑鼠移到上方時
 				if (!g.colresize && !$(this).hasClass('thMove') && !g.colCopy) {
 					$(this).addClass('thOver');
 				}
@@ -1030,10 +1058,13 @@
 					var nl = onl - nw + Math.floor(p.cgwidth / 2);
 					$(g.nDiv).hide();
 					$(g.nBtn).hide();
-					$(g.nBtn).css({
-						'left': nl,
-						top: g.hDiv.offsetTop
-					}).show();
+					// 欄位調整顯示與否 [NOTE:因為Firefox跑版問題所以關閉]
+					if(!$.browser.mozilla){
+						$(g.nBtn).css({
+							'left': nl,
+							top: g.hDiv.offsetTop
+						}).show();
+					}
 					var ndw = parseInt($(g.nDiv).width());
 					$(g.nDiv).css({
 						top: g.bDiv.offsetTop
@@ -1097,6 +1128,8 @@
 			$(g.cDrag).css({
 				top: -hdheight + 'px'
 			});
+			// 欄位調整[NOTE:因為Firefox跑版問題所以關閉]
+			if(!$.browser.mozilla){
 			$('thead tr:first th', g.hDiv).each(function () {
 				var cgDiv = document.createElement('div');
 				$(g.cDrag).append(cgDiv);
@@ -1120,6 +1153,7 @@
 					});
 				}
 			});
+			}
 		}
 		//add strip
 		if (p.striped) {
@@ -1182,9 +1216,11 @@
 				for (var nx = 0; nx < p.rpOptions.length; nx++) {
 					if (p.rp == p.rpOptions[nx]) sel = 'selected="selected"';
 					else sel = '';
-					opt += "<option value='" + p.rpOptions[nx] + "' " + sel + " >" + p.rpOptions[nx] + "&nbsp;&nbsp;</option>";
+					opt += "<option value='" + p.rpOptions[nx] + "' " + sel + " >" + p.rpOptions[nx] + "</option>";
 				}
-				$('.pDiv2', g.pDiv).prepend("<div class='pGroup'><select name='rp'>" + opt + "</select></div> <div class='btnseparator'></div>");
+				// 隱藏每頁顯示的下拉框
+				if(!p.norpdropdownlist)
+					$('.pDiv2', g.pDiv).prepend("<div class='pGroup'><select name='rp'>" + opt + "</select></div> <div class='btnseparator'></div>");
 				$('select', g.pDiv).change(function () {
 					if (p.onRpChange) {
 						p.onRpChange(+this.value);
@@ -1198,11 +1234,23 @@
 			//add search button
 			if (p.searchitems) {
 				$('.pDiv2', g.pDiv).prepend("<div class='pGroup'> <div class='pSearch pButton'><span></span></div> </div>  <div class='btnseparator'></div>");
-				$('.pSearch', g.pDiv).click(function () {
-					$(g.sDiv).slideToggle('fast', function () {
+				$('.pSearch', g.pDiv).click(function () {				
+					/*$(g.sDiv).slideToggle('fast', function () {
 						$('.sDiv:visible input:first', g.gDiv).trigger('focus');
-					});
+					});*/
+					// 重寫搜尋bar
+					if ($(".sDiv").is(":hidden")) {
+						$(".sDiv").slideDown("fast");
+						$('.sDiv:visible input:first', g.gDiv).trigger('focus');
+					} else {
+						$(".sDiv").slideUp("fast");
+						// 搜尋列收起時，清除搜尋內容顯示所有資料
+						$('input[name=q]', g.sDiv).val('');
+						p.query = '';
+						g.doSearch();
+					}
 				});
+
 				//add search box
 				g.sDiv.className = 'sDiv';
 				var sitems = p.searchitems;
@@ -1221,7 +1269,9 @@
 				}
 				$(g.sDiv).append("<div class='sDiv2'>" + p.findtext + 
 						" <input type='text' value='" + p.query +"' size='30' name='q' class='qsbox' /> "+
-						" <select name='qtype'>" + sopt + "</select></div>");
+						" <select name='qtype'>" + sopt + "</select>"+
+						" <input type='button' value='" + p.findtext +"' name='qsubmit' /> "+
+					    "</div>");
 				//Split into separate selectors because of bug in jQuery 1.3.2
 				$('input[name=q]', g.sDiv).keydown(function (e) {
 					if (e.keyCode == 13) {
@@ -1232,6 +1282,9 @@
 					if (e.keyCode == 13) {
 						g.doSearch();
 					}
+				});
+				$('input[name=qsubmit]', g.sDiv).click(function (e) {
+						g.doSearch();
 				});
 				$('input[value=Clear]', g.sDiv).click(function () {
 					$('input[name=q]', g.sDiv).val('');
@@ -1280,6 +1333,7 @@
 			g.nDiv.className = 'nDiv';
 			g.nDiv.innerHTML = "<table cellpadding='0' cellspacing='0'><tbody></tbody></table>";
 			$(g.nDiv).css({
+			
 				marginBottom: (gh * -1),
 				display: 'none',
 				top: gtop
@@ -1308,6 +1362,8 @@
 				$(this).parent().next().trigger('click');
 			});
 			$(g.gDiv).prepend(g.nDiv);
+			//[NOTE:因為Firefox跑版問題所以關閉]
+			if(!$.browser.mozilla){
 			$(g.nBtn).addClass('nBtn')
 				.html('<div></div>')
 				.attr('title', 'Hide/Show Columns')
@@ -1316,6 +1372,7 @@
 					return true;
 				}
 			);
+			}
 			if (p.showToggleBtn) {
 				$(g.gDiv).prepend(g.nBtn);
 			}
