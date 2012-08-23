@@ -53,7 +53,8 @@
 			onDoubleClick: false,
 			onSuccess: false,
 			onError: false,
-			onSubmit: false //using a custom populate function
+			onSubmit: false, //using a custom populate function
+			ajaxCache: false
 		}, p);
 		$(t).show() //show if hidden
 			.attr({
@@ -561,6 +562,7 @@
 					}
 				}
 				$.ajax({
+					cache: p.ajaxCache,
 					type: p.method,
 					url: p.url,
 					data: param,
