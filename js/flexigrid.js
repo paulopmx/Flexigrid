@@ -51,6 +51,7 @@
 			onToggleCol: false,
 			onChangeSort: false,
 			onDoubleClick: false,
+			onRowClick: false,
 			onSuccess: false,
 			onError: false,
 			onSubmit: false //using a custom populate function
@@ -690,6 +691,10 @@
 						if (p.singleSelect && ! g.multisel ) {
 							$(this).siblings().removeClass('trSelected');
 							$(this).toggleClass('trSelected');
+						}
+						
+						if (p.onRowClick) {
+							p.onRowClick(this, g, p);
 						}
 					}).mousedown(function (e) {
 						if (e.shiftKey) {
