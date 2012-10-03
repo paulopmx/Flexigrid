@@ -27,17 +27,6 @@ if ($conn->connect_errno) {
 	die("Failed to connect to MySQL: (" . $conn->connect_errno . ") " . $conn->connect_error);
 }
 
-function countRec($fname,$tname,$conn) {
-	$sql = $conn->prepare("SELECT count(?) FROM $tname ");
-	$sql->bind_param("s", $fname);
-	$sql->execute();
-	$sql->store_result();
-	$sql->bind_result($count);
-	$sql->fetch();
-
-	return $count;
-}
-
 $start = (($page-1) * $rp);
 
 if ($query){
@@ -55,7 +44,7 @@ $sql->execute();
 $sql->store_result();
 $sql->bind_result($id_country, $name);
 
-$total = countRec('id_country','country',$conn);
+$total = $sql->num_rows;
 
 header("Content-type: text/xml");
 $xml = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>\n";
