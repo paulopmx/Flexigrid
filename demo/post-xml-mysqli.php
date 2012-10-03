@@ -32,19 +32,11 @@ function countRec($fname,$tname,$conn) {
 	$sql->bind_param("s", $fname);
 	$sql->execute();
 	$sql->store_result();
+	$sql->bind_result($count);
+	$sql->fetch();
 
-	return $sql->num_rows;
+	return $count;
 }
-
-$page = $_POST['page'];
-$rp = $_POST['rp'];
-$sortname = $_POST['sortname'];
-$sortorder = $_POST['sortorder'];
-
-if (!$sortname) $sortname = 'name';
-if (!$sortorder) $sortorder = 'desc';
-if (!$page) $page = 1;
-if (!$rp) $rp = 10;
 
 $start = (($page-1) * $rp);
 
