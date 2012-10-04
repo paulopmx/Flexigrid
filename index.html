@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Flexigrid - Demo</title>
+    <link type="text/css" href="css/flexigrid.pack.css" rel="stylesheet" />
+    <script type="text/javascript" src="js/jquery-1.8.1.min.js"></script>
+    <script type="text/javascript" src="js/flexigrid.pack.js"></script>  
+</head>
+<body>
+
+<script>
+//wait for document ready
+$(function() {
+	
+	$(".flexme#demo").flexigrid({
+		url : 'php/post-xml-mysqli.php',
+		dataType : 'xml',
+		colModel : [ {
+			display : 'ID',
+			name : 'id_country',
+			width : 40,
+			sortable : true,
+			align : 'center',
+			hide : true
+		}, {
+			display : 'Name',
+			name : 'name',
+			width : 180,
+			sortable : true,
+			align : 'left'
+		} ],
+		buttons : [ {
+			name : 'Add',
+			bclass : 'add',
+			onpress : countries
+		}, {
+			name : 'Delete',
+			bclass : 'delete',
+			onpress : countries
+		}, {
+			separator : true
+		} ],
+		searchitems : [ {
+			display : 'ID',
+			name : 'id_country'
+		}, {
+			display : 'Name',
+			name : 'name'
+		} ],
+		sortname : "name",
+		sortorder : "asc",
+		usepager : true,
+		useRp : true,
+		rp : 15,
+		showTableToggleBtn : false,
+		width : "100%",
+		height : $(document).height()-350
+		});
+	
+	function countries(com, grid) {
+		if (com == 'Delete') {
+			var del = confirm('Delete ' + $('.trSelected', grid).length + ' items?');
+			
+			if(del == true){
+				$('.trSelected', grid).each(function() {
+					var id = $(this).attr('ID');
+					id = id.substring(id.lastIndexOf('row')+3);
+					//ajax call za brisanje
+					$.ajax({
+						url: 'php/country_delete.php',  //server script to process data
+						type: 'POST',
+						data: "id="+id,
+						//Options to tell JQuery not to process data or worry about content-type
+						//cache: false,
+						//contentType: false,
+						//processData: false,
+						async: true,
+						success: function(xml) {
+							$(".flexme#countries").flexReload();
+						},
+					});
+				});
+			}
+			
+		} else if (com == 'Add') {
+			$( "#add_countries" ).dialog( "open" );
+			//$( "#add_client" ).dialog( "open" );
+		}
+
+	}
+});
+</script>
+<table id="demo" class="flexme" style="display: none"></table>
+
+
+</body>
+</html>

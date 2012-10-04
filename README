@@ -1,9 +1,9 @@
 Flexigrid for jQuery -  v1.1
- 
-Copyright (c) 2008 Paulo P. Marinas (https://github.com/paulopmx/Flexigrid-for-jQuery)
+FORK: purpose of this fork is to keep a clean original project with only verified changes, so that it can stay lightweight.
+
+Copyright (c) 2008 Paulo P. Marinas (https://github.com/paulopmx/Flexigrid)
 Dual licensed under the MIT or GPL Version 2 licenses.
 http://jquery.org/license
-
 
 Lightweight but rich data grid with re-sizable columns and a scrolling data to match the headers, plus an ability to connect to an XML or JSON data source using Ajax to load the content.
 
