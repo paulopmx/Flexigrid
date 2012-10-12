@@ -227,8 +227,10 @@
 					this.rePosDrag();
 					this.fixHeight();
 					this.colresize = false;
-					var name = p.colModel[n].name;		// Store the widths in the cookies
-					$.cookie('flexiwidths/'+name, nw);
+					if ($.cookies) {
+						var name = p.colModel[n].name;		// Store the widths in the cookies
+						$.cookie('flexiwidths/'+name, nw);
+					}
 				} else if (this.vresize) {
 					this.vresize = false;
 				} else if (this.colCopy) {
@@ -811,9 +813,11 @@
 				var th = document.createElement('th');
 				$(th).attr('axis', 'col' + i);
 				if( cm ) {	// only use cm if its defined
-					var cookie_width = 'flexiwidths/'+cm.name;		// Re-Store the widths in the cookies
-					if( $.cookie(cookie_width) != undefined ) {
-						cm.width = $.cookie(cookie_width);
+					if ($.cookies) {
+						var cookie_width = 'flexiwidths/'+cm.name;		// Re-Store the widths in the cookies
+						if( $.cookie(cookie_width) != undefined ) {
+							cm.width = $.cookie(cookie_width);
+						}
 					}
 					if( cm.display != undefined ) {
 						th.innerHTML = cm.display;
