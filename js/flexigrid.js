@@ -538,28 +538,39 @@
 				if (p.page > p.pages) {
 					p.page = p.pages;
 				}
-				var param = [{
-					name: 'page',
-					value: p.newp
-				}, {
-					name: 'rp',
-					value: p.rp
-				}, {
-					name: 'sortname',
-					value: p.sortname
-				}, {
-					name: 'sortorder',
-					value: p.sortorder
-				}, {
-					name: 'query',
-					value: p.query
-				}, {
-					name: 'qtype',
-					value: p.qtype
-				}];
-				if (p.params.length) {
-					for (var pi = 0; pi < p.params.length; pi++) {
-						param[param.length] = p.params[pi];
+				var param;
+				if ($.isPlainObject(p.params)) {
+					param			= p.params;
+					param.page		= p.newp;
+					param.rp		= p.rp;
+					param.sortname	= p.sortname;
+					param.sortorder	= p.sortorder;
+					param.query		= p.query;
+					param.qtype		= p.qtype;
+				} else {
+					param = [{
+						name: 'page',
+						value: p.newp
+					}, {
+						name: 'rp',
+						value: p.rp
+					}, {
+						name: 'sortname',
+						value: p.sortname
+					}, {
+						name: 'sortorder',
+						value: p.sortorder
+					}, {
+						name: 'query',
+						value: p.query
+					}, {
+						name: 'qtype',
+						value: p.qtype
+					}];
+					if (p.params.length) {
+						for (var pi = 0; pi < p.params.length; pi++) {
+							param[param.length] = p.params[pi];
+						}
 					}
 				}
 				$.ajax({
