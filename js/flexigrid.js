@@ -692,7 +692,6 @@
 						return;
 					}
 					$(this).toggleClass('trSelected');
-					console.log("click: toggle, ms=%s", g.multisel);
 					if (p.singleSelect && ! g.multisel) {
 						$(this).siblings().removeClass('trSelected');
 					}
