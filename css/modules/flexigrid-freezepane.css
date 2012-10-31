@@ -3,7 +3,22 @@
 		{
 		z-index: 3;
 		overflow: hidden;
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		border-right: 1px solid #ccc;
 		}
+
+		.fl-fpane-left .fl-bdiv
+			{
+			overflow: hidden;
+			}	
+			
+		.fl-fpane-left .fl-bdiv-inner
+			{
+			/* padding-bottom: 40px; */
+			}
+
 
 	.fl-fpane-left .fl-table
 		{
@@ -20,3 +35,5 @@
 				{
 				white-space: nowrap;
 				}
+		
+	

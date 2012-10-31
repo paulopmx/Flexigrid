@@ -25,10 +25,10 @@
 
 		.fl-button:hover
 			{
-			background: #cfcfcf;
-			-webkit-box-shadow: inset #fff 0px 0px 10px;
-			-moz-box-shadow: inset #fff 0px 0px 10px;
-			box-shadow: inset #fff 0px 5px 10px;
+			/* background: #cfcfcf; */
+			-webkit-box-shadow:  #ccc 0px 0px 3px;
+			-moz-box-shadow:  #ccc 0px 0px 3px;
+			box-shadow:  #fff 0px 0px 3px;
 			}
 
 

@@ -9,7 +9,7 @@
 	margin: 0;
 	padding: 0;
 	border: 0;
-	font-family: Arial;
+	font-family: "Helvetica Neue", Arial;
 	font-size: 11px;
 	letter-spacing: normal;
 	line-height: normal;
@@ -22,6 +22,7 @@
 	position: relative;
 	background: #fff;
 	color: #333;
+	box-shadow: 0 0 5px #ddd;
 	}
 	
 	.fl-hbdiv
@@ -32,15 +33,6 @@
 		clear: both;
 		}
 
-		.fl-fpane-left
-			{
-			position: absolute;
-			top: 0px;
-			left: 0px;
-			border-right: 1px solid #ccc;
-			}
-
-		
 	.fl-hdiv
 		{
 		width: 100%;
@@ -68,17 +60,6 @@
 			float: left;
 			padding-bottom: 0px;
 			}
-
-		.fl-fpane-left .fl-bdiv
-			{
-			overflow: hidden;
-			}	
-			
-		.fl-fpane-left .fl-bdiv-inner
-			{
-			padding-bottom: 40px;
-			}
-		
 
 .fl-table
 	{

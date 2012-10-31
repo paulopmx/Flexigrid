@@ -98,6 +98,7 @@ fl_mod['fl_menu'] = {
 							{
 							
 							var self = $(this).parents('.fl-grid').get(0);
+
 							
 							$(self).prop('colTarget',$(this).parents('th').prop('column_name'));
 							
@@ -121,12 +122,18 @@ fl_mod['fl_menu'] = {
 							var k = l+'px';
 							var k2 = $(self.fl_menu).css('left');
 							
-							if (k==k2) 
+							if (k==k2)
+								{ 
 								$(self.fl_menu).toggle('fast');
+								}
 							else
+								{
 								$(self.fl_menu).css({left:l,top:t}).show('fast');
+								$('.fl-coltogged',self).removeClass('fl-coltogged');
+								}
 
-							//alert($(self.fl_menu).html());
+							$(this).toggleClass('fl-coltogged');
+								
 
 							
 							}
@@ -141,6 +148,7 @@ fl_mod['fl_menu'] = {
 						function ()
 							{
 							$(this).hide();
+							$('.fl-coltogged').removeClass('fl-coltogged');
 							}
 					);
 					
@@ -149,6 +157,7 @@ fl_mod['fl_menu'] = {
 						function ()
 							{
 							$('.fl-menu:first',this).hide();
+							$('.fl-coltogged').removeClass('fl-coltogged');
 							}
 					);
 

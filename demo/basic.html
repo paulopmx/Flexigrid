@@ -96,7 +96,6 @@
 	
 		var opt = {
 			viewtype: 'freezepane'
-			,titleText: 'Freeze Pane Grid'
 			,height: 150
 			,colModel: {
 				'country_name': {
@@ -159,13 +158,12 @@
 			;
 
 		var opt3 = {
-			height: 150
-			,titleText: 'Percentage Width Grid'
+			height: 'auto'
 			,viewtype: 'fullwidth'
 			,rp: 6
 			,page: 1
 			,exclude: ['fl_menu']
-			,toolbars: [{type:'pager',width:'50%'},{type:'pager',width:'50%'}]
+			,toolbars: [{type:'pager'}]
 			,colModel: {
 				'country_name': {
 					 display: "Country Name"

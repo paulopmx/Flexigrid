@@ -23,13 +23,36 @@ fl_mod['fl_fp'] = {
 		}
 
 	//events
-	,fl_events_fl_fp : {beforeRender:'setPane',afterRender:'fixwidth',afterReload: 'sync_hover',afterColResize:'fixwidth',afterColToggle:'fixwidth'}		
+	,fl_events_fl_fp : {beforeRender:'setPane',afterRender:['fixwidth','leftscroll'],afterReload: 'sync_hover',afterColResize:'fixwidth',afterColToggle:'fixwidth'}		
 	,fl_events_fl_fw: {}
 	,fl_fp_setPane: function () 
 		{
 		if (this.viewtype=='freezepane')
 			this.dpane = 'right';
 		}
+	,fl_fp_leftscroll: function ()
+		{
+		
+		//enable scrolling on left pane
+		$(".fl-fpane-left .fl-bdiv",this).bind("mousewheel",function(ev,delta) {
+		    
+/*
+		    var scrollTop = $(this).scrollTop();
+		    var ns = scrollTop-Math.round(ev.wheelDelta);
+		    
+		    $(this).scrollTop(ns);
+		    if (this.scrollHeight != (this.scrollTop + $(this).height())&&this.scrollTop!=0) 
+				    ev.preventDefault();
+*/
+
+			var dir = delta > 0 ? 'Up' : 'Down',
+                vel = Math.abs(delta);
+            console.log(dir + ' at a velocity of ' + vel);
+            return false;
+
+		});
+		
+		}	
 	,fl_fp_fixwidth: function ()
 		{
 		
