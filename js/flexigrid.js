@@ -380,7 +380,7 @@
 								// If the content has a <BGCOLOR=nnnnnn> option, decode it.
 								var offs = td.innerHTML.indexOf( '<BGCOLOR=' );
 								if( offs >0 ) {
-									$(td).css('background',  text.substr(offs+7,7) );
+									$(td).css('background',	 text.substr(offs+7,7) );
 								}
 
 								$(td).attr('abbr', $(this).attr('abbr'));
@@ -429,7 +429,7 @@
 							var text = $("cell:eq(" + idx + ")", robj).text();
 							var offs = text.indexOf( '<BGCOLOR=' );
 							if( offs >0 ) {
-								$(td).css('background',  text.substr(offs+7,7) );
+								$(td).css('background',	 text.substr(offs+7,7) );
 							}
 							td.innerHTML = text;
 							$(td).attr('abbr', $(this).attr('abbr'));
@@ -684,50 +684,50 @@
 				};
 			},
 			addRowProp: function () {
-				$('tbody tr', g.bDiv).each(function () {
-					$(this).click(function (e) {
-						var obj = (e.target || e.srcElement);
-						if (obj.href || obj.type) return true;
-						$(this).toggleClass('trSelected');
-						if (p.singleSelect && ! g.multisel ) {
-							$(this).siblings().removeClass('trSelected');
-							$(this).toggleClass('trSelected');
-						}
-					}).mousedown(function (e) {
-						if (e.shiftKey) {
-							$(this).toggleClass('trSelected');
-							g.multisel = true;
-							this.focus();
-							$(g.gDiv).noSelect();
-						}
-						if (e.ctrlKey)
-						{
-							$(this).toggleClass('trSelected');
-							g.multisel = true;
-							this.focus();
-						}
-					}).mouseup(function () {
-						if (g.multisel && ! e.ctrlKey) {
-							g.multisel = false;
-							$(g.gDiv).noSelect(false);
-						}
-					}).dblclick(function () {
-						if (p.onDoubleClick) {
-							p.onDoubleClick(this, g, p);
-						}
-					}).hover(function (e) {
-						if (g.multisel && e.shiftKey) {
-							$(this).toggleClass('trSelected');
-						}
-					}, function () {});
-					if ($.browser.msie && $.browser.version < 7.0) {
-						$(this).hover(function () {
-							$(this).addClass('trOver');
-						}, function () {
-							$(this).removeClass('trOver');
-						});
+				$('tbody tr', g.bDiv).on('click', function (e) {
+					var obj = (e.target || e.srcElement);
+					if (obj.href || obj.type) return true;
+					if (e.ctrlKey || e.metaKey) {
+						// mousedown already took care of this case
+						return;
 					}
-				});
+					$(this).toggleClass('trSelected');
+					if (p.singleSelect && ! g.multisel) {
+						$(this).siblings().removeClass('trSelected');
+					}
+				}).on('mousedown', function (e) {
+					if (e.shiftKey) {
+						$(this).toggleClass('trSelected');
+						g.multisel = true;
+						this.focus();
+						$(g.gDiv).noSelect();
+					}
+					if (e.ctrlKey || e.metaKey) {
+						$(this).toggleClass('trSelected');
+						g.multisel = true;
+						this.focus();
+					}
+				}).on('mouseup', function (e) {
+					if (g.multisel && ! (e.ctrlKey || e.metaKey)) {
+						g.multisel = false;
+						$(g.gDiv).noSelect(false);
+					}
+				}).on('dblclick', function () {
+					if (p.onDoubleClick) {
+						p.onDoubleClick(this, g, p);
+					}
+				}).hover(function (e) {
+					if (g.multisel && e.shiftKey) {
+						$(this).toggleClass('trSelected');
+					}
+				}, function () {});
+				if ($.browser.msie && $.browser.version < 7.0) {
+					$(this).hover(function () {
+						$(this).addClass('trOver');
+					}, function () {
+						$(this).removeClass('trOver');
+					});
+				}
 			},
 
 			combo_flag: true,
@@ -1433,6 +1433,6 @@
 		}
 	}; //end noSelect
   $.fn.flexSearch = function(p) { // function to search grid
-    return this.each( function() { if (this.grid&&this.p.searchitems) this.grid.doSearch(); });
+	return this.each( function() { if (this.grid&&this.p.searchitems) this.grid.doSearch(); });
   }; //end flexSearch
 })(jQuery);
