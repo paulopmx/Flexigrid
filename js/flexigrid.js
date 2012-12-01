@@ -53,7 +53,13 @@
 			onDoubleClick: false,
 			onSuccess: false,
 			onError: false,
-			onSubmit: false //using a custom populate function
+			onSubmit: false, //using a custom populate function
+            __mw: { //extendable middleware function holding object
+                datacol: function(p, col, val) { //middleware for formatting data columns
+                    return (typeof p.datacol[col] == 'function') ? p.datacol[col](val) : val;
+                }
+            },
+            datacol: {} //datacol middleware object 'colkey': function(colval) {}
 		}, p);
 		$(t).show() //show if hidden
 			.attr({
@@ -371,11 +377,13 @@
 									td.innerHTML = row[p.colModel[idx].name];
 								} else {
 									// If the json elements aren't named (which is typical), use numeric order
+                                    var iHTML = '';
 									if (typeof row.cell[idx] != "undefined") {
-										td.innerHTML = (row.cell[idx] != null) ? row.cell[idx] : '';//null-check for Opera-browser
+										iHTML = (row.cell[idx] != null) ? row.cell[idx] : '';//null-check for Opera-browser
 									} else {
-										td.innerHTML = row.cell[p.colModel[idx].name];
+										iHTML = row.cell[p.colModel[idx].name];
 									}
+                                    td.innerHTML = p.__mw.datacol(p, $(this).attr('abbr'), iHTML); //use middleware datacol to format cols
 								}
 								// If the content has a <BGCOLOR=nnnnnn> option, decode it.
 								var offs = td.innerHTML.indexOf( '<BGCOLOR=' );
@@ -431,7 +439,8 @@
 							if( offs >0 ) {
 								$(td).css('background',	 text.substr(offs+7,7) );
 							}
-							td.innerHTML = text;
+                            
+							td.innerHTML = p.__mw.datacol(p, $(this).attr('abbr'), text); //use middleware datacol to format cols
 							$(td).attr('abbr', $(this).attr('abbr'));
 							$(tr).append(td);
 							td = null;
