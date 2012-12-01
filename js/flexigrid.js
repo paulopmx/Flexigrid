@@ -81,7 +81,7 @@
 				$('div', g.cDrag).hide();
 				$('thead tr:first th:visible', this.hDiv).each(function () {
 					var n = $('thead tr:first th:visible', g.hDiv).index(this);
-					var cdpos = parseInt($('div', this).width());
+					var cdpos = parseInt($('div', this).width(), 10);
 					if (cdleft == 0) cdleft -= Math.floor(p.cgwidth / 2);
 					cdpos = cdpos + cdleft + cdpad;
 					if (isNaN(cdpos)) {
@@ -102,7 +102,7 @@
 						$(this).height(newH + hdHeight);
 					}
 				);
-				var nd = parseInt($(g.nDiv).height());
+				var nd = parseInt($(g.nDiv).height(), 10);
 				if (nd > newH) $(g.nDiv).height(newH).width(200);
 				else $(g.nDiv).height('auto').width('auto');
 				$(g.block).css({
@@ -125,7 +125,7 @@
 					$(obj).prev().addClass('dragging').show();
 					this.colresize = {
 						startX: e.pageX,
-						ol: parseInt(obj.style.left),
+						ol: parseInt(obj.style.left, 10),
 						ow: ow,
 						n: n
 					};
@@ -602,19 +602,19 @@
 						break;
 					case 'prev':
 						if (p.page > 1) {
-							p.newp = parseInt(p.page) - 1;
+							p.newp = parseInt(p.page, 10) - 1;
 						}
 						break;
 					case 'next':
 						if (p.page < p.pages) {
-							p.newp = parseInt(p.page) + 1;
+							p.newp = parseInt(p.page, 10) + 1;
 						}
 						break;
 					case 'last':
 						p.newp = p.pages;
 						break;
 					case 'input':
-						var nv = parseInt($('.pcontrol input', this.pDiv).val());
+						var nv = parseInt($('.pcontrol input', this.pDiv).val(), 10);
 						if (isNaN(nv)) {
 							nv = 1;
 						}
@@ -673,14 +673,14 @@
 				});
 			},
 			getCellDim: function (obj) {// get cell prop for editable event
-				var ht = parseInt($(obj).height());
-				var pht = parseInt($(obj).parent().height());
-				var wt = parseInt(obj.style.width);
-				var pwt = parseInt($(obj).parent().width());
+				var ht = parseInt($(obj).height(), 10);
+				var pht = parseInt($(obj).parent().height(), 10);
+				var wt = parseInt(obj.style.width, 10);
+				var pwt = parseInt($(obj).parent().width(), 10);
 				var top = obj.offsetParent.offsetTop;
 				var left = obj.offsetParent.offsetLeft;
-				var pdl = parseInt($(obj).css('paddingLeft'));
-				var pdt = parseInt($(obj).css('paddingTop'));
+				var pdl = parseInt($(obj).css('paddingLeft'), 10);
+				var pdt = parseInt($(obj).css('paddingTop'), 10);
 				return {
 					ht: ht,
 					wt: wt,
@@ -781,7 +781,7 @@
 				}
 				var n = $('div', this.cDrag).index(obj),
 					$th = $('th:visible div:eq(' + n + ')', this.hDiv),
-					ol = parseInt(obj.style.left),
+					ol = parseInt(obj.style.left, 10),
 					ow = $th.width(),
 					nw = 0,
 					nl = 0,
@@ -1038,7 +1038,7 @@
 					g.dcolt = n;
 				} else if (!g.colresize) {
 					var nv = $('th:visible', g.hDiv).index(this);
-					var onl = parseInt($('div:eq(' + nv + ')', g.cDrag).css('left'));
+					var onl = parseInt($('div:eq(' + nv + ')', g.cDrag).css('left'), 10);
 					var nw = jQuery(g.nBtn).outerWidth();
 					var nl = onl - nw + Math.floor(p.cgwidth / 2);
 					$(g.nDiv).hide();
@@ -1047,7 +1047,7 @@
 						'left': nl,
 						top: g.hDiv.offsetTop
 					}).show();
-					var ndw = parseInt($(g.nDiv).width());
+					var ndw = parseInt($(g.nDiv).width(), 10);
 					$(g.nDiv).css({
 						top: g.bDiv.offsetTop
 					});
@@ -1096,14 +1096,14 @@
 		if (cdcol != null) {
 			g.cDrag.className = 'cDrag';
 			g.cdpad = 0;
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderLeftWidth'))) ? 0 : parseInt($('div', cdcol).css('borderLeftWidth')));
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderRightWidth'))) ? 0 : parseInt($('div', cdcol).css('borderRightWidth')));
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingLeft'))) ? 0 : parseInt($('div', cdcol).css('paddingLeft')));
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingRight'))) ? 0 : parseInt($('div', cdcol).css('paddingRight')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('borderLeftWidth'))) ? 0 : parseInt($(cdcol).css('borderLeftWidth')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('borderRightWidth'))) ? 0 : parseInt($(cdcol).css('borderRightWidth')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingLeft'))) ? 0 : parseInt($(cdcol).css('paddingLeft')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingRight'))) ? 0 : parseInt($(cdcol).css('paddingRight')));
+			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderLeftWidth')), 10);
+			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderRightWidth')), 10);
+			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingLeft')), 10);
+			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingRight'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingRight')), 10);
+			g.cdpad += (isNaN(parseInt($(cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderLeftWidth')), 10);
+			g.cdpad += (isNaN(parseInt($(cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderRightWidth')), 10);
+			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($(cdcol).css('paddingLeft')), 10);
+			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingRight'), 10)) ? 0 : parseInt($(cdcol).css('paddingRight')), 10);
 			$(g.bDiv).before(g.cDrag);
 			var cdheight = $(g.bDiv).height();
 			var hdheight = $(g.hDiv).height();
