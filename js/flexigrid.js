@@ -7,8 +7,8 @@
  *
  */
 (function ($) {
-	$.addFlex = function (t, p) {
-		if (t.grid) return false; //return if already exist
+    $.addFlex = function (t, p) {
+    	if (t.grid) return false; //return if already exist
 		p = $.extend({ //apply default properties
 			height: 200, //default height
 			width: 'auto', //auto width
@@ -56,7 +56,12 @@
 			onSubmit: false, //using a custom populate function
             __mw: { //extendable middleware function holding object
                 datacol: function(p, col, val) { //middleware for formatting data columns
-                    return (typeof p.datacol[col] == 'function') ? p.datacol[col](val) : val;
+                    var _col = (typeof p.datacol[col] == 'function') ? p.datacol[col](val) : val; //format column using function
+                    if(typeof p.datacol['*'] == 'function') { //if wildcard function exists
+                        return p.datacol['*'](_col); //run wildcard function
+                    } else {
+                        return _col; //return column without wildcard
+                    }
                 }
             },
             datacol: {} //datacol middleware object 'colkey': function(colval) {}
