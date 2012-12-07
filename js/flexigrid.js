@@ -64,7 +64,8 @@
                     }
                 }
             },
-            datacol: {} //datacol middleware object 'colkey': function(colval) {}
+            datacol: {}, //datacol middleware object 'colkey': function(colval) {}
+            colResize: true //from: http://stackoverflow.com/a/10615589
 		}, p);
 		$(t).show() //show if hidden
 			.attr({
@@ -121,7 +122,7 @@
 				});
 			},
 			dragStart: function (dragtype, e, obj) { //default drag function start
-				if (dragtype == 'colresize') {//column resize
+				if (dragtype == 'colresize' && p.colResize == true) {//column resize
 					$(g.nDiv).hide();
 					$(g.nBtn).hide();
 					var n = $('div', this.cDrag).index(obj);
