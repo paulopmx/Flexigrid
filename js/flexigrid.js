@@ -876,6 +876,11 @@
 		g.tDiv = document.createElement('div'); //create toolbar
 		g.sDiv = document.createElement('div');
 		g.pDiv = document.createElement('div'); //create pager container
+        
+        if(p.colResize === false) { //don't display column drag if we are not using it
+            $(g.cDrag).css('display', 'none');
+        }
+        
 		if (!p.usepager) {
 			g.pDiv.style.display = 'none';
 		}
@@ -1097,49 +1102,51 @@
 		//add td & row properties
 		g.addCellProp();
 		g.addRowProp();
-		//set cDrag
-		var cdcol = $('thead tr:first th:first', g.hDiv).get(0);
-		if (cdcol != null) {
-			g.cDrag.className = 'cDrag';
-			g.cdpad = 0;
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderLeftWidth')), 10);
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderRightWidth')), 10);
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingLeft')), 10);
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingRight'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingRight')), 10);
-			g.cdpad += (isNaN(parseInt($(cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderLeftWidth')), 10);
-			g.cdpad += (isNaN(parseInt($(cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderRightWidth')), 10);
-			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($(cdcol).css('paddingLeft')), 10);
-			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingRight'), 10)) ? 0 : parseInt($(cdcol).css('paddingRight')), 10);
-			$(g.bDiv).before(g.cDrag);
-			var cdheight = $(g.bDiv).height();
-			var hdheight = $(g.hDiv).height();
-			$(g.cDrag).css({
-				top: -hdheight + 'px'
-			});
-			$('thead tr:first th', g.hDiv).each(function () {
-				var cgDiv = document.createElement('div');
-				$(g.cDrag).append(cgDiv);
-				if (!p.cgwidth) {
-					p.cgwidth = $(cgDiv).width();
-				}
-				$(cgDiv).css({
-					height: cdheight + hdheight
-				}).mousedown(function (e) {
-					g.dragStart('colresize', e, this);
-				}).dblclick(function(e){
-					g.autoResizeColumn(this);
-				});
-				if ($.browser.msie && $.browser.version < 7.0) {
-					g.fixHeight($(g.gDiv).height());
-					$(cgDiv).hover(function () {
-						g.fixHeight();
-						$(this).addClass('dragging')
-					}, function () {
-						if (!g.colresize) $(this).removeClass('dragging')
-					});
-				}
-			});
-		}
+		//set cDrag only if we are using it
+        if(p.colResize === true) {
+    		var cdcol = $('thead tr:first th:first', g.hDiv).get(0);
+    		if (cdcol != null) {
+    			g.cDrag.className = 'cDrag';
+    			g.cdpad = 0;
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderLeftWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderRightWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingLeft')), 10);
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingRight'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingRight')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderLeftWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderRightWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($(cdcol).css('paddingLeft')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingRight'), 10)) ? 0 : parseInt($(cdcol).css('paddingRight')), 10);
+    			$(g.bDiv).before(g.cDrag);
+    			var cdheight = $(g.bDiv).height();
+    			var hdheight = $(g.hDiv).height();
+    			$(g.cDrag).css({
+    				top: -hdheight + 'px'
+    			});
+    			$('thead tr:first th', g.hDiv).each(function () {
+    				var cgDiv = document.createElement('div');
+    				$(g.cDrag).append(cgDiv);
+    				if (!p.cgwidth) {
+    					p.cgwidth = $(cgDiv).width();
+    				}
+    				$(cgDiv).css({
+    					height: cdheight + hdheight
+    				}).mousedown(function (e) {
+    					g.dragStart('colresize', e, this);
+    				}).dblclick(function(e){
+    					g.autoResizeColumn(this);
+    				});
+    				if ($.browser.msie && $.browser.version < 7.0) {
+    					g.fixHeight($(g.gDiv).height());
+    					$(cgDiv).hover(function () {
+    						g.fixHeight();
+    						$(this).addClass('dragging')
+    					}, function () {
+    						if (!g.colresize) $(this).removeClass('dragging')
+    					});
+    				}
+    			});
+    		}
+        }
 		//add strip
 		if (p.striped) {
 			$('tbody tr:odd', g.bDiv).addClass('erow');
