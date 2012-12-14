@@ -6,9 +6,35 @@
  * http://jquery.org/license
  *
  */
+
 (function ($) {
-	$.addFlex = function (t, p) {
-		if (t.grid) return false; //return if already exist
+    /*!
+     * START code from jQuery UI
+     *
+     * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+     * Dual licensed under the MIT or GPL Version 2 licenses.
+     * http://jquery.org/license
+     *
+     * http://docs.jquery.com/UI
+     */
+     
+    if(typeof $.support.selectstart != 'function') {
+        $.support.selectstart = "onselectstart" in document.createElement("div");
+    }
+    
+    if(typeof $.fn.disableSelection != 'function') {
+        $.fn.disableSelection = function() {
+            return this.bind( ( $.support.selectstart ? "selectstart" : "mousedown" ) +
+                ".ui-disableSelection", function( event ) {
+                event.preventDefault();
+            });
+        };
+    }
+    
+    /* END code from jQuery UI */
+    
+    $.addFlex = function (t, p) {
+        if (t.grid) return false; //return if already exist
 		p = $.extend({ //apply default properties
 			height: 200, //default height
 			width: 'auto', //auto width
@@ -53,7 +79,23 @@
 			onDoubleClick: false,
 			onSuccess: false,
 			onError: false,
-			onSubmit: false //using a custom populate function
+			onSubmit: false, //using a custom populate function
+            __mw: { //extendable middleware function holding object
+                datacol: function(p, col, val) { //middleware for formatting data columns
+                    var _col = (typeof p.datacol[col] == 'function') ? p.datacol[col](val) : val; //format column using function
+                    if(typeof p.datacol['*'] == 'function') { //if wildcard function exists
+                        return p.datacol['*'](_col); //run wildcard function
+                    } else {
+                        return _col; //return column without wildcard
+                    }
+                }
+            },
+            getGridClass: function(g) { //get the grid class, always returns g
+                return g;
+            },
+            datacol: {}, //datacol middleware object 'colkey': function(colval) {}
+            colResize: true, //from: http://stackoverflow.com/a/10615589
+            colMove: true
 		}, p);
 		$(t).show() //show if hidden
 			.attr({
@@ -75,7 +117,7 @@
 				$('div', g.cDrag).hide();
 				$('thead tr:first th:visible', this.hDiv).each(function () {
 					var n = $('thead tr:first th:visible', g.hDiv).index(this);
-					var cdpos = parseInt($('div', this).width());
+					var cdpos = parseInt($('div', this).width(), 10);
 					if (cdleft == 0) cdleft -= Math.floor(p.cgwidth / 2);
 					cdpos = cdpos + cdleft + cdpad;
 					if (isNaN(cdpos)) {
@@ -96,7 +138,7 @@
 						$(this).height(newH + hdHeight);
 					}
 				);
-				var nd = parseInt($(g.nDiv).height());
+				var nd = parseInt($(g.nDiv).height(), 10);
 				if (nd > newH) $(g.nDiv).height(newH).width(200);
 				else $(g.nDiv).height('auto').width('auto');
 				$(g.block).css({
@@ -110,7 +152,7 @@
 				});
 			},
 			dragStart: function (dragtype, e, obj) { //default drag function start
-				if (dragtype == 'colresize') {//column resize
+				if (dragtype == 'colresize' && p.colResize === true) {//column resize
 					$(g.nDiv).hide();
 					$(g.nBtn).hide();
 					var n = $('div', this.cDrag).index(obj);
@@ -119,7 +161,7 @@
 					$(obj).prev().addClass('dragging').show();
 					this.colresize = {
 						startX: e.pageX,
-						ol: parseInt(obj.style.left),
+						ol: parseInt(obj.style.left, 10),
 						ow: ow,
 						n: n
 					};
@@ -138,32 +180,36 @@
 						sx: e.pageX,
 						hgo: hgo
 					};
-				} else if (dragtype == 'colMove') {//column header drag
-					$(g.nDiv).hide();
-					$(g.nBtn).hide();
-					this.hset = $(this.hDiv).offset();
-					this.hset.right = this.hset.left + $('table', this.hDiv).width();
-					this.hset.bottom = this.hset.top + $('table', this.hDiv).height();
-					this.dcol = obj;
-					this.dcoln = $('th', this.hDiv).index(obj);
-					this.colCopy = document.createElement("div");
-					this.colCopy.className = "colCopy";
-					this.colCopy.innerHTML = obj.innerHTML;
-					if ($.browser.msie) {
-						this.colCopy.className = "colCopy ie";
-					}
-					$(this.colCopy).css({
-						position: 'absolute',
-						float: 'left',
-						display: 'none',
-						textAlign: obj.align
-					});
-					$('body').append(this.colCopy);
-					$(this.cDrag).hide();
+				} else if ((dragtype == 'colMove')) {//column header drag                    
+                    $(e.target).disableSelection(); //disable selecting the column header
+                        
+                    if((p.colMove === true)) {
+                        $(g.nDiv).hide();
+                        $(g.nBtn).hide();
+                        this.hset = $(this.hDiv).offset();
+                        this.hset.right = this.hset.left + $('table', this.hDiv).width();
+                        this.hset.bottom = this.hset.top + $('table', this.hDiv).height();
+                        this.dcol = obj;
+                        this.dcoln = $('th', this.hDiv).index(obj);
+                        this.colCopy = document.createElement("div");
+                        this.colCopy.className = "colCopy";
+                        this.colCopy.innerHTML = obj.innerHTML;
+                        if ($.browser.msie) {
+                            this.colCopy.className = "colCopy ie";
+                        }
+                        $(this.colCopy).css({
+                            position: 'absolute',
+                            float: 'left',
+                            display: 'none',
+                            textAlign: obj.align
+                        });
+                        $('body').append(this.colCopy);
+                        $(this.cDrag).hide();
+                    }
 				}
 				$('body').noSelect();
 			},
-			dragMove: function (e) {
+            dragMove: function (e) {
 				if (this.colresize) {//column resize
 					var n = this.colresize.n;
 					var diff = e.pageX - this.colresize.startX;
@@ -371,11 +417,13 @@
 									td.innerHTML = row[p.colModel[idx].name];
 								} else {
 									// If the json elements aren't named (which is typical), use numeric order
+                                    var iHTML = '';
 									if (typeof row.cell[idx] != "undefined") {
-										td.innerHTML = (row.cell[idx] != null) ? row.cell[idx] : '';//null-check for Opera-browser
+										iHTML = (row.cell[idx] != null) ? row.cell[idx] : '';//null-check for Opera-browser
 									} else {
-										td.innerHTML = row.cell[p.colModel[idx].name];
+										iHTML = row.cell[p.colModel[idx].name];
 									}
+                                    td.innerHTML = p.__mw.datacol(p, $(this).attr('abbr'), iHTML); //use middleware datacol to format cols
 								}
 								// If the content has a <BGCOLOR=nnnnnn> option, decode it.
 								var offs = td.innerHTML.indexOf( '<BGCOLOR=' );
@@ -431,7 +479,8 @@
 							if( offs >0 ) {
 								$(td).css('background',	 text.substr(offs+7,7) );
 							}
-							td.innerHTML = text;
+                            
+							td.innerHTML = p.__mw.datacol(p, $(this).attr('abbr'), text); //use middleware datacol to format cols
 							$(td).attr('abbr', $(this).attr('abbr'));
 							$(tr).append(td);
 							td = null;
@@ -593,19 +642,19 @@
 						break;
 					case 'prev':
 						if (p.page > 1) {
-							p.newp = parseInt(p.page) - 1;
+							p.newp = parseInt(p.page, 10) - 1;
 						}
 						break;
 					case 'next':
 						if (p.page < p.pages) {
-							p.newp = parseInt(p.page) + 1;
+							p.newp = parseInt(p.page, 10) + 1;
 						}
 						break;
 					case 'last':
 						p.newp = p.pages;
 						break;
 					case 'input':
-						var nv = parseInt($('.pcontrol input', this.pDiv).val());
+						var nv = parseInt($('.pcontrol input', this.pDiv).val(), 10);
 						if (isNaN(nv)) {
 							nv = 1;
 						}
@@ -664,14 +713,14 @@
 				});
 			},
 			getCellDim: function (obj) {// get cell prop for editable event
-				var ht = parseInt($(obj).height());
-				var pht = parseInt($(obj).parent().height());
-				var wt = parseInt(obj.style.width);
-				var pwt = parseInt($(obj).parent().width());
+				var ht = parseInt($(obj).height(), 10);
+				var pht = parseInt($(obj).parent().height(), 10);
+				var wt = parseInt(obj.style.width, 10);
+				var pwt = parseInt($(obj).parent().width(), 10);
 				var top = obj.offsetParent.offsetTop;
 				var left = obj.offsetParent.offsetLeft;
-				var pdl = parseInt($(obj).css('paddingLeft'));
-				var pdt = parseInt($(obj).css('paddingTop'));
+				var pdl = parseInt($(obj).css('paddingLeft'), 10);
+				var pdt = parseInt($(obj).css('paddingTop'), 10);
 				return {
 					ht: ht,
 					wt: wt,
@@ -772,7 +821,7 @@
 				}
 				var n = $('div', this.cDrag).index(obj),
 					$th = $('th:visible div:eq(' + n + ')', this.hDiv),
-					ol = parseInt(obj.style.left),
+					ol = parseInt(obj.style.left, 10),
 					ow = $th.width(),
 					nw = 0,
 					nl = 0,
@@ -805,7 +854,10 @@
 			},
 			pager: 0
 		};
-		if (p.colModel) { //create model if any
+        
+		g = p.getGridClass(g); //get the grid class
+        
+        if (p.colModel) { //create model if any
 			thead = document.createElement('thead');
 			var tr = document.createElement('tr');
 			for (var i = 0; i < p.colModel.length; i++) {
@@ -861,6 +913,11 @@
 		g.tDiv = document.createElement('div'); //create toolbar
 		g.sDiv = document.createElement('div');
 		g.pDiv = document.createElement('div'); //create pager container
+        
+        if(p.colResize === false) { //don't display column drag if we are not using it
+            $(g.cDrag).css('display', 'none');
+        }
+        
 		if (!p.usepager) {
 			g.pDiv.style.display = 'none';
 		}
@@ -1029,7 +1086,7 @@
 					g.dcolt = n;
 				} else if (!g.colresize) {
 					var nv = $('th:visible', g.hDiv).index(this);
-					var onl = parseInt($('div:eq(' + nv + ')', g.cDrag).css('left'));
+					var onl = parseInt($('div:eq(' + nv + ')', g.cDrag).css('left'), 10);
 					var nw = jQuery(g.nBtn).outerWidth();
 					var nl = onl - nw + Math.floor(p.cgwidth / 2);
 					$(g.nDiv).hide();
@@ -1038,7 +1095,7 @@
 						'left': nl,
 						top: g.hDiv.offsetTop
 					}).show();
-					var ndw = parseInt($(g.nDiv).width());
+					var ndw = parseInt($(g.nDiv).width(), 10);
 					$(g.nDiv).css({
 						top: g.bDiv.offsetTop
 					});
@@ -1082,49 +1139,51 @@
 		//add td & row properties
 		g.addCellProp();
 		g.addRowProp();
-		//set cDrag
-		var cdcol = $('thead tr:first th:first', g.hDiv).get(0);
-		if (cdcol != null) {
-			g.cDrag.className = 'cDrag';
-			g.cdpad = 0;
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderLeftWidth'))) ? 0 : parseInt($('div', cdcol).css('borderLeftWidth')));
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderRightWidth'))) ? 0 : parseInt($('div', cdcol).css('borderRightWidth')));
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingLeft'))) ? 0 : parseInt($('div', cdcol).css('paddingLeft')));
-			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingRight'))) ? 0 : parseInt($('div', cdcol).css('paddingRight')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('borderLeftWidth'))) ? 0 : parseInt($(cdcol).css('borderLeftWidth')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('borderRightWidth'))) ? 0 : parseInt($(cdcol).css('borderRightWidth')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingLeft'))) ? 0 : parseInt($(cdcol).css('paddingLeft')));
-			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingRight'))) ? 0 : parseInt($(cdcol).css('paddingRight')));
-			$(g.bDiv).before(g.cDrag);
-			var cdheight = $(g.bDiv).height();
-			var hdheight = $(g.hDiv).height();
-			$(g.cDrag).css({
-				top: -hdheight + 'px'
-			});
-			$('thead tr:first th', g.hDiv).each(function () {
-				var cgDiv = document.createElement('div');
-				$(g.cDrag).append(cgDiv);
-				if (!p.cgwidth) {
-					p.cgwidth = $(cgDiv).width();
-				}
-				$(cgDiv).css({
-					height: cdheight + hdheight
-				}).mousedown(function (e) {
-					g.dragStart('colresize', e, this);
-				}).dblclick(function(e){
-					g.autoResizeColumn(this);
-				});
-				if ($.browser.msie && $.browser.version < 7.0) {
-					g.fixHeight($(g.gDiv).height());
-					$(cgDiv).hover(function () {
-						g.fixHeight();
-						$(this).addClass('dragging')
-					}, function () {
-						if (!g.colresize) $(this).removeClass('dragging')
-					});
-				}
-			});
-		}
+		//set cDrag only if we are using it
+        if(p.colResize === true) {
+    		var cdcol = $('thead tr:first th:first', g.hDiv).get(0);
+    		if (cdcol != null) {
+    			g.cDrag.className = 'cDrag';
+    			g.cdpad = 0;
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderLeftWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($('div', cdcol).css('borderRightWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingLeft')), 10);
+    			g.cdpad += (isNaN(parseInt($('div', cdcol).css('paddingRight'), 10)) ? 0 : parseInt($('div', cdcol).css('paddingRight')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('borderLeftWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderLeftWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('borderRightWidth'), 10)) ? 0 : parseInt($(cdcol).css('borderRightWidth')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingLeft'), 10)) ? 0 : parseInt($(cdcol).css('paddingLeft')), 10);
+    			g.cdpad += (isNaN(parseInt($(cdcol).css('paddingRight'), 10)) ? 0 : parseInt($(cdcol).css('paddingRight')), 10);
+    			$(g.bDiv).before(g.cDrag);
+    			var cdheight = $(g.bDiv).height();
+    			var hdheight = $(g.hDiv).height();
+    			$(g.cDrag).css({
+    				top: -hdheight + 'px'
+    			});
+    			$('thead tr:first th', g.hDiv).each(function () {
+    				var cgDiv = document.createElement('div');
+    				$(g.cDrag).append(cgDiv);
+    				if (!p.cgwidth) {
+    					p.cgwidth = $(cgDiv).width();
+    				}
+    				$(cgDiv).css({
+    					height: cdheight + hdheight
+    				}).mousedown(function (e) {
+    					g.dragStart('colresize', e, this);
+    				}).dblclick(function(e){
+    					g.autoResizeColumn(this);
+    				});
+    				if ($.browser.msie && $.browser.version < 7.0) {
+    					g.fixHeight($(g.gDiv).height());
+    					$(cgDiv).hover(function () {
+    						g.fixHeight();
+    						$(this).addClass('dragging')
+    					}, function () {
+    						if (!g.colresize) $(this).removeClass('dragging')
+    					});
+    				}
+    			});
+    		}
+        }
 		//add strip
 		if (p.striped) {
 			$('tbody tr:odd', g.bDiv).addClass('erow');
