@@ -6,7 +6,33 @@
  * http://jquery.org/license
  *
  */
+
 (function ($) {
+    /*!
+     * START code from jQuery UI
+     *
+     * Copyright 2011, AUTHORS.txt (http://jqueryui.com/about)
+     * Dual licensed under the MIT or GPL Version 2 licenses.
+     * http://jquery.org/license
+     *
+     * http://docs.jquery.com/UI
+     */
+     
+    if(typeof $.support.selectstart != 'function') {
+        $.support.selectstart = "onselectstart" in document.createElement("div");
+    }
+    
+    if(typeof $.fn.disableSelection != 'function') {
+        $.fn.disableSelection = function() {
+            return this.bind( ( $.support.selectstart ? "selectstart" : "mousedown" ) +
+                ".ui-disableSelection", function( event ) {
+                event.preventDefault();
+            });
+        };
+    }
+    
+    /* END code from jQuery UI */
+    
     $.addFlex = function (t, p) {
         if (t.grid) return false; //return if already exist
 		p = $.extend({ //apply default properties
@@ -68,7 +94,8 @@
                 return g;
             },
             datacol: {}, //datacol middleware object 'colkey': function(colval) {}
-            colResize: true //from: http://stackoverflow.com/a/10615589
+            colResize: true, //from: http://stackoverflow.com/a/10615589
+            colMove: true
 		}, p);
 		$(t).show() //show if hidden
 			.attr({
@@ -125,7 +152,7 @@
 				});
 			},
 			dragStart: function (dragtype, e, obj) { //default drag function start
-				if (dragtype == 'colresize' && p.colResize == true) {//column resize
+				if (dragtype == 'colresize' && p.colResize === true) {//column resize
 					$(g.nDiv).hide();
 					$(g.nBtn).hide();
 					var n = $('div', this.cDrag).index(obj);
@@ -153,32 +180,36 @@
 						sx: e.pageX,
 						hgo: hgo
 					};
-				} else if (dragtype == 'colMove') {//column header drag
-					$(g.nDiv).hide();
-					$(g.nBtn).hide();
-					this.hset = $(this.hDiv).offset();
-					this.hset.right = this.hset.left + $('table', this.hDiv).width();
-					this.hset.bottom = this.hset.top + $('table', this.hDiv).height();
-					this.dcol = obj;
-					this.dcoln = $('th', this.hDiv).index(obj);
-					this.colCopy = document.createElement("div");
-					this.colCopy.className = "colCopy";
-					this.colCopy.innerHTML = obj.innerHTML;
-					if ($.browser.msie) {
-						this.colCopy.className = "colCopy ie";
-					}
-					$(this.colCopy).css({
-						position: 'absolute',
-						float: 'left',
-						display: 'none',
-						textAlign: obj.align
-					});
-					$('body').append(this.colCopy);
-					$(this.cDrag).hide();
+				} else if ((dragtype == 'colMove')) {//column header drag                    
+                    $(e.target).disableSelection(); //disable selecting the column header
+                        
+                    if((p.colMove === true)) {
+                        $(g.nDiv).hide();
+                        $(g.nBtn).hide();
+                        this.hset = $(this.hDiv).offset();
+                        this.hset.right = this.hset.left + $('table', this.hDiv).width();
+                        this.hset.bottom = this.hset.top + $('table', this.hDiv).height();
+                        this.dcol = obj;
+                        this.dcoln = $('th', this.hDiv).index(obj);
+                        this.colCopy = document.createElement("div");
+                        this.colCopy.className = "colCopy";
+                        this.colCopy.innerHTML = obj.innerHTML;
+                        if ($.browser.msie) {
+                            this.colCopy.className = "colCopy ie";
+                        }
+                        $(this.colCopy).css({
+                            position: 'absolute',
+                            float: 'left',
+                            display: 'none',
+                            textAlign: obj.align
+                        });
+                        $('body').append(this.colCopy);
+                        $(this.cDrag).hide();
+                    }
 				}
 				$('body').noSelect();
 			},
-			dragMove: function (e) {
+            dragMove: function (e) {
 				if (this.colresize) {//column resize
 					var n = this.colresize.n;
 					var diff = e.pageX - this.colresize.startX;
