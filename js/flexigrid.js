@@ -64,6 +64,9 @@
                     }
                 }
             },
+            getGridClass: function(g) { //get the grid class, always returns g
+                return g;
+            },
             datacol: {}, //datacol middleware object 'colkey': function(colval) {}
             colResize: true //from: http://stackoverflow.com/a/10615589
 		}, p);
@@ -820,7 +823,10 @@
 			},
 			pager: 0
 		};
-		if (p.colModel) { //create model if any
+        
+		g = p.getGridClass(g); //get the grid class
+        
+        if (p.colModel) { //create model if any
 			thead = document.createElement('thead');
 			var tr = document.createElement('tr');
 			for (var i = 0; i < p.colModel.length; i++) {
