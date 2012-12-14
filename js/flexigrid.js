@@ -8,7 +8,7 @@
  */
 (function ($) {
     $.addFlex = function (t, p) {
-    	if (t.grid) return false; //return if already exist
+        if (t.grid) return false; //return if already exist
 		p = $.extend({ //apply default properties
 			height: 200, //default height
 			width: 'auto', //auto width
