@@ -74,17 +74,16 @@
 				var cdpad = this.cdpad;
 				$('div', g.cDrag).hide();
 				$('thead tr:first th:visible', this.hDiv).each(function () {
-					var n = $('thead tr:first th:visible', g.hDiv).index(this);
-					var cdpos = parseInt($('div', this).width());
-					if (cdleft == 0) cdleft -= Math.floor(p.cgwidth / 2);
-					cdpos = cdpos + cdleft + cdpad;
-					if (isNaN(cdpos)) {
-						cdpos = 0;
-					}
-					$('div:eq(' + n + ')', g.cDrag).css({
-						'left': cdpos + 'px'
-					}).show();
-					cdleft = cdpos;
+                    var collWidth = $(this).outerWidth(true);
+                    var handlerHalfWidth = Math.floor(p.cgwidth/2);
+                    var left = (i===0)? Math.ceil(collWidth-handlerHalfWidth) :
+                                        Math.ceil($(this).position().left + collWidth-handlerHalfWidth) ;
+                    var n = $('thead tr:first th:visible', g.hDiv).index(this);
+                    if (isNaN(left)) left = 0;
+                    $('div:eq(' + n + ')', g.cDrag).css({
+                        'left': left + 'px'
+                    }).show();
+                    cdleft = left;
 				});
 			},
 			fixHeight: function (newH) {
