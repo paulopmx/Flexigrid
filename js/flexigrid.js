@@ -324,6 +324,7 @@
 				this.loading = false;
 				if (!data) {
 					$('.pPageStat', this.pDiv).html(p.errormsg);
+                    if (p.onSuccess) p.onSuccess(this);
 					return false;
 				}
 				if (p.dataType == 'xml') {
@@ -338,6 +339,7 @@
 					p.page = 1;
 					this.buildpager();
 					$('.pPageStat', this.pDiv).html(p.nomsg);
+                    if (p.onSuccess) p.onSuccess(this);
 					return false;
 				}
 				p.pages = Math.ceil(p.total / p.rp);
