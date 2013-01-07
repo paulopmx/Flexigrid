@@ -154,7 +154,7 @@
 					}
 					$(this.colCopy).css({
 						position: 'absolute',
-						float: 'left',
+						'float': 'left',
 						display: 'none',
 						textAlign: obj.align
 					});
