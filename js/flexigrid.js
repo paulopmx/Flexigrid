@@ -74,17 +74,16 @@
 				var cdpad = this.cdpad;
 				$('div', g.cDrag).hide();
 				$('thead tr:first th:visible', this.hDiv).each(function () {
-					var n = $('thead tr:first th:visible', g.hDiv).index(this);
-					var cdpos = parseInt($('div', this).width());
-					if (cdleft == 0) cdleft -= Math.floor(p.cgwidth / 2);
-					cdpos = cdpos + cdleft + cdpad;
-					if (isNaN(cdpos)) {
-						cdpos = 0;
-					}
-					$('div:eq(' + n + ')', g.cDrag).css({
-						'left': cdpos + 'px'
-					}).show();
-					cdleft = cdpos;
+                    var collWidth = $(this).outerWidth(true);
+                    var handlerHalfWidth = Math.floor(p.cgwidth/2);
+                    var left = (i===0)? Math.ceil(collWidth-handlerHalfWidth) :
+                                        Math.ceil($(this).position().left + collWidth-handlerHalfWidth) ;
+                    var n = $('thead tr:first th:visible', g.hDiv).index(this);
+                    if (isNaN(left)) left = 0;
+                    $('div:eq(' + n + ')', g.cDrag).css({
+                        'left': left + 'px'
+                    }).show();
+                    cdleft = left;
 				});
 			},
 			fixHeight: function (newH) {
@@ -154,7 +153,7 @@
 					}
 					$(this.colCopy).css({
 						position: 'absolute',
-						float: 'left',
+						'float': 'left',
 						display: 'none',
 						textAlign: obj.align
 					});
@@ -324,6 +323,7 @@
 				this.loading = false;
 				if (!data) {
 					$('.pPageStat', this.pDiv).html(p.errormsg);
+                    if (p.onSuccess) p.onSuccess(this);
 					return false;
 				}
 				if (p.dataType == 'xml') {
@@ -338,6 +338,7 @@
 					p.page = 1;
 					this.buildpager();
 					$('.pPageStat', this.pDiv).html(p.nomsg);
+                    if (p.onSuccess) p.onSuccess(this);
 					return false;
 				}
 				p.pages = Math.ceil(p.total / p.rp);
@@ -921,6 +922,7 @@
 					$(tDiv2).append("<div class='btnseparator'></div>");
 				}
 			}
+            g.tDiv2 = tDiv2;
 			$(g.tDiv).append(tDiv2);
 			$(g.tDiv).append("<div style='clear:both'></div>");
 			$(g.gDiv).prepend(g.tDiv);
