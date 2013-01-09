@@ -922,6 +922,7 @@
 					$(tDiv2).append("<div class='btnseparator'></div>");
 				}
 			}
+            g.tDiv2 = tDiv2;
 			$(g.tDiv).append(tDiv2);
 			$(g.tDiv).append("<div style='clear:both'></div>");
 			$(g.gDiv).prepend(g.tDiv);
