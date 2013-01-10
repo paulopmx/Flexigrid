@@ -72,6 +72,7 @@
 					top: g.hDiv.offsetTop + 1
 				});
 				var cdpad = this.cdpad;
+				var cdcounter
 				$('div', g.cDrag).hide();
 				$('thead tr:first th:visible', this.hDiv).each(function () {
 					var n = $('thead tr:first th:visible', g.hDiv).index(this);
@@ -82,9 +83,10 @@
 						cdpos = 0;
 					}
 					$('div:eq(' + n + ')', g.cDrag).css({
-						'left': cdpos + 'px'
+						'left': (!($.browser.mozilla) ? cdpos - cdcounter : cdpos) + 'px'
 					}).show();
 					cdleft = cdpos;
+					cdcounter++;
 				});
 			},
 			fixHeight: function (newH) {
