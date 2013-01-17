@@ -307,7 +307,7 @@
 				var ncol = $("th[axis='col" + cid + "']", this.hDiv)[0];
 				var n = $('thead th', g.hDiv).index(ncol);
 				var cb = $('input[value=' + cid + ']', g.nDiv)[0];
-				if (visible === null) {
+				if (visible == null) {
 					visible = ncol.hidden;
 				}
 				if ($('input:checked', g.nDiv).length < p.minColToggle && !visible) {
