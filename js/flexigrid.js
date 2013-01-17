@@ -113,7 +113,7 @@
 					top: g.hDiv.offsetTop + 1
 				});
 				var cdpad = this.cdpad;
-				var cdcounter
+				var cdcounter=0;
 				$('div', g.cDrag).hide();
 				$('thead tr:first th:visible', this.hDiv).each(function () {
 					var n = $('thead tr:first th:visible', g.hDiv).index(this);
