@@ -555,6 +555,11 @@ div.pGroup {
 	vertical-align: text-top;
 	position: relative;
 	top: -5px;
+	margin: 3px;
+}
+
+.flexigrid div.pDiv select {
+	margin: 3px;
 }
 
 .flexigrid div.pDiv  div.pButton {
