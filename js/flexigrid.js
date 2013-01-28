@@ -7,6 +7,44 @@
  *
  */
 (function ($) {
+	/*
+	 * jQuery 1.9 support. browser object has been removed in 1.9 
+	 */
+	var browser = $.browser
+	
+	if (!browser) {
+		function uaMatch( ua ) {
+			ua = ua.toLowerCase();
+
+			var match = /(chrome)[ \/]([\w.]+)/.exec( ua ) ||
+				/(webkit)[ \/]([\w.]+)/.exec( ua ) ||
+				/(opera)(?:.*version|)[ \/]([\w.]+)/.exec( ua ) ||
+				/(msie) ([\w.]+)/.exec( ua ) ||
+				ua.indexOf("compatible") < 0 && /(mozilla)(?:.*? rv:([\w.]+)|)/.exec( ua ) ||
+				[];
+
+			return {
+				browser: match[ 1 ] || "",
+				version: match[ 2 ] || "0"
+			};
+		};
+
+		var matched = uaMatch( navigator.userAgent );
+		browser = {};
+
+		if ( matched.browser ) {
+			browser[ matched.browser ] = true;
+			browser.version = matched.version;
+		}
+
+		// Chrome is Webkit, but Webkit is also Safari.
+		if ( browser.chrome ) {
+			browser.webkit = true;
+		} else if ( browser.webkit ) {
+			browser.safari = true;
+		}
+	}
+	
     /*!
      * START code from jQuery UI
      *
@@ -124,7 +162,7 @@
 						cdpos = 0;
 					}
 					$('div:eq(' + n + ')', g.cDrag).css({
-						'left': (!($.browser.mozilla) ? cdpos - cdcounter : cdpos) + 'px'
+						'left': (!(browser.mozilla) ? cdpos - cdcounter : cdpos) + 'px'
 					}).show();
 					cdleft = cdpos;
 					cdcounter++;
@@ -194,7 +232,7 @@
                         this.colCopy = document.createElement("div");
                         this.colCopy.className = "colCopy";
                         this.colCopy.innerHTML = obj.innerHTML;
-                        if ($.browser.msie) {
+                        if (browser.msie) {
                             this.colCopy.className = "colCopy ie";
                         }
                         $(this.colCopy).css({
@@ -307,7 +345,7 @@
 				var ncol = $("th[axis='col" + cid + "']", this.hDiv)[0];
 				var n = $('thead th', g.hDiv).index(ncol);
 				var cb = $('input[value=' + cid + ']', g.nDiv)[0];
-				if (visible === null) {
+				if (visible == null) {
 					visible = ncol.hidden;
 				}
 				if ($('input:checked', g.nDiv).length < p.minColToggle && !visible) {
@@ -350,7 +388,7 @@
 				} else {
 					$('tr:eq(' + cdrop + ')', this.nDiv).after($('tr:eq(' + cdrag + ')', this.nDiv));
 				}
-				if ($.browser.msie && $.browser.version < 7.0) {
+				if (browser.msie && browser.version < 7.0) {
 					$('tr:eq(' + cdrop + ') input', this.nDiv)[0].checked = true;
 				}
 				this.hDiv.scrollLeft = this.bDiv.scrollLeft;
@@ -439,7 +477,7 @@
 							}
 						);
 						if ($('thead', this.gDiv).length < 1) {//handle if grid has no headers
-							for (idx = 0; idx < cell.length; idx++) {
+							for (idx = 0; idx < row.cell.length; idx++) {
 								var td = document.createElement('td');
 								// If the json elements aren't named (which is typical), use numeric order
 								if (typeof row.cell[idx] != "undefined") {
@@ -515,7 +553,7 @@
 					$(g.block).remove();
 				}
 				this.hDiv.scrollLeft = this.bDiv.scrollLeft;
-				if ($.browser.opera) {
+				if (browser.opera) {
 					$(t).css('visibility', 'visible');
 				}
 			},
@@ -579,7 +617,7 @@
 				if (p.hideOnSubmit) {
 					$(this.gDiv).prepend(g.block);
 				}
-				if ($.browser.opera) {
+				if (browser.opera) {
 					$(t).css('visibility', 'hidden');
 				}
 				if (!p.newp) {
@@ -771,7 +809,7 @@
 						$(this).toggleClass('trSelected');
 					}
 				}, function () {});
-				if ($.browser.msie && $.browser.version < 7.0) {
+				if (browser.msie && browser.version < 7.0) {
 					$(this).hover(function () {
 						$(this).addClass('trOver');
 					}, function () {
@@ -928,7 +966,7 @@
 			g.gDiv.style.width = p.width + isNaN(p.width) ? '' : 'px';
 		} 
 		//add conditional classes
-		if ($.browser.msie) {
+		if (browser.msie) {
 			$(g.gDiv).addClass('ie');
 		}
 		if (p.novstripe) {
@@ -968,7 +1006,7 @@
 						});
 					}
 					$(tDiv2).append(btnDiv);
-					if ($.browser.msie && $.browser.version < 7.0) {
+					if (browser.msie && browser.version < 7.0) {
 						$(btnDiv).hover(function () {
 							$(this).addClass('fbOver');
 						}, function () {
@@ -1173,7 +1211,7 @@
                     }).dblclick(function(e) {
                         g.autoResizeColumn(this);
                     });
-                    if ($.browser.msie && $.browser.version < 7.0) {
+                    if (browser.msie && browser.version < 7.0) {
                         g.fixHeight($(g.gDiv).height());
                         $(cgDiv).hover(function() {
                             g.fixHeight();
@@ -1203,7 +1241,7 @@
 			$(g.rDiv).mousedown(function (e) {
 				g.dragStart('vresize', e, true);
 			}).html('<span></span>').css('height', $(g.gDiv).height());
-			if ($.browser.msie && $.browser.version < 7.0) {
+			if (browser.msie && browser.version < 7.0) {
 				$(g.rDiv).hover(function () {
 					$(this).addClass('hgOver');
 				}, function () {
@@ -1239,7 +1277,7 @@
                     g.changePage('input');
 				}
 			});
-			if ($.browser.msie && $.browser.version < 7) $('.pButton', g.pDiv).hover(function () {
+			if (browser.msie && browser.version < 7) $('.pButton', g.pDiv).hover(function () {
 				$(this).addClass('pBtnOver');
 			}, function () {
 				$(this).removeClass('pBtnOver');
@@ -1362,7 +1400,7 @@
 				$('tbody', g.nDiv).append('<tr><td class="ndcol1"><input type="checkbox" ' + chk + ' class="togCol" value="' + cn + '" /></td><td class="ndcol2">' + this.innerHTML + '</td></tr>');
 				cn++;
 			});
-			if ($.browser.msie && $.browser.version < 7.0) $('tr', g.nDiv).hover(function () {
+			if (browser.msie && browser.version < 7.0) $('tr', g.nDiv).hover(function () {
 				$(this).addClass('ndcolover');
 			}, function () {
 				$(this).removeClass('ndcolover');
@@ -1415,7 +1453,7 @@
 			g.dragEnd();
 		});
 		//browser adjustments
-		if ($.browser.msie && $.browser.version < 7.0) {
+		if (browser.msie && browser.version < 7.0) {
 			$('.hDiv,.bDiv,.mDiv,.pDiv,.vGrip,.tDiv, .sDiv', g.gDiv).css({
 				width: '100%'
 			});
@@ -1476,22 +1514,22 @@
 		var prevent = (p === null) ? true : p;
 		if (prevent) {
 			return this.each(function () {
-				if ($.browser.msie || $.browser.safari) $(this).bind('selectstart', function () {
+				if (browser.msie || browser.safari) $(this).bind('selectstart', function () {
 					return false;
 				});
-				else if ($.browser.mozilla) {
+				else if (browser.mozilla) {
 					$(this).css('MozUserSelect', 'none');
 					$('body').trigger('focus');
-				} else if ($.browser.opera) $(this).bind('mousedown', function () {
+				} else if (browser.opera) $(this).bind('mousedown', function () {
 					return false;
 				});
 				else $(this).attr('unselectable', 'on');
 			});
 		} else {
 			return this.each(function () {
-				if ($.browser.msie || $.browser.safari) $(this).unbind('selectstart');
-				else if ($.browser.mozilla) $(this).css('MozUserSelect', 'inherit');
-				else if ($.browser.opera) $(this).unbind('mousedown');
+				if (browser.msie || browser.safari) $(this).unbind('selectstart');
+				else if (browser.mozilla) $(this).css('MozUserSelect', 'inherit');
+				else if (browser.opera) $(this).unbind('mousedown');
 				else $(this).removeAttr('unselectable', 'on');
 			});
 		}
