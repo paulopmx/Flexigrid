@@ -1004,7 +1004,6 @@
 				$(this).attr('axis', 'col' + ci++);
 			}
 			$(thdiv).css({
-				textAlign: this.align,
 				width: this.width + 'px'
 			});
 			thdiv.innerHTML = this.innerHTML;
