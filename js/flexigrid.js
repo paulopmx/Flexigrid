@@ -1095,6 +1095,13 @@
 			if (!p.colmodel) {
 				$(this).attr('axis', 'col' + ci++);
 			}
+			
+			// if there isn't a default width, then the column headers don't match
+			// i'm sure there is a better way, but this at least stops it failing
+			if (this.width == '') {
+				this.width = 100;
+			}
+			
 			$(thdiv).css({
 				textAlign: this.align,
 				width: this.width + 'px'
