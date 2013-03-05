@@ -80,13 +80,13 @@ require('bitfactory').make(router([
                 }
             });
         },
-        "writecss": ["less", function(cb) {
-            fs.writeFile('./css/flexigrid.pack.css', lesstree.toCSS({yuicompress: true}), 'utf8', function(err) {
+        "writecss": ["header", "less", function(cb) {
+            fs.writeFile('./css/flexigrid.pack.css', header + lesstree.toCSS({yuicompress: true}), 'utf8', function(err) {
                 cb(err);
             });
         }],
-        "writecss-min": ["less", function(cb) {
-            fs.writeFile('./css/flexigrid.css', lesstree.toCSS(), 'utf8', function(err) {
+        "writecss-min": ["header", "less", function(cb) {
+            fs.writeFile('./css/flexigrid.css', header + lesstree.toCSS(), 'utf8', function(err) {
                 cb(err);
             });
         }],
