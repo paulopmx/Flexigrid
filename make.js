@@ -3,26 +3,49 @@
  * Dual licensed under the MIT or GPL Version 2 licenses.
  * http://jquery.org/license
  * 
- * Depends on nodejs, bitfactory, stoptime, and uglify-js
- * npm install bitfactory stoptime uglify-js
+ * Depends on nodejs, bitfactory, stoptime, uglify-js, and less
+ * npm install bitfactory stoptime uglify-js less
  */
  
- var UglifyJS = require('uglify-js'),
-     fs = require('fs'),
-     stoptime = require('stoptime'),
-     ugly, header;
+var UglifyJS = require('uglify-js'),
+    less = require('less'),
+    stoptime = require('stoptime'),
+    fs = require('fs'),
+    exec = require('child_process').exec,
+    ugly, header, lesstree;
 
-require('bitfactory').make({ //routes
-    "": function(err, results) {
+var final = function(_tag) {
+    var tag = '';
+    
+    if((typeof _tag !== 'undefined') &&  (_tag !== '')) {
+        tag = ' (' + _tag + ')';
+    }
+    
+    return function(err, results) {
         var timer = results[0]['timer'];
         
         if(err) {
             console.error(err);
         } else {
-            console.log('built Flexigrid in ' + timer.elapsed() + 'ms');
+            console.log('built Flexigrid' + tag +' in ' + timer.elapsed() + 'ms');
         }
-    },
-}, { //dependencies
+    };
+};
+
+var router = function(routes) {
+    var _obj = {};
+    
+    routes.forEach(function(v, i, a) {
+        _obj[v] = final(v);
+    });
+    
+    return _obj;
+};
+
+require('bitfactory').make(router([
+    '',
+    'lampp'
+]), { //dependencies
     "*": { //wildcard
         "timer": function(cb) {
             cb(null, stoptime());
@@ -41,9 +64,51 @@ require('bitfactory').make({ //routes
             ugly = UglifyJS.minify('./js/flexigrid.js');
             cb();
         },
-        "write": ["header", "uglify", function(cb) {
-            fs.writeFile('./js/flexigrid.pack.js', header + ugly.code, 'utf8', function(err) {
+        "less": function(cb) {
+            fs.readFile('./css/flexigrid.less', 'utf8', function(err, data) {
                 if(err) {
+                    cb(err);
+                } else {
+                    (new less.Parser()).parse(data, function(err, tree) {
+                        if(err) {
+                            cb(err);
+                        } else {
+                            lesstree = tree;
+                            cb();
+                        }
+                    });
+                }
+            });
+        },
+        "writecss": ["less", function(cb) {
+            fs.writeFile('./css/flexigrid.pack.css', lesstree.toCSS({yuicompress: true}), 'utf8', function(err) {
+                cb(err);
+            });
+        }],
+        "writecss-min": ["less", function(cb) {
+            fs.writeFile('./css/flexigrid.css', lesstree.toCSS(), 'utf8', function(err) {
+                cb(err);
+            });
+        }],
+        "writejs": ["header", "uglify", function(cb) {
+            fs.writeFile('./js/flexigrid.pack.js', header + ugly.code, 'utf8', function(err) {
+                cb(err);
+            });
+        }]
+    },
+    "lampp": {
+        "rm": function(cb) {
+            exec('rm -R /opt/lampp/htdocs/flexigrid/*', function(err, stdout, stderr) {
+                if(err !== null) {
+                    cb(err);
+                } else {
+                    cb();
+                }
+            });
+        },
+        "cp": ["rm", function(cb) {
+            exec('cp -R * /opt/lampp/htdocs/flexigrid', function(err, stdout, stderr) {
+                if(err !== null) {
                     cb(err);
                 } else {
                     cb();
