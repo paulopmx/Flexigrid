@@ -7,8 +7,8 @@
  *
  */
 (function ($) {
-	/*
-	 * jQuery 1.9 support. browser object has been removed in 1.9 
+    /*
+     * jQuery 1.9 support. browser object has been removed in 1.9 
 	 */
 	var browser = $.browser
 	
@@ -477,6 +477,7 @@
 								}
 
 								$(td).attr('abbr', $(this).attr('abbr'));
+                                g.addCellPropFast(td, tr, idx);
 								$(tr).append(td);
 								td = null;
 							}
@@ -490,7 +491,7 @@
 								} else {
 									td.innerHTML = row.cell[p.colModel[idx].name];
 								}
-                                g.addCellPropFast(td, tr, i);
+                                g.addCellPropFast(td, tr, idx);
 								$(tr).append(td);
 								td = null;
 							}
@@ -547,7 +548,6 @@
 				$('tr', t).unbind();
 				$(t).empty();
 				$(t).append(tbody);
-				//this.addCellProp();
 				this.addRowProp();
 				this.rePosDrag();
 				tbody = null;
