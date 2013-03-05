@@ -7,13 +7,11 @@
     	<link rel="stylesheet" type="text/css" href="../css/flexigrid.pack.css" />
     	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
         <script type="text/javascript" src="https://raw.github.com/daxxog/stoptime/master/stoptime.min.js"></script>
-    	<script type="text/javascript" src="../js/flexigrid.js"></script>
+    	<script type="text/javascript" src="https://raw.github.com/paulopmx/Flexigrid/88e84051616a2d274d8d210e405d14e1123e27ae/js/flexigrid.js"></script>
 	</head>
 	<body>
         <table class="flexme3" style="display: none"></table>
 	    <script type="text/javascript">
-            var _ = {}; //namespacer
-            
             $(function() {
                 var ev = {};
                 ev = function(e, cb) { //run / on event
@@ -43,6 +41,8 @@
                         }
                     }
                 };
+                
+                var _ = {}; //namespacer
                 
                 _.gc = {};
                 _.gridClassFactory = function(what) {
