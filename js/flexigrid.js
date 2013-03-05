@@ -7,8 +7,8 @@
  *
  */
 (function ($) {
-	/*
-	 * jQuery 1.9 support. browser object has been removed in 1.9 
+    /*
+     * jQuery 1.9 support. browser object has been removed in 1.9 
 	 */
 	var browser = $.browser
 	
@@ -435,19 +435,24 @@
 				this.buildpager();
 				//build new body
 				var tbody = document.createElement('tbody');
+                
+                var rowTemplate = function() { //row template
+                    var tr = document.createElement('tr');
+                };
+                
 				if (p.dataType == 'json') {
 					$.each(data.rows, function (i, row) {
 						var tr = document.createElement('tr');
 						if (row.name) tr.name = row.name;
 						if (row.color) {
-							$(tr).css('background',row.color);
+							$(tr).css('background', row.color);
 						} else {
 							if (i % 2 && p.striped) tr.className = 'erow';
 						}
 						if (row[p.idProperty]) {
 							tr.id = 'row' + row[p.idProperty];
 						}
-						$('thead tr:first th', g.hDiv).each( //add cell
+						g.cacheSel('thead tr:first th', 'hDiv').each( //add cell
 							function () {
 								var td = document.createElement('td');
 								var idx = $(this).attr('axis').substr(3);
@@ -472,6 +477,7 @@
 								}
 
 								$(td).attr('abbr', $(this).attr('abbr'));
+                                g.addCellPropFast(td, tr, idx);
 								$(tr).append(td);
 								td = null;
 							}
@@ -485,6 +491,7 @@
 								} else {
 									td.innerHTML = row.cell[p.colModel[idx].name];
 								}
+                                g.addCellPropFast(td, tr, idx);
 								$(tr).append(td);
 								td = null;
 							}
@@ -499,7 +506,7 @@
 						var tr = document.createElement('tr');
 						if ($(this).attr('name')) tr.name = $(this).attr('name');
 						if ($(this).attr('color')) {
-							$(tr).css('background',$(this).attr('id'));
+							$(tr).css('background', $(this).attr('id'));
 						} else {
 							if (i % 2 && p.striped) tr.className = 'erow';
 						}
@@ -509,7 +516,7 @@
 						}
 						nid = null;
 						var robj = this;
-						$('thead tr:first th', g.hDiv).each(function () {
+						g.cacheSel('thead tr:first th', 'hDiv').each(function(i, e) {
 							var td = document.createElement('td');
 							var idx = $(this).attr('axis').substr(3);
 							td.align = this.align;
@@ -521,6 +528,7 @@
 							}
                             td.innerHTML = p.__mw.datacol(p, $(this).attr('abbr'), text); //use middleware datacol to format cols
 							$(td).attr('abbr', $(this).attr('abbr'));
+                            g.addCellPropFast(td, tr, i);
 							$(tr).append(td);
 							td = null;
 						});
@@ -540,7 +548,6 @@
 				$('tr', t).unbind();
 				$(t).empty();
 				$(t).append(tbody);
-				this.addCellProp();
 				this.addRowProp();
 				this.rePosDrag();
 				tbody = null;
@@ -715,31 +722,36 @@
 					this.populate();
 				}
 			},
-			addCellProp: function () {
-				$('tbody tr td', g.bDiv).each(function () {
-					var tdDiv = document.createElement('div');
-					var n = $('td', $(this).parent()).index(this);
-					var pth = $('th:eq(' + n + ')', g.hDiv).get(0);
+            addCellPropFast: function(td, prnt, n) {
+                    var tdDiv = document.createElement('div'),
+                        that = $(td),
+                        _css = {};
+					var pth = g.cacheSel('th:eq(' + n + ')', 'hDiv').get(0);
+                    
+                    if(typeof g['pnDiv' + n] == 'undefined') {
+                        g['pnDiv' + n] = pth;
+                    }
+                    
 					if (pth != null) {
 						if (p.sortname == $(pth).attr('abbr') && p.sortname) {
-							this.className = 'sorted';
+							td.className = 'sorted';
 						}
-						$(tdDiv).css({
-							textAlign: pth.align,
-							width: $('div:first', pth)[0].style.width
-						});
-						if (pth.hidden) {
-							$(this).css('display', 'none');
+                        _css['textAlign'] = pth.align;
+                        _css['width'] = g.cacheSel('div:first', 'pnDiv' + n)[0].style.width; //:first selector is SLOW, cache it
+						if(pth.hidden) {
+							$(td).css('display', 'none');
 						}
 					}
 					if (p.nowrap == false) {
-						$(tdDiv).css('white-space', 'normal');
+                        _css['white-space'] =  'normal';
 					}
-					if (this.innerHTML == '') {
-						this.innerHTML = '&nbsp;';
+					if (td.innerHTML == '') {
+						td.innerHTML = '&nbsp;';
 					}
-					tdDiv.innerHTML = this.innerHTML;
-					var prnt = $(this).parent()[0];
+                    
+                    $(tdDiv).css(_css);
+					tdDiv.innerHTML = td.innerHTML;
+                    
 					var pid = false;
 					if (prnt.id) {
 						pid = prnt.id.substr(3);
@@ -747,8 +759,14 @@
 					if (pth != null) {
 						if (pth.process) pth.process(tdDiv, pid);
 					}
-					$(this).empty().append(tdDiv).removeAttr('width'); //wrap content
+					that.empty().append(tdDiv).removeAttr('width'); //wrap content
 					g.addTitleToCell(tdDiv);
+            },
+			addCellProp: function () {
+				$('tbody tr td', g['bDiv']).each(function () {
+                    var par = $(this).parent(),
+                    n = $('td', par).index(this);
+                    g.addCellPropFast(this, par[0], n);
 				});
 			},
 			getCellDim: function (obj) {// get cell prop for editable event
@@ -953,6 +971,17 @@
 		g.sDiv = document.createElement('div');
 		g.pDiv = document.createElement('div'); //create pager container
         
+        g._cacheSel = {};
+        g.cacheSel = function(sel, div) {
+            var hash = sel + '_' + div;
+            
+            if(typeof g._cacheSel[hash] == 'undefined') {
+                g._cacheSel[hash] = $(sel, g[div]);
+            }
+            
+            return g._cacheSel[hash];
+        };
+        
         if(p.colResize === false) { //don't display column drag if we are not using it
             $(g.cDrag).css('display', 'none');
         }
@@ -1075,7 +1104,7 @@
 		if (thead) $(g.hTable).append(thead);
 		thead = null;
 		if (!p.colmodel) var ci = 0;
-		$('thead tr:first th', g.hDiv).each(function () {
+		g.cacheSel('thead tr:first th', 'hDiv').each(function () {
 			var thdiv = document.createElement('div');
 			if ($(this).attr('abbr')) {
 				$(this).click(function (e) {
@@ -1205,7 +1234,7 @@
                 $(g.cDrag).css({
                     top: -hdheight + 'px'
                 });
-                $('thead tr:first th', g.hDiv).each(function() {
+                g.cacheSel('thead tr:first th', 'hDiv').each(function() {
                     var cgDiv = document.createElement('div');
                     $(g.cDrag).append(cgDiv);
                     if (!p.cgwidth) {
