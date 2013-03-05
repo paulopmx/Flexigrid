@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+	<head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title>Flexigrid</title>
+    	<link rel="stylesheet" href="style.css" />
+    	<link rel="stylesheet" type="text/css" href="../css/flexigrid.pack.css" />
+    	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+        <script type="text/javascript" src="https://raw.github.com/daxxog/stoptime/master/stoptime.min.js"></script>
+    	<script type="text/javascript" src="../js/flexigrid.pack.js"></script>
+	</head>
+	<body>
+        <table class="flexme3" style="display: none"></table>
+	    <script type="text/javascript">
+            $(function() {
+                var ev = {};
+                ev = function(e, cb) { //run / on event
+                    if(typeof ev._ == 'undefined') {
+                        ev._ = {};
+                    }
+                    
+                    if(typeof e == 'string') {
+                        if(!$.isArray(ev._[e])) {
+                            ev._[e] = [];
+                        }
+                        
+                        if(typeof cb == 'function') { //if we have a function
+                            return ev._[e].push(cb); //push it on the stack
+                        } else if(cb === 'k') { //if we want to kill an event now
+                            ev._[e].forEach(function(v, i, a) { // loop and
+                                delete ev._[e][i];              // kill all events
+                            });
+                        } else { //execute event
+                            ev._[e].forEach(function(v, i, a) { // loop and
+                                if(typeof v == 'function') { //find functions
+                                    if(v() === 'k') { //if we should kill this function after running
+                                        delete ev._[e][i]; //delete the function
+                                    }
+                                }
+                            });
+                        }
+                    }
+                };
+                
+                var _ = {}; //namespacer
+                
+                _.gc = {};
+                _.gridClassFactory = function(what) {
+                    return function(g) {
+                        var _gc = what,
+                            _addData = g.addData;
+                        _.gc[_gc] = g;
+                        
+                        g.addData = function() {
+                            _addData.apply(this, arguments);
+                            ev('addData-done');
+                        };
+                        
+                        return g;
+                    };
+                };
+                
+                _.timer = stoptime();
+                _.speedTest = function(com, grid) {
+                    _.timer.reset();
+                    _.gc.speedtest.populate();
+                    ev('addData-done', function() {
+                        console.log('grid took ' + _.timer.elapsed() + 'ms to render!');
+                        
+                        return 'k';
+                    });
+                };
+                
+                $(".flexme3").flexigrid({
+                    url: 'post-xml.php',
+                    dataType: 'xml',
+                    getGridClass: _.gridClassFactory('speedtest'),
+                    colModel: [{
+                        display: 'ISO',
+                        name: 'iso',
+                        width: 40,
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: 'Name',
+                        name: 'name',
+                        width: 180,
+                        sortable: true,
+                        align: 'left'
+                    }, {
+                        display: 'Printable Name',
+                        name: 'printable_name',
+                        width: 120,
+                        sortable: true,
+                        align: 'left'
+                    }, {
+                        display: 'ISO3',
+                        name: 'iso3',
+                        width: 130,
+                        sortable: true,
+                        align: 'left',
+                        hide: true
+                    }, {
+                        display: 'Number Code',
+                        name: 'numcode',
+                        width: 80,
+                        sortable: true,
+                        align: 'right'
+                    }],
+                    buttons: [{
+                        name: 'Run speed test',
+                        bclass: 'add',
+                        onpress: _.speedTest
+                    }],
+                    searchitems: [{
+                        display: 'ISO',
+                        name: 'iso'
+                    }, {
+                        display: 'Name',
+                        name: 'name',
+                        isdefault: true
+                    }],
+                    sortname: "iso",
+                    sortorder: "asc",
+                    usepager: true,
+                    title: 'Countries',
+                    useRp: true,
+                    rp: 15,
+                    showTableToggleBtn: true,
+                    width: 700,
+                    height: 200
+                });
+            });
+        </script>
+	</body>
+</html>
