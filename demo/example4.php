@@ -23,6 +23,20 @@
         $_SESSION['Example4'] = $rows;
 
     }
+    elseif(isset($_GET['Edit'])){ // this is for Editing records
+        $rows = $_SESSION['Example4'];
+        
+        unset($rows[trim($_GET['OrgEmpID'])]);  // just delete the original entry and add.
+        
+        $rows[$_GET['EmpID']] = 
+        array(
+            'name'=>$_GET['Name']
+            , 'favorite_color'=>$_GET['FavoriteColor']
+            , 'favorite_pet'=>$_GET['FavoritePet']
+            , 'primary_language'=>$_GET['PrimaryLanguage']
+        );
+        $_SESSION['Example4'] = $rows;
+    }
     elseif(isset($_GET['Delete'])){ // this is for removing records
         $rows = $_SESSION['Example4'];
         unset($rows[trim($_GET['Delete'])]);  // to remove the \n
