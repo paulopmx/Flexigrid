@@ -257,12 +257,12 @@
 
         <h2>Example 3</h2>
         <p>
-            Flexigrid with dynamic data, paging, search, toolbar, and connected to an JSON file.
+            Flexigrid with dynamic data, paging, search, toolbar, and connected to an XML file.
             (<a href="#" onclick="$(this).parent().next().toggle(); return false;">Show sample code</a>)
         </p>
         <div class="code">
             <pre>
-               $(".flexme3").flexigrid({
+            $(".flexme3").flexigrid({
                 url : 'post-xml.php',
                 dataType : 'xml',
                 colModel : [ {
@@ -325,11 +325,127 @@
                 showTableToggleBtn : true,
                 width : 700,
                 height : 200
-            });
+            });      
+
+            function test(com, grid) {
+                if (com == 'Delete') {
+                    confirm('Delete ' + $('.trSelected', grid).length + ' items?')
+                } else if (com == 'Add') {
+                    alert('Add New Item');
+                }
+            }
             </pre>
         </div>
         <table class="flexme3" style="display: none"></table>
-       
+
+
+        <h2>Example 4</h2>
+        <p>
+            Flexigrid with dynamic data, paging, search, toolbar, and connected to a php-session based JSON file.
+            (<a href="#" onclick="$(this).parent().next().toggle(); return false;">Show sample code</a>)
+        </p>
+        <div class="code">
+            <pre>
+            $(".flexme4").flexigrid({
+                url : 'example4.php',
+                dataType : 'json',
+                colModel : [ {
+                    display : 'EmployeeID',
+                    name : 'employeeID',
+                    width : 90,
+                    sortable : true,
+                    align : 'center'
+                    }, {
+                        display : 'Name',
+                        name : 'name',
+                        width : 180,
+                        sortable : true,
+                        align : 'left'
+                    }, {
+                        display : 'Primary Language',
+                        name : 'primary_language',
+                        width : 120,
+                        sortable : true,
+                        align : 'left'
+                    }, {
+                        display : 'Favorite Color',
+                        name : 'favorite_color',
+                        width : 130,
+                        sortable : true,
+                        align : 'left',
+                        hide : true
+                    }, {
+                        display : 'Favorite Animal',
+                        name : 'favorite_pet',
+                        width : 80,
+                        sortable : true,
+                        align : 'right'
+                } ],
+                buttons : [ {
+                    name : 'Add',
+                    bclass : 'add',
+                    onpress : Example4
+                    }, {
+                        name : 'Delete',
+                        bclass : 'delete',
+                        onpress : Example4
+                    }, {
+                        separator : true
+                } ],
+                searchitems : [ {
+                    display : 'EmployeeID',
+                    name : 'employeeID'
+                    }, {
+                        display : 'Name',
+                        name : 'name',
+                        isdefault : true
+                } ],
+                sortname : "iso",
+                sortorder : "asc",
+                usepager : true,
+                title : 'Employees',
+                useRp : true,
+                rp : 15,
+                showTableToggleBtn : true,
+                width : 750,
+                height : 200
+            });
+
+            function Example4(com, grid) {
+                if (com == 'Delete') {
+                    var conf = confirm('Delete ' + $('.trSelected', grid).length + ' items?')
+                    if(conf){
+                        $.each($('.trSelected', grid),
+                            function(key, value){
+                                $.get('example4.php', { Delete: value.firstChild.innerText}
+                                    , function(){
+                                        // when ajax returns (callback), update the grid to refresh the data
+                                        $(".flexme4").flexReload();
+                                });
+                        });    
+                    }
+                } else if (com == 'Add') {
+                    // collect the data
+                    var EmpID = prompt("Please enter the Employee ID","5");
+                    var Name = prompt("Please enter the Employee Name","Mark");
+                    var PrimaryLanguage = prompt("Please enter the Employee's Primary Language","php");
+                    var FavoriteColor = prompt("Please enter the Employee's Favorite Color","Tan");
+                    var FavoriteAnimal = prompt("Please enter the Employee's Favorite Animal","Dog");
+
+                    // call the ajax to save the data to the session
+                    $.get('example4.php', { Add: true, EmpID: EmpID, Name: Name, PrimaryLanguage: PrimaryLanguage, FavoriteColor: FavoriteColor, FavoritePet: FavoriteAnimal  }
+                        , function(){
+                            // when ajax returns (callback), update the grid to refresh the data
+                            $(".flexme4").flexReload();
+                    });
+                }
+            }
+            </pre>
+        </div>
+        <table class="flexme4" style="display: none"></table>
+
+
+
 
         <script type="text/javascript">
             $('.flexme1').flexigrid();
@@ -401,13 +517,108 @@
                 showTableToggleBtn : true,
                 width : 700,
                 height : 200
-            });
+            });      
 
             function test(com, grid) {
                 if (com == 'Delete') {
                     confirm('Delete ' + $('.trSelected', grid).length + ' items?')
                 } else if (com == 'Add') {
                     alert('Add New Item');
+                }
+            }
+
+            $(".flexme4").flexigrid({
+                url : 'example4.php',
+                dataType : 'json',
+                colModel : [ {
+                    display : 'EmployeeID',
+                    name : 'employeeID',
+                    width : 90,
+                    sortable : true,
+                    align : 'center'
+                    }, {
+                        display : 'Name',
+                        name : 'name',
+                        width : 180,
+                        sortable : true,
+                        align : 'left'
+                    }, {
+                        display : 'Primary Language',
+                        name : 'primary_language',
+                        width : 120,
+                        sortable : true,
+                        align : 'left'
+                    }, {
+                        display : 'Favorite Color',
+                        name : 'favorite_color',
+                        width : 130,
+                        sortable : true,
+                        align : 'left',
+                        hide : true
+                    }, {
+                        display : 'Favorite Animal',
+                        name : 'favorite_pet',
+                        width : 80,
+                        sortable : true,
+                        align : 'right'
+                } ],
+                buttons : [ {
+                    name : 'Add',
+                    bclass : 'add',
+                    onpress : Example4
+                    }, {
+                        name : 'Delete',
+                        bclass : 'delete',
+                        onpress : Example4
+                    }, {
+                        separator : true
+                } ],
+                searchitems : [ {
+                    display : 'EmployeeID',
+                    name : 'employeeID'
+                    }, {
+                        display : 'Name',
+                        name : 'name',
+                        isdefault : true
+                } ],
+                sortname : "iso",
+                sortorder : "asc",
+                usepager : true,
+                title : 'Employees',
+                useRp : true,
+                rp : 15,
+                showTableToggleBtn : true,
+                width : 750,
+                height : 200
+            });
+
+            function Example4(com, grid) {
+                if (com == 'Delete') {
+                    var conf = confirm('Delete ' + $('.trSelected', grid).length + ' items?')
+                    if(conf){
+                        $.each($('.trSelected', grid),
+                            function(key, value){
+                                $.get('example4.php', { Delete: value.firstChild.innerText}
+                                    , function(){
+                                        // when ajax returns (callback), update the grid to refresh the data
+                                        $(".flexme4").flexReload();
+                                });
+                        });    
+                    }
+                } else if (com == 'Add') {
+                    // collect the data
+                    var EmpID = prompt("Please enter the Employee ID","5");
+                    var Name = prompt("Please enter the Employee Name","Mark");
+                    var PrimaryLanguage = prompt("Please enter the Employee's Primary Language","php");
+                    var FavoriteColor = prompt("Please enter the Employee's Favorite Color","Tan");
+                    var FavoriteAnimal = prompt("Please enter the Employee's Favorite Animal","Dog");
+
+                    // call the ajax to save the data to the session
+                    $.get('example4.php', { Add: true, EmpID: EmpID, Name: Name, PrimaryLanguage: PrimaryLanguage, FavoriteColor: FavoriteColor, FavoritePet: FavoriteAnimal  }
+                        , function(){
+                            // when ajax returns (callback), update the grid to refresh the data
+                            $(".flexme4").flexReload();
+                    });
                 }
             }
         </script>
