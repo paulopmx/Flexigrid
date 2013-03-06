@@ -436,10 +436,6 @@
 				//build new body
 				var tbody = document.createElement('tbody');
                 
-                var rowTemplate = function() { //row template
-                    var tr = document.createElement('tr');
-                };
-                
 				if (p.dataType == 'json') {
 					$.each(data.rows, function (i, row) {
 						var tr = document.createElement('tr');
