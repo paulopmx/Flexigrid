@@ -97,6 +97,8 @@
 			pagetext: 'Page',
 			outof: 'of',
 			findtext: 'Find',
+			searchtext: 'Search',
+			searchbutton: false,
 			params: [], //allow optional parameters to be passed around
 			procmsg: 'Processing, please wait ...',
 			query: '',
@@ -1332,10 +1334,20 @@
 				if (p.qtype === '') {
 					p.qtype = sitems[0].name;
 				}
+				var div_searchbutton = "";
+				if (p.searchbutton) {
+					div_searchbutton = "<input name='search_button' type='button' value='" + p.searchtext + "'>";	
+				}
+				 
 				$(g.sDiv).append("<div class='sDiv2'>" + p.findtext +
-						" <input type='text' value='" + p.query +"' size='30' name='q' class='qsbox' /> "+
-						" <select name='qtype'>" + sopt + "</select></div>");
+						" <input type='text' value='" + p.query +"' size='30' name='q' class='qsbox' /> " +
+						" <select name='qtype'>" + sopt + "</select>" +
+						div_searchbutton +
+						"</div>");
 				//Split into separate selectors because of bug in jQuery 1.3.2
+				$('input[name=search_button]', g.sDiv).click(function() {
+					g.doSearch();
+				});
 				$('input[name=q]', g.sDiv).keydown(function (e) {
 					if (e.keyCode == 13) {
 						g.doSearch();
