@@ -10,7 +10,7 @@
 	/*
 	 * jQuery 1.9 support. browser object has been removed in 1.9 
 	 */
-	var browser = $.browser
+	var browser = $.browser;
 	
 	if (!browser) {
 		function uaMatch( ua ) {
