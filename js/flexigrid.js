@@ -922,6 +922,15 @@
 					if (cm.width) {
 						$(th).attr('width', cm.width);
 					}
+					
+					//Added new property 'fixCol'
+					//Start
+					
+					if (cm.fixCol) {
+						$(th).attr('title', 'fixCol'+i);  /* set a title to identify as fix */
+					}
+					//End
+					
 					if ($(cm).attr('hide')) {
 						th.hidden = true;
 					}
@@ -1404,7 +1413,25 @@
 				if (kcol.style.display == 'none') {
 					chk = '';
 				}
-				$('tbody', g.nDiv).append('<tr><td class="ndcol1"><input type="checkbox" ' + chk + ' class="togCol" value="' + cn + '" /></td><td class="ndcol2">' + this.innerHTML + '</td></tr>');
+				
+				//Checking if the header has title to make it fix
+				
+				if(kcol.title)
+				{
+					/*
+					Checking if it has any title or not
+					*/
+				}
+				else{
+					/*
+					Put the column into the control panel
+					*/
+					
+					$('tbody', g.nDiv).append('<tr><td class="ndcol1"><input type="checkbox" ' + chk + ' class="togCol" value="' + cn + '" /></td><td class="ndcol2">' + this.innerHTML + '</td></tr>');
+				}
+				
+				//
+								
 				cn++;
 			});
 			if (browser.msie && browser.version < 7.0) $('tr', g.nDiv).hover(function () {
