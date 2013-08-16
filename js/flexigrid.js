@@ -963,7 +963,7 @@
 		g.hTable = document.createElement('table');
 		g.gDiv.className = 'flexigrid';
 		if (p.width != 'auto') {
-			g.gDiv.style.width = p.width + isNaN(p.width) ? '' : 'px';
+			g.gDiv.style.width = p.width + (isNaN(p.width) ? '' : 'px');
 		} 
 		//add conditional classes
 		if (browser.msie) {
