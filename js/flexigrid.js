@@ -586,7 +586,7 @@
 			buildpager: function () { //rebuild pager based on new properties
 				$('.pcontrol input', this.pDiv).val(p.page);
 				$('.pcontrol span', this.pDiv).html(p.pages);
-				var r1 = (p.page - 1) * p.rp + 1;
+				var r1 = p.total == 0 ? 0 : (p.page - 1) * p.rp + 1;
 				var r2 = r1 + p.rp - 1;
 				if (p.total < r2) {
 					r2 = p.total;
