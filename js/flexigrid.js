@@ -92,6 +92,8 @@
 			rp: 15, //results per page
 			rpOptions: [10, 15, 20, 30, 50], //allowed per-page values
 			title: false,
+			selection: true, //enable selection tool
+			singleSelect: false, //disable multi-selection
 			idProperty: 'id',
 			pagestat: 'Displaying {from} to {to} of {total} items',
 			pagetext: 'Page',
@@ -774,43 +776,39 @@
 				};
 			},
 			addRowProp: function () {
+				var lastClick = null;
 				$('tbody tr', g.bDiv).on('click', function (e) {
 					var obj = (e.target || e.srcElement);
 					if (obj.href || obj.type) return true;
-					if (e.ctrlKey || e.metaKey) {
-						// mousedown already took care of this case
-						return;
-					}
-					$(this).toggleClass('trSelected');
-					if (p.singleSelect && ! g.multisel) {
-						$(this).siblings().removeClass('trSelected');
-					}
-				}).on('mousedown', function (e) {
-					if (e.shiftKey) {
-						$(this).toggleClass('trSelected');
-						g.multisel = true;
-						this.focus();
-						$(g.gDiv).noSelect();
-					}
-					if (e.ctrlKey || e.metaKey) {
-						$(this).toggleClass('trSelected');
-						g.multisel = true;
-						this.focus();
-					}
-				}).on('mouseup', function (e) {
-					if (g.multisel && ! (e.ctrlKey || e.metaKey)) {
-						g.multisel = false;
-						$(g.gDiv).noSelect(false);
+					if (p.selection) {
+                        			if (e.shiftKey && p.singleSelect) {
+                            				if ($(lastClick).hasClass('trSelected')) {
+                        					if ($(lastClick)[0].rowIndex < $(this)[0].rowIndex) {
+                                    					$(lastClick).nextUntil($(this)).addClass('trSelected');
+                                				} else {
+                                    					$(this).nextUntil($(lastClick)).addClass('trSelected');
+                        					}
+                                				$(this).addClass('trSelected');
+                                				g.multisel = true;
+                            				} else {
+                                				$(this).toggleClass('trSelected');
+                                				g.multisel = false;
+                            				}
+                				} else if (e.ctrlKey && p.singleSelect) {
+                            				$(this).toggleClass('trSelected');
+                            				g.multisel = true;
+                        			} else {
+			                        	$(this).siblings().removeClass('trSelected');
+			                            	$(this).toggleClass('trSelected');
+			                            	g.multisel = false;
+                        			}
+                        			lastClick = this;
 					}
 				}).on('dblclick', function () {
 					if (p.onDoubleClick) {
 						p.onDoubleClick(this, g, p);
 					}
-				}).hover(function (e) {
-					if (g.multisel && e.shiftKey) {
-						$(this).toggleClass('trSelected');
-					}
-				}, function () {});
+				});
 				if (browser.msie && browser.version < 7.0) {
 					$(this).hover(function () {
 						$(this).addClass('trOver');
