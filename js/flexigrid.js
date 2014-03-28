@@ -92,6 +92,8 @@
 			rp: 15, //results per page
 			rpOptions: [10, 15, 20, 30, 50], //allowed per-page values
 			title: false,
+			selection: true, //enable or disable selection click
+			singleSelect: false, //multi or single selection
 			idProperty: 'id',
 			pagestat: 'Displaying {from} to {to} of {total} items',
 			pagetext: 'Page',
@@ -779,19 +781,25 @@
 						// mousedown already took care of this case
 						return;
 					}
-					$(this).toggleClass('trSelected');
-					if (p.singleSelect && ! g.multisel) {
-						$(this).siblings().removeClass('trSelected');
+					if (p.selection) {
+						$(this).toggleClass('trSelected');
+						if (p.singleSelect && ! g.multisel) {
+							$(this).siblings().removeClass('trSelected');
+						}
 					}
 				}).on('mousedown', function (e) {
 					if (e.shiftKey) {
-						$(this).toggleClass('trSelected');
+						if (p.selection) {
+							$(this).toggleClass('trSelected');
+						}
 						g.multisel = true;
 						this.focus();
 						$(g.gDiv).noSelect();
 					}
 					if (e.ctrlKey || e.metaKey) {
-						$(this).toggleClass('trSelected');
+						if (p.selection) {
+							$(this).toggleClass('trSelected');
+						}
 						g.multisel = true;
 						this.focus();
 					}
@@ -805,8 +813,10 @@
 						p.onDoubleClick(this, g, p);
 					}
 				}).hover(function (e) {
-					if (g.multisel && e.shiftKey) {
-						$(this).toggleClass('trSelected');
+					if (p.selection) {
+						if (g.multisel && e.shiftKey) {
+							$(this).toggleClass('trSelected');
+						}
 					}
 				}, function () {});
 				if (browser.msie && browser.version < 7.0) {
