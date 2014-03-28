@@ -414,6 +414,11 @@ div.colCopy {
 	border-bottom: 1px solid #fff;
 	vertical-align: top;
 	white-space: nowrap;
+	white-space: nowrap;
+	user-select: none;
+	-ms-user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
 }
 
 .flexigrid div.hDiv th div {
