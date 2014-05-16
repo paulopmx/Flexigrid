@@ -775,6 +775,7 @@
 			},
 			addRowProp: function () {
 				$('tbody tr', g.bDiv).on('click', function (e) {
+					e.preventDefault();
 					var obj = (e.target || e.srcElement);
 					if (obj.href || obj.type) return true;
 					if (e.ctrlKey || e.metaKey) {
