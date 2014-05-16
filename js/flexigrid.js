@@ -99,6 +99,8 @@
 			findtext: 'Find',
 			params: [], //allow optional parameters to be passed around
 			procmsg: 'Processing, please wait ...',
+			minmaxtext: 'Minimize/Maximize Table',
+			showhidecoltext: 'Hide/Show Columns',
 			query: '',
 			qtype: '',
 			nomsg: 'No items',
@@ -1363,7 +1365,7 @@
 			g.mDiv.innerHTML = '<div class="ftitle">' + p.title + '</div>';
 			$(g.gDiv).prepend(g.mDiv);
 			if (p.showTableToggleBtn) {
-				$(g.mDiv).append('<div class="ptogtitle" title="Minimize/Maximize Table"><span></span></div>');
+				$(g.mDiv).append('<div class="ptogtitle" title="' + p.minmaxtext + '"><span></span></div>');
 				$('div.ptogtitle', g.mDiv).click(function () {
 					$(g.gDiv).toggleClass('hideBody');
 					$(this).toggleClass('vsble');
@@ -1425,7 +1427,7 @@
 			$(g.gDiv).prepend(g.nDiv);
 			$(g.nBtn).addClass('nBtn')
 				.html('<div></div>')
-				.attr('title', 'Hide/Show Columns')
+				.attr('title', p.showhidecoltext)
 				.click(function () {
 					$(g.nDiv).toggle();
 					return true;
