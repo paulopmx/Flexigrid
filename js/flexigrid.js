@@ -107,6 +107,7 @@
 			hideOnSubmit: true,
 			autoload: true,
 			blockOpacity: 0.5,
+			sortorder: 'asc',
 			preProcess: false,
 			addTitleToCell: false, // add a title attr to cells with truncated contents
 			dblClickResize: false, //auto resize column by double clicking
@@ -577,12 +578,57 @@
 				$('.sasc', this.hDiv).removeClass('sasc');
 				$('div', th).addClass('s' + p.sortorder);
 				p.sortname = $(th).attr('abbr');
-				if (p.onChangeSort) {
-					p.onChangeSort(p.sortname, p.sortorder);
-				} else {
-					this.populate();
-				}
+				if (p.onChangeSort)
+                    p.onChangeSort(p.sortname, p.sortorder);
+                else if (!p.url)
+                    this.inPlaceSort(th);
+                else
+                    this.populate();
 			},
+			inPlaceSort: function(th) {
+                // Originally coded by Nick Eby
+                // http://pixelnix.com/flexigrid-jquery-plugin-extending-to-allow-sorting-of-static-grids/
+                if (!p.sortorder)
+                    p.sortorder = "asc";
+
+                var col = $(th).index();
+                if (isNaN(col) || col < 0)
+                    alert("Sorting is not configured properly. Could not find the header for sortname '" + p.sortname + "'");
+
+                var rows = $(this.bDiv).find("tr");
+                if (!rows || rows.length < 2)
+                    return;
+
+                var parent = $(rows[0]).parent();
+                // Added optional datatype th attribute for optimized sorting
+                // string (default) | date | number
+                var dataType = $(th).attr("datatype");
+
+                rows.sort(function (a, b) {
+                    var compA = $(a).find("td:eq(" + col + ")").text();
+                    var compB = $(b).find("td:eq(" + col + ")").text();
+                    try {
+                        if (dataType == "date") {
+                            compA = new Date(compA);
+                            compB = new Date(compB);
+                        }
+                        else if (dataType == "number") {
+                            compA = parseFloat(compA);
+                            compB = parseFloat(compB);
+                        }
+                    }
+                    catch (e) { }
+                    // string is assumed type
+                    if (p.sortorder == "asc")
+                        return (compA < compB) ? -1 : (compA > compB) ? 1 : 0;
+                    else
+                        return (compA < compB) ? 1 : (compA > compB) ? -1 : 0;
+                });
+
+                $.each(rows, function () {
+                    $(parent).append(this);
+                });
+            },
 			buildpager: function () { //rebuild pager based on new properties
 				$('.pcontrol input', this.pDiv).val(p.page);
 				$('.pcontrol span', this.pDiv).html(p.pages);
