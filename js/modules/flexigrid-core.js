@@ -23,7 +23,7 @@ fl_grid.prototype = {
 	,width: 'auto'
 	,className: 'fl-grid'
 	,viewtype: 'standard'
-	
+	,showColumns: true
 	//state
 	,page: 1
 	,total: 1
@@ -226,6 +226,11 @@ fl_grid.prototype = {
 								.addClass('fl-td')
 								.addClass('fl-td-'+c[co])
 								;
+
+						if (!this.showColumns)
+							{
+							$(td).addClass('fl-td-no-col');
+							}
 
 						var cm = this.colModel[c[co]];
 

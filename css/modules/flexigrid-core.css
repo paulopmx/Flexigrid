@@ -90,12 +90,14 @@
 			}
 
 		
-		.fl-td
+
+		.fl-td-no-col
 			{
 			border-left: 0px;
 			border-right: 0px;
 			padding: 0px 1px;
 			}
+
 			
 			.fl-tr:hover .fl-td, .fl-tr-hover .fl-td
 				{

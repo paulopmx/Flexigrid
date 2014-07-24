@@ -40,6 +40,14 @@
 				color: #555;
 				}
 				
+			h2
+			    {
+    				font-family: 'Helvetica Neue';
+    			    font-size: 24px;
+    			    font-weight: 200;
+    			    color: #555;
+			    }	
+				
             button
                 {
                     background: #f7f7f7;
@@ -59,25 +67,29 @@
 	</head>
 	<body>
 
+	<h1><b>Flexigrid</b> Features Test Page</h1>
+
 	<button type="button" onclick="toggle()">Toggle Theme</button>&nbsp; 
 	<button type="button" onclick="$('.fl-grid').prop('height',200).trigger('resize')">Resize 200</button>&nbsp;
 	<button type="button" onclick="$('.fl-grid').prop('height',150).trigger('resize')">Resize 150</button>&nbsp;
 	<button type="button" onclick="$('.fl-grid').prop('height','auto').trigger('resize')">Auto Height</button>&nbsp;
 	
-	<br />
+	<br /><br />
 
-	<h1><b>Flexigrid</b> Features Test Page</h1>
 
 	<div>
-	
-	<div class="ftable fl-grid-pb"></div>
-	
-	<br />
-	
+
+	<h2>Standard Demo</h2>
 	<div class="ftable2 fl-grid-pb"></div>
 
 	<br />
 	
+	<h2>Freeze Pane Demo</h2>
+	<div class="ftable fl-grid-pb"></div>
+	
+	<br />
+	
+    <h2>Percentage Column Width Demo</h2>	
 	<div class="ftable3"></div>
 
 	
@@ -180,6 +192,7 @@
 		var opt3 = {
 			height: 'auto'
 			,viewtype: 'fullwidth'
+			,showColumns: false
 			,rp: 6
 			,page: 1
 			,exclude: ['fl_menu']
