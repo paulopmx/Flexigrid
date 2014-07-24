@@ -1,6 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html>
+<!DOCTYPE html>
+<html lang="en-US">
 	<head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">	
 		<title>Flexigrid Features Test</title>
 
 
@@ -27,6 +28,7 @@
 				padding: 20px;
 				font-family: Arial;
 				background: #fff;
+				text-align: center;
 				}
 				
 			h1
@@ -38,6 +40,20 @@
 				color: #555;
 				}
 				
+            button
+                {
+                    background: #f7f7f7;
+                    border: 1px solid #ccc;
+                    border-radius: 3px;
+                    padding: 8px 20px;
+                    font-family: "Helvetica Neue";
+                    cursor: pointer;
+                    font-size: 12px;
+                    font-weight: 400;
+                    width: 120px;
+                    box-shadow: 0 0 5px #eee;
+                }
+				
 		</style>
 		
 	</head>
@@ -46,7 +62,7 @@
 	<button type="button" onclick="toggle()">Toggle Theme</button>&nbsp; 
 	<button type="button" onclick="$('.fl-grid').prop('height',200).trigger('resize')">Resize 200</button>&nbsp;
 	<button type="button" onclick="$('.fl-grid').prop('height',150).trigger('resize')">Resize 150</button>&nbsp;
-	<button type="button" onclick="$('.fl-grid').prop('height','auto').trigger('resize')">Resize Auto Height</button>&nbsp;
+	<button type="button" onclick="$('.fl-grid').prop('height','auto').trigger('resize')">Auto Height</button>&nbsp;
 	
 	<br />
 
@@ -69,6 +85,7 @@
 	
 	<script type="text/javascript" src="../lib/jquery162.js"></script>
 
+<!--
 	<script type="text/javascript" src="../js/modules/flexigrid-core.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-menu.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-freezepane.js" ></script>
@@ -78,13 +95,16 @@
 	<script type="text/javascript" src="../js/modules/flexigrid-table-parser.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-toolbar.js" ></script>
 	<script type="text/javascript" src="../js/modules/flexigrid-titlebar.js" ></script>
+-->
+
+	<script type="text/javascript" src="../js/flexigrid-2.0.min.js" ></script>
+
 
 	<!-- 
 
 
 
 
-	<script type="text/javascript" src="../js/flexigrid-2.0.min.js" ></script>
 	
 	<script type="text/javascript" src="../js/flexigrid-2.0.js" ></script>
 	<script type="text/javascript" src="../js/flexigrid-2.0.pack.js" ></script>
@@ -105,8 +125,8 @@
 					,align: 'right'
 				}
 				,'country_code': {
-					display: "Country Code"
-					,width: '360'
+					display: "Some Code"
+					,width: '300'
 				}
 				,'id': {
 					display: "Country ID"

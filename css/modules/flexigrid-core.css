@@ -14,6 +14,7 @@
 	letter-spacing: normal;
 	line-height: normal;
 	background: none;
+	-webkit-text-size-adjust: 100%;
 	}
 
 .fl-grid
@@ -53,6 +54,7 @@
 		width: 100%;
 		overflow: auto;
 		position: relative;
+		
 		}
 		
 		.fl-bdiv-inner

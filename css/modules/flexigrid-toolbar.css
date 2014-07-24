@@ -24,6 +24,7 @@
 			width: 100%;
 			margin-left: -1px;
 			position: relative;
+			text-align: left;
 			}
 			
 			.fl-toolbar-inner
@@ -63,6 +64,7 @@
 		cursor: pointer;
 		vertical-align: middle;
 		position: relative;
+		box-shadow: none;
 		}
 		
 		.fl-button:hover
