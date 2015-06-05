@@ -64,6 +64,8 @@
                     });
         };
     }
+    
+    /* END code from jQuery UI */
 
     $(document).ready(function () {
         docloaded = true;
@@ -146,6 +148,7 @@
             if (!docloaded) {
                 $(this).hide();
                 $(document).ready(function () {
+                    console.log(pluginName);
                     methods[pluginName].call(t, t, op); // @todo fix t/this
                 });
             } else {
@@ -154,7 +157,7 @@
         });
     }; //end flexigrid
 
-    methods.flexigrid = function (t, p) {
+    methods[pluginName] = function (t, p) {
         if (t.grid)
             return false; //return if already exist
         var op = $(this).data(pluginName);
@@ -1507,7 +1510,7 @@
         }
     }; //end noSelect
 
-    $.fn.flexigrid = $.fn[pluginName] = function (method) {
+    $.fn[pluginName] = function (method) {
         //return false;
         if (methods[method])
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -1515,5 +1518,10 @@
             return methods.init.apply(this, arguments);
         else
             $.error('Method ' + method + ' fail');
+    };    
+    
+    $.fn.flexigrid = function () {
+        return $.fn[pluginName].apply(this, arguments);
     };
+    
 })(jQuery);
