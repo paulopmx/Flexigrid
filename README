@@ -3,7 +3,7 @@ ixelfGrid
 Originally it's a fork of flexigrid for working with jsonRpc data.
 It's was massively rewrited/reorganised
 
-```
+```js
 <script>
     jQuery(document).ready(function () {
         var $ = jQuery;
