@@ -1,5 +1,5 @@
 /*
- * ixelfGrid v1.3 
+ * ixelfGrid v1.4
  * Mickael Desgranges mickael@mkdgs.fr
  * 
  * Forked from Flexigrid for jQuery
@@ -41,7 +41,8 @@
         // Chrome is Webkit, but Webkit is also Safari.
         if (browser.chrome || browser.webkit)
             browser.safari = browser.webkit = true;
-    };
+    }
+    ;
 
     /*!
      * START code from jQuery UI
@@ -64,7 +65,7 @@
                     });
         };
     }
-    
+
     /* END code from jQuery UI */
 
     $(document).ready(function () {
@@ -111,6 +112,7 @@
                     autoload: true,
                     blockOpacity: 0.5,
                     preProcess: false,
+                    onInit: false,
                     onDragCol: false,
                     onToggleCol: false,
                     onChangeSort: false,
@@ -148,7 +150,6 @@
             if (!docloaded) {
                 $(this).hide();
                 $(document).ready(function () {
-                    console.log(pluginName);
                     methods[pluginName].call(t, t, op); // @todo fix t/this
                 });
             } else {
@@ -431,7 +432,7 @@
                 } else {
                     $('tr:eq(' + cdrop + ')', this.nDiv).after($('tr:eq(' + cdrag + ')', this.nDiv));
                 }
-                
+
                 this.hDiv.scrollLeft = this.bDiv.scrollLeft;
             },
             scroll: function () {
@@ -750,7 +751,7 @@
                     }
                 }, function () {
                 });
-               
+
             },
             combo_flag: true,
             combo_resetIndex: function (selObj) {
@@ -915,16 +916,16 @@
         $(op.grid.gDiv).append(t);
         //set toolbar
         if (op.buttons.length) {
-            var tDiv2 = methods.addToolbar(op.grid.gDiv);            
-            tDiv2.className = 'tDiv2';            
+            var tDiv2 = methods.addToolbar.call(op.t);
+            tDiv2.className = 'tDiv2';
             for (var i = 0; i < op.buttons.length; i++) {
                 var btn = op.buttons[i];
-                methods.addButton(tDiv2, btn);
-            }            
+                methods.addButton.call(op.t, tDiv2, btn);
+            }
         }
-        
+
         op.grid.hDiv.className = 'hDiv';
-        
+
         //
         // @TODO re-code according to colmodel
         //
@@ -1084,7 +1085,7 @@
                     }).dblclick(function (e) {
                         op.grid.autoResizeColumn(this);
                     });
-                    
+
                 });
             }
         }
@@ -1104,7 +1105,7 @@
             $(op.grid.rDiv).mousedown(function (e) {
                 op.grid.dragStart('vresize', e, true);
             }).html('<span></span>').css('height', $(op.grid.gDiv).height());
-           
+
             $(op.grid.gDiv).append(op.grid.rDiv);
         }
         // add pager
@@ -1134,7 +1135,7 @@
                 if (e.keyCode == 13)
                     op.grid.changePage('input');
             });
-            
+
             if (op.useRp) {
                 var opt = '', sel = '';
                 for (var nx = 0; nx < op.rpOptions.length; nx++) {
@@ -1255,7 +1256,7 @@
                 $('tbody', op.grid.nDiv).append('<tr><td class="ndcol1"><input type="checkbox" ' + chk + ' class="togCol" value="' + cn + '" /></td><td class="ndcol2">' + this.innerHTML + '</td></tr>');
                 cn++;
             });
-            
+
             $('td.ndcol2', op.grid.nDiv).click(function () {
                 if ($('input:checked', op.grid.nDiv).length <= op.minColToggle && $(this).prev().find('input')[0].checked)
                     return false;
@@ -1309,7 +1310,7 @@
         }, function () {
             op.grid.dragEnd();
         });
-        
+
         op.grid.rePosDrag();
         op.grid.fixHeight();
 
@@ -1319,6 +1320,10 @@
         // load data
         if (op.url && op.autoload) {
             methods.populate.call(op.t);
+        }
+
+        if (typeof op.onInit === 'function') {
+            op.onInit(op);
         }
         return op;
     };
@@ -1397,53 +1402,53 @@
             methods.populate.call(op.t);
     };
 
-    methods.addToolbar = function(grid, options) {
-            var op = $(this).data(pluginName);
-            var tDiv = document.createElement('div');
+    methods.addToolbar = function () {
+        var op = $(this).data(pluginName);
+        var tDiv2 = document.createElement('div');
+        tDiv2.className = 'tDiv2';
+        var tDiv = $('.tDiv', op.grid.gDiv);
+        if (!tDiv.length) {
+            tDiv = document.createElement('div');
             tDiv.className = 'tDiv';
-            var tDiv2 = document.createElement('div');
-            tDiv2.className = 'tDiv2';
-            $(tDiv).append(tDiv2);
-            $(grid).prepend(tDiv);
-            return tDiv2;
+            $(op.grid.gDiv).prepend(tDiv);
+        }
+
+        $(tDiv).append(tDiv2);
+        return tDiv2;
     };
 
     methods.addButton = function (toolbar, btn) {
         var op = $(this).data(pluginName);
         if (btn.hide)
             return;
-        if (!btn.separator) {
-            var btnDiv = document.createElement('div');
-            btnDiv.className = 'fbutton';
-            btnDiv.innerHTML = ("<div><span>") + (btn.hidename ? "&nbsp;" : btn.name) + ("</span></div>");
-            if (btn.bclass)
-                $('span', btnDiv).addClass(btn.bclass).css({
-                    paddingLeft: 20
-                });
-            if (btn.bimage) // if bimage defined, use its string as an image url for this buttons style (RS)
-                $('span', btnDiv).css('background', 'url(' + btn.bimage + ') no-repeat center left');
-            $('span', btnDiv).css('paddingLeft', 20);
 
-            if (btn.tooltip) // add title if exists (RS)
-                $('span', btnDiv)[0].title = btn.tooltip;
-           
-            btnDiv.name = btn.name;
-            if (btn.id) {
-                btnDiv.id = btn.id;
-            }
-            
-            if (typeof btn.buttonFunction === 'function') {
-                btn.buttonFunction(btnDiv, op);
-            }
-            
-            $(toolbar).append(btnDiv);
-           
+        var btnDiv = document.createElement('div');
+        btnDiv.className = 'fbutton';
+        btnDiv.innerHTML = ("<div><span>") + (btn.hidename ? "&nbsp;" : btn.name) + ("</span></div>");
+        if (btn.bclass)
+            $('span', btnDiv).addClass(btn.bclass).css({
+                paddingLeft: 20
+            });
+        if (btn.bimage) // if bimage defined, use its string as an image url for this buttons style (RS)
+            $('span', btnDiv).css('background', 'url(' + btn.bimage + ') no-repeat center left');
+        $('span', btnDiv).css('paddingLeft', 20);
+
+        if (btn.tooltip) // add title if exists (RS)
+            $('span', btnDiv)[0].title = btn.tooltip;
+
+        btnDiv.name = btn.name;
+        if (btn.id) {
+            btnDiv.id = btn.id;
         }
-        else {
-            $separator = "<div class='btnseparator'></div>";
-            if (typeof btn.buttonFunction == 'function') {
-                btn.buttonFunction($separator, op);
-            }
+
+        if (typeof btn.buttonFunction === 'function') {
+            btn.buttonFunction(btnDiv, op);
+        }
+
+        $(toolbar).append(btnDiv);
+
+        if (btn.separator) {
+            var $separator = "<div class='btnseparator'></div>";
             $(toolbar).append($separator);
         }
     };
@@ -1511,17 +1516,15 @@
     }; //end noSelect
 
     $.fn[pluginName] = function (method) {
-        //return false;
+
         if (methods[method])
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
         else if (typeof method === 'object' || !method)
             return methods.init.apply(this, arguments);
         else
             $.error('Method ' + method + ' fail');
-    };    
-    
-    $.fn.flexigrid = function () {
-        return $.fn[pluginName].apply(this, arguments);
     };
-    
+
+    $.fn.flexigrid = $.fn[pluginName];
+
 })(jQuery);
