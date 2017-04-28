@@ -9,7 +9,9 @@
 	overflow: hidden;
 	color: #000;
 }
-
+.flexigrid table{
+	border-collapse: separate !important;
+}
 .flexigrid.hideBody {
 	height: 26px !important;
 	border-bottom: 1px solid #ccc;
@@ -374,7 +376,7 @@ div.colCopy {
 }
 
 .flexigrid div.hDiv th.thOver {
-	
+
 }
 
 .flexigrid div.hDiv th.thOver div,.flexigrid div.hDiv th.sorted.thOver div
@@ -417,7 +419,7 @@ div.colCopy {
 }
 
 .flexigrid div.hDiv th div {
-	
+
 }
 
 .flexigrid span.cdropleft {
@@ -454,7 +456,7 @@ div.colCopy {
 }
 
 .flexigrid tr td.sorted div {
-	
+
 }
 
 .flexigrid tr.erow td {
@@ -468,7 +470,7 @@ div.colCopy {
 }
 
 .flexigrid tr.erow td.sorted div {
-	
+
 }
 
 .flexigrid div.bDiv tr:hover td,.flexigrid div.bDiv tr:hover td.sorted,.flexigrid div.bDiv tr.trOver td.sorted,.flexigrid div.bDiv tr.trOver td
@@ -522,6 +524,16 @@ div.colCopy {
 }
 
 /* end novstripe */
+/*========when dragging,no select=================*/
+.now_dragging .flexigrid div.hDiv th div,.now_dragging .flexigrid div.bDiv td div,.now_dragging,.now_dragging *{
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+/*========when dragging,no select=================*/
+
 .flexigrid div.pDiv {
 	background: url(images/wbg.gif) repeat-x 0 -1px;
 	border: 1px solid #ccc;

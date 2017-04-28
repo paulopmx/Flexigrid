@@ -8,10 +8,10 @@
  */
 (function ($) {
 	/*
-	 * jQuery 1.9 support. browser object has been removed in 1.9 
+	 * jQuery 1.9 support. browser object has been removed in 1.9
 	 */
 	var browser = $.browser
-	
+
 	if (!browser) {
 		function uaMatch( ua ) {
 			ua = ua.toLowerCase();
@@ -44,7 +44,7 @@
 			browser.safari = true;
 		}
 	}
-	
+
     /*!
      * START code from jQuery UI
      *
@@ -54,11 +54,11 @@
      *
      * http://docs.jquery.com/UI
      */
-     
+
     if(typeof $.support.selectstart != 'function') {
         $.support.selectstart = "onselectstart" in document.createElement("div");
     }
-    
+
     if(typeof $.fn.disableSelection != 'function') {
         $.fn.disableSelection = function() {
             return this.bind( ( $.support.selectstart ? "selectstart" : "mousedown" ) +
@@ -67,9 +67,9 @@
             });
         };
     }
-    
+
     /* END code from jQuery UI */
-    
+
 	$.addFlex = function (t, p) {
 		if (t.grid) return false; //return if already exist
 		p = $.extend({ //apply default properties
@@ -162,8 +162,10 @@
 						cdpos = 0;
 					}
 					$('div:eq(' + n + ')', g.cDrag).css({
-						'left': (!(browser.mozilla) ? cdpos - cdcounter : cdpos) + 'px'
+						// 'left': (!(browser.mozilla) ? cdpos - cdcounter : cdpos) + 'px'
+						'left': (cdpos) + 'px'
 					}).show();
+
 					cdleft = cdpos;
 					cdcounter++;
 				});
@@ -191,6 +193,7 @@
 				});
 			},
 			dragStart: function (dragtype, e, obj) { //default drag function start
+				$('body').addClass('now_dragging');
                 if (dragtype == 'colresize' && p.colResize === true) {//column resize
 					$(g.nDiv).hide();
 					$(g.nBtn).hide();
@@ -294,6 +297,7 @@
 				}
 			},
 			dragEnd: function () {
+				$('body').removeClass('now_dragging');
 				if (this.colresize) {
 					var n = this.colresize.n;
 					var nw = this.colresize.nw;
@@ -895,9 +899,9 @@
 			},
 			pager: 0
 		};
-        
+
         g = p.getGridClass(g); //get the grid class
-        
+
 		if (p.colModel) { //create model if any
 			thead = document.createElement('thead');
 			var tr = document.createElement('tr');
@@ -954,11 +958,11 @@
 		g.tDiv = document.createElement('div'); //create toolbar
 		g.sDiv = document.createElement('div');
 		g.pDiv = document.createElement('div'); //create pager container
-        
+
         if(p.colResize === false) { //don't display column drag if we are not using it
             $(g.cDrag).css('display', 'none');
         }
-        
+
 		if (!p.usepager) {
 			g.pDiv.style.display = 'none';
 		}
@@ -966,7 +970,7 @@
 		g.gDiv.className = 'flexigrid';
 		if (p.width != 'auto') {
 			g.gDiv.style.width = p.width + (isNaN(p.width) ? '' : 'px');
-		} 
+		}
 		//add conditional classes
 		if (browser.msie) {
 			$(g.gDiv).addClass('ie');
@@ -1097,13 +1101,13 @@
 			if (!p.colmodel) {
 				$(this).attr('axis', 'col' + ci++);
 			}
-			
+
 			// if there isn't a default width, then the column headers don't match
 			// i'm sure there is a better way, but this at least stops it failing
 			if (this.width == '') {
 				this.width = 100;
 			}
-			
+
 			$(thdiv).css({
 				textAlign: this.align,
 				width: this.width + 'px'
@@ -1282,7 +1286,7 @@
 				g.changePage('last');
 			});
 			$('.pcontrol input', g.pDiv).keydown(function (e) {
-				if (e.keyCode == 13) { 
+				if (e.keyCode == 13) {
                     g.changePage('input');
 				}
 			});
@@ -1559,7 +1563,7 @@
 				var col = cell.abbr;
 				var val = cell.firstChild.innerHTML;
 				if (val == '&nbsp;') val = '';      // Trim the content
-        		        var idx = cell.cellIndex;                
+        		        var idx = cell.cellIndex;
 
 				arRow.push({
 					Column: col,        // Column identifier
