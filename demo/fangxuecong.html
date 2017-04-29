@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>fangxuecong</title>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+<meta name="author" content="Thilina Fong" />
+<meta name="description" content="" />
+<link rel="stylesheet" href="../css/flexigrid.css" />
+</head>
+<body>
+<div id="container">
+  <table class="fle">
+    <thead>
+<!-- js-thead -->
+    </thead>
+    <tbody>
+<!-- js-tbody -->
+    </tbody>
+  </table>
+</div>
+<script src="http://localhost/jquery.js" charset="utf-8"></script>
+<script src="../js/flexigrid.js" charset="utf-8"></script>
+<script type="text/javascript" src="make_table.js"></script>
+<script type="text/javascript">
+$(function(){
+  $(".fle").flexigrid({
+    height: 'auto', //default height
+    resizable: false,
+  });
+});
+</script>
+</body>
+</html>
